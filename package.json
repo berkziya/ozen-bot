@@ -10,7 +10,16 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "@types/async-lock": "^1.4.2",
     "@types/node": "^22.0.0",
     "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "async-lock": "^1.4.1",
+    "fs": "0.0.1-security",
+    "path": "^0.12.7",
+    "playwright": "^1.45.3",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.20"
   }
 }
