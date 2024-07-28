@@ -1,0 +1,34 @@
+import { Autonomy } from '../Autonomy';
+import { Player } from '../Player';
+import { State } from '../State';
+export declare class Storage {
+    owner: Player | State | Autonomy | null;
+    subStorage: Storage[];
+    stateMoney: number;
+    stateGold: number;
+    stateOil: number;
+    stateOre: number;
+    stateUranium: number;
+    stateDiamonds: number;
+    money: number;
+    gold: number;
+    oil: number;
+    ore: number;
+    uranium: number;
+    diamonds: number;
+    liquidOxygen: number;
+    helium3: number;
+    rivalium: number;
+    antirad: number;
+    energyDrink: number;
+    spaceRockets: number;
+    lss: number;
+    tanks: number;
+    aircrafts: number;
+    missiles: number;
+    bombers: number;
+    battleships: number;
+    laserDrones: number;
+    moonTanks: number;
+    spaceStations: number;
+}
