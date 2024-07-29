@@ -12,7 +12,7 @@ export declare class UserContext {
     lock: AsyncLock;
     init(): Promise<void>;
     amILoggedIn(): Promise<boolean>;
-    login(mail: string, password: string, cookies?: boolean): Promise<number | null>;
+    login(mail: string, password: string, useCookies?: boolean): Promise<number | null>;
     ajax(url: string, data?: string): Promise<void>;
 }
 export declare class Client {

@@ -28,6 +28,6 @@ export class Party {
     this.id = id_;
     this.name = 'party/' + this.id.toString();
     this.secretaries = [];
-    this.members= [];
+    this.members = [];
   }
 }

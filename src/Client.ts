@@ -7,12 +7,13 @@ import {
   BrowserContextOptions,
 } from 'playwright';
 import AsyncLock from 'async-lock';
-import fs from 'fs';
-import path from 'path';
 import { Player } from './entity/Player';
 
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
+
 const iPhoneUserAgent =
-  'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/127.0 Mobile/15E148 Safari/605.1.15';
+  'Mozilla/5.0 (iPhone; CPU iPhone OS 14_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/128.0 Mobile/15E148 Safari/605.1.15';
 const mobileViewport = {
   width: 430,
   height: 932,
@@ -37,7 +38,7 @@ export class UserContext {
         locale: 'en-US',
         viewport: this.mobile ? mobileViewport : undefined,
         userAgent: this.mobile ? iPhoneUserAgent : undefined,
-        // isMobile: mobile,
+        isMobile: this.mobile,
         hasTouch: this.mobile,
       };
 
@@ -58,45 +59,61 @@ export class UserContext {
   async login(
     mail: string,
     password: string,
-    cookies: boolean = true
+    useCookies: boolean = true
   ): Promise<number | null> {
-    return await this.lock.acquire(['context', 'page'], async () => {
+    return this.lock.acquire(['context', 'page'], async () => {
       try {
         await this.page.goto('/');
+
         const sanitizedMail = mail.replace(/[^a-z0-9]/gi, '_').toLowerCase();
         const cookiesPath = path.resolve(
           __dirname,
           '../../..',
           `${sanitizedMail}_${this.mobile ? 'mobile_' : ''}cookies.json`
         );
-        if (cookies && fs.existsSync(cookiesPath)) {
-          const cookies = JSON.parse(fs.readFileSync(cookiesPath, 'utf8'));
-          await this.page.context().addCookies(cookies);
-          this.page.reload();
-        } else {
-          cookies = false;
+
+        if (useCookies) {
+          try {
+            await fs.access(cookiesPath);
+            const cookiesData = await fs.readFile(cookiesPath, 'utf8');
+            const cookies = JSON.parse(cookiesData);
+            await this.page.context().addCookies(cookies);
+            await this.page.reload();
+          } catch (error: any) {
+            if (error.code !== 'ENOENT') {
+              throw error;
+            }
+            // File doesn't exist, proceed without cookies
+            useCookies = false;
+          }
+        }
+
+        if (!useCookies) {
           await this.page.fill('input[name="mail"]', mail);
           await this.page.fill('input[name="p"]', password);
           await this.page.click('input[name="s"]');
         }
+
         if (!(await this.amILoggedIn())) {
-          if (cookies) {
-            return await this.login(mail, password, false);
+          if (useCookies) {
+            return this.login(mail, password, false);
           }
           return null;
         }
-        let id: number;
+
         this.id = await this.page.evaluate(() => {
+          // @ts-ignore
           return id;
         });
+
         // this.player = await this.models.getPlayer(this.id!);
-        fs.writeFileSync(
-          cookiesPath,
-          JSON.stringify(await this.page.context().cookies())
-        );
+
+        const cookies = await this.page.context().cookies();
+        await fs.writeFile(cookiesPath, JSON.stringify(cookies));
+
         return this.id;
-      } catch (e) {
-        console.error(e);
+      } catch (error) {
+        console.error(error);
         return null;
       }
     });

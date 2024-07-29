@@ -1,6 +1,6 @@
 {
   "name": "ozen-bot",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -17,8 +17,6 @@
   },
   "dependencies": {
     "async-lock": "^1.4.1",
-    "fs": "0.0.1-security",
-    "path": "^0.12.7",
     "playwright": "^1.45.3",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.20"
