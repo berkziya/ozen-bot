@@ -60,4 +60,19 @@ export class State {
     this.regions = [];
     this.autonomies = [];
   }
+
+  toJSON() {
+    return {
+      id: this.id,
+      name: this.name,
+      regions: this.regions.map((region) => region.id),
+      autonomies: this.autonomies.map((autonomy) => autonomy.id),
+      governmentForm: this.governmentForm,
+      leader: this.leader?.id,
+      leaderIsCommander: this.leaderIsCommander,
+      econMinister: this.econMinister?.id,
+      foreignMinister: this.foreignMinister?.id,
+      leaderTermStart: this.leaderTermStart,
+    };
+  }
 }

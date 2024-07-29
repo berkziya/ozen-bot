@@ -62,4 +62,23 @@ export class Player {
     this.governorOfAuto = null;
     this.party = null;
   }
+
+  toJSON() {
+    return {
+      id: this.id,
+      name: this.name,
+      level: this.level,
+      exp: this.exp,
+      perks: this.perks,
+      region: this.region?.id,
+      residency: this.residency?.id,
+      homelandBonus: this.homelandBonus?.id,
+      leaderOfState: this.leaderOfState?.id,
+      econMinisterOfState: this.econMinisterOfState?.id,
+      foreignMinisterOfState: this.foreignMinisterOfState?.id,
+      governorOfAuto: this.governorOfAuto?.id,
+      party: this.party?.id,
+      storage: this.storage,
+    };
+  }
 }

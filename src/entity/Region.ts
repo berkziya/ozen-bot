@@ -117,4 +117,19 @@ export class Region {
       this.buildings.airport * 100_000
     );
   }
+
+  toJSON() {
+    return {
+      id: this.id,
+      name: this.name,
+      state: this.state?.id,
+      autonomy: this.autonomy?.id,
+      borderRegions: this.borderRegions.map((region) => region.id),
+      buildings: this.buildings,
+      seaAccess: this.seaAccess,
+      citizens: this.citizens.map((player) => player.id),
+      residents: this.residents.map((player) => player.id),
+      resources: this.resources,
+    };
+  }
 }

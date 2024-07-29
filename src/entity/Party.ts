@@ -30,4 +30,15 @@ export class Party {
     this.secretaries = [];
     this.members = [];
   }
+
+  toJSON() {
+    return {
+      id: this.id,
+      name: this.name,
+      region: this.region,
+      leader: this.leader,
+      secretaries: this.secretaries,
+      members: this.members,
+    };
+  }
 }
