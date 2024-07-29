@@ -19,19 +19,48 @@ const mobileViewport = {
   height: 932,
 };
 
+/**
+ * Represents the user context for interacting with the browser and web pages.
+ */
 export class UserContext {
+  /**
+   * Creates an instance of UserContext.
+   * @param browser The browser instance.
+   * @param mobile Indicates whether the user is on a mobile device.
+   */
   constructor(private browser: Browser, public mobile: boolean) {}
 
+  /**
+   * The browser context.
+   */
   public context!: BrowserContext;
+
+  /**
+   * The web page.
+   */
   public page!: Page;
 
+  /**
+   * The user ID.
+   */
   public id!: number;
+
+  /**
+   * The player information.
+   */
   public player!: Player;
 
+  /**
+   * The async lock for synchronizing access to context and page.
+   */
   public lock = new AsyncLock();
 
+  /**
+   * Initializes the user context by creating a new browser context and page.
+   */
   async init() {
     await this.lock.acquire(['context', 'page'], async () => {
+      // Context options for the browser context
       const contextOptions: BrowserContextOptions = {
         baseURL: 'https://rivalregions.com',
         timezoneId: 'UTC',
@@ -47,6 +76,10 @@ export class UserContext {
     });
   }
 
+  /**
+   * Checks if the user is logged in.
+   * @returns A boolean indicating whether the user is logged in.
+   */
   async amILoggedIn() {
     try {
       await this.page.waitForSelector('#chat_send');
@@ -56,6 +89,13 @@ export class UserContext {
     }
   }
 
+  /**
+   * Logs in the user with the specified email and password.
+   * @param mail The user's email.
+   * @param password The user's password.
+   * @param useCookies Indicates whether to use cookies for login.
+   * @returns The user ID if login is successful, otherwise null.
+   */
   async login(
     mail: string,
     password: string,
@@ -119,6 +159,11 @@ export class UserContext {
     });
   }
 
+  /**
+   * Sends an AJAX request to the specified URL with optional data.
+   * @param url The URL to send the AJAX request to.
+   * @param data The additional data to include in the request.
+   */
   async ajax(url: string, data: string = '') {
     return await this.lock.acquire(['page'], async () => {
       const jsAjax = `
@@ -132,14 +177,34 @@ export class UserContext {
   }
 }
 
+/**
+ * Represents a client that interacts with a browser and manages user contexts.
+ */
 export class Client {
   private browser!: Browser;
 
   public users: UserContext[] = [];
-  public browserType: 'chromium' | 'firefox' = 'firefox';
-  public headless: boolean = false;
+  public browserType;
+  public headless;
 
-  async init() {
+  /**
+   * Creates a new instance of the Client class.
+   * @param browserType - The type of browser to launch (chromium or firefox).
+   * @param headless - Indicates whether the browser should be launched in headless mode.
+   */
+  constructor(
+    browserType: 'chromium' | 'firefox' = 'firefox',
+    headless: boolean = false
+  ) {
+    this.browserType = browserType;
+    this.headless = headless;
+  }
+
+  /**
+   * Initializes the client by launching the browser based on the specified browser type.
+   * @returns A promise that resolves to the initialized browser instance, or null if initialization fails.
+   */
+  async init(): Promise<Browser | null> {
     try {
       if (this.browserType === 'chromium') {
         this.browser = await chromium.launch({
@@ -162,6 +227,11 @@ export class Client {
     }
   }
 
+  /**
+   * Creates a user context within the client's browser.
+   * @param mobile - Indicates whether the user context should simulate a mobile device.
+   * @returns A promise that resolves to the created UserContext instance.
+   */
   async createUserContext(mobile: boolean = false): Promise<UserContext> {
     const userContext = new UserContext(this.browser, mobile);
     await userContext.init();
