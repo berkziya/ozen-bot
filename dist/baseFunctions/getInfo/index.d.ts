@@ -1,0 +1,1 @@
+export { getPlayerInfo } from './getPlayerInfo';
