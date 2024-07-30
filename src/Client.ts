@@ -7,10 +7,10 @@ import {
   BrowserContextOptions,
 } from 'playwright';
 import AsyncLock from 'async-lock';
-import { Player } from './entity/Player';
-
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
+
+import { Player } from './entity/Player';
 
 const iPhoneUserAgent =
   'Mozilla/5.0 (iPhone; CPU iPhone OS 14_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/128.0 Mobile/15E148 Safari/605.1.15';
@@ -141,10 +141,8 @@ export class UserContext {
           return null;
         }
 
-        this.id = await this.page.evaluate(() => {
-          // @ts-ignore
-          return id;
-        });
+        // @ts-ignore
+        this.id = await this.page.evaluate(() => id);
 
         // this.player = await this.models.getPlayer(this.id!);
 
@@ -184,7 +182,7 @@ export class Client {
   private browser!: Browser;
 
   public users: UserContext[] = [];
-  public browserType;
+  public browserType_;
   public headless;
 
   /**
@@ -196,7 +194,7 @@ export class Client {
     browserType: 'chromium' | 'firefox' = 'firefox',
     headless: boolean = false
   ) {
-    this.browserType = browserType;
+    this.browserType_ = browserType == 'chromium' ? chromium : firefox;
     this.headless = headless;
   }
 
@@ -206,17 +204,10 @@ export class Client {
    */
   async init(): Promise<Browser | null> {
     try {
-      if (this.browserType === 'chromium') {
-        this.browser = await chromium.launch({
-          headless: this.headless,
-          slowMo: 1000,
-        });
-      } /*if (this.browserType === 'firefox')*/ else {
-        this.browser = await firefox.launch({
-          headless: this.headless,
-          slowMo: 1000,
-        });
-      }
+      this.browser = await this.browserType_.launch({
+        headless: this.headless,
+        slowMo: 1000,
+      });
       if (!this.browser) {
         throw new Error('Browser not initialized');
       }
