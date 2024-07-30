@@ -227,6 +227,7 @@ export class Client {
   }: { mobile?: boolean } = {}): Promise<UserContext> {
     const userContext = new UserContext(this.browser, mobile);
     await userContext.init();
+    this.users.push(userContext);
     return userContext;
   }
 }
