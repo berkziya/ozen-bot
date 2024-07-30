@@ -1,29 +1,19 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { Player } from './Player';
 import { Region } from './Region';
 
-@Entity()
 export class Party {
   lastUpdate: number = 0;
 
-  @PrimaryColumn()
   id: number;
 
-  @Column()
   name: string;
 
-  @Column()
   region?: Region;
 
-  @Column()
   leader?: Player;
 
-  @Column()
   secretaries: Player[];
 
-  @OneToMany(() => Player, (player) => player.party, {
-    onDelete: 'SET NULL',
-  })
   members: Player[];
 
   constructor(id_: number) {

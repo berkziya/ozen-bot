@@ -1,34 +1,20 @@
 import { State } from './State';
 import { Autonomy } from './Autonomy';
-import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { Player } from './Player';
 
-@Entity()
 export class Region {
   lastUpdate: number = 0;
 
-  @PrimaryColumn()
   id: number;
 
-  @Column()
   name: string;
 
-  @ManyToOne(() => State, (state) => state.regions, {
-    nullable: true,
-    onDelete: 'SET NULL',
-  })
   state: State | null = null;
 
-  @ManyToOne(() => Autonomy, (autonomy) => autonomy.regions, {
-    nullable: true,
-    onDelete: 'SET NULL',
-  })
   autonomy: Autonomy | null = null;
 
-  @Column()
   borderRegions: Region[];
 
-  @Column('json')
   buildings: {
     militaryAcademy: number;
     hospital: number;
@@ -53,16 +39,12 @@ export class Region {
     houseFund: 0,
   };
 
-  @Column({ default: false })
   seaAccess: boolean = false;
 
-  @OneToMany(() => Player, (player) => player.region)
   citizens: Player[];
 
-  @OneToMany(() => Player, (player) => player.residency)
   residents: Player[];
 
-  @Column('json')
   resources: {
     gold: number;
     oil: number;
