@@ -190,10 +190,10 @@ export class Client {
    * @param browserType - The type of browser to launch (chromium or firefox).
    * @param headless - Indicates whether the browser should be launched in headless mode.
    */
-  constructor(
-    browserType: 'chromium' | 'firefox' = 'firefox',
-    headless: boolean = false
-  ) {
+  constructor({
+    browserType = 'firefox',
+    headless = false,
+  }: { browserType?: 'chromium' | 'firefox'; headless?: boolean } = {}) {
     this.browserType_ = browserType == 'chromium' ? chromium : firefox;
     this.headless = headless;
   }
@@ -223,7 +223,9 @@ export class Client {
    * @param mobile - Indicates whether the user context should simulate a mobile device.
    * @returns A promise that resolves to the created UserContext instance.
    */
-  async createUserContext(mobile: boolean = false): Promise<UserContext> {
+  async createUserContext({
+    mobile = false,
+  }: { mobile?: boolean } = {}): Promise<UserContext> {
     const userContext = new UserContext(this.browser, mobile);
     await userContext.init();
     return userContext;
