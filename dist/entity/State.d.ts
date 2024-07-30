@@ -2,6 +2,7 @@ import { Player } from './Player';
 import { Region } from './Region';
 import { Autonomy } from './Autonomy';
 export declare class State {
+    lastUpdate: number;
     id: number;
     name: string;
     regions: Region[];
@@ -14,10 +15,11 @@ export declare class State {
     leaderTermStart: Date | null;
     constructor(id_: number);
     toJSON(): {
+        lastUpdate: number;
         id: number;
         name: string;
         regions: number[];
-        autonomies: Number[];
+        autonomies: number[];
         governmentForm: string;
         leader: number | undefined;
         leaderIsCommander: boolean;

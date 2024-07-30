@@ -2,6 +2,7 @@ import { State } from './State';
 import { Autonomy } from './Autonomy';
 import { Player } from './Player';
 export declare class Region {
+    lastUpdate: number;
     id: number;
     name: string;
     state: State | null;
@@ -35,10 +36,11 @@ export declare class Region {
     initialAttack(): number;
     initialDefense(): number;
     toJSON(): {
+        lastUpdate: number;
         id: number;
         name: string;
         state: number | undefined;
-        autonomy: Number | undefined;
+        autonomy: number | undefined;
         borderRegions: number[];
         buildings: {
             militaryAcademy: number;

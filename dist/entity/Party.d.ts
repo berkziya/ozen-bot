@@ -1,6 +1,7 @@
 import { Player } from './Player';
 import { Region } from './Region';
 export declare class Party {
+    lastUpdate: number;
     id: number;
     name: string;
     region?: Region;
@@ -9,6 +10,7 @@ export declare class Party {
     members: Player[];
     constructor(id_: number);
     toJSON(): {
+        lastUpdate: number;
         id: number;
         name: string;
         region: Region | undefined;

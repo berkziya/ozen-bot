@@ -14,6 +14,7 @@ const typeorm_1 = require("typeorm");
 const Player_1 = require("./Player");
 const Region_1 = require("./Region");
 let Party = class Party {
+    lastUpdate = 0;
     id;
     name;
     region;
@@ -28,6 +29,7 @@ let Party = class Party {
     }
     toJSON() {
         return {
+            lastUpdate: this.lastUpdate,
             id: this.id,
             name: this.name,
             region: this.region,

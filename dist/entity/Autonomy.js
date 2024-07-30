@@ -16,6 +16,7 @@ const Region_1 = require("./Region");
 const State_1 = require("./State");
 const Storage_1 = require("./shared/Storage");
 let Autonomy = class Autonomy {
+    lastUpdate = 0;
     id;
     name;
     state;
@@ -31,6 +32,7 @@ let Autonomy = class Autonomy {
     }
     toJSON() {
         return {
+            lastUpdate: this.lastUpdate,
             id: this.id,
             name: this.name,
             state: this.state,

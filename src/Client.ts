@@ -11,6 +11,7 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
 import { Player } from './entity/Player';
+import ModelHandler from './ModelHandler';
 
 const iPhoneUserAgent =
   'Mozilla/5.0 (iPhone; CPU iPhone OS 14_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/128.0 Mobile/15E148 Safari/605.1.15';
@@ -28,7 +29,11 @@ export class UserContext {
    * @param browser The browser instance.
    * @param mobile Indicates whether the user is on a mobile device.
    */
-  constructor(private browser: Browser, public mobile: boolean) {}
+  constructor(
+    private browser: Browser,
+    public mobile: boolean,
+    public models: ModelHandler
+  ) {}
 
   /**
    * The browser context.
@@ -163,7 +168,7 @@ export class UserContext {
    * @param data The additional data to include in the request.
    */
   async ajax(url: string, data: string = '') {
-    return await this.lock.acquire(['page'], async () => {
+    return await this.lock.acquire(['context', 'page'], async () => {
       const jsAjax = `
       $.ajax({
         url: '${url}',
@@ -171,6 +176,13 @@ export class UserContext {
         type: 'POST',
       });`;
       await this.page.evaluate(jsAjax);
+    });
+  }
+
+  async get(url: string) {
+    return await this.lock.acquire(['context', 'page'], async () => {
+      await this.page.goto(url);
+      return { content: await this.page.content() };
     });
   }
 }
@@ -181,6 +193,7 @@ export class UserContext {
 export class Client {
   private browser!: Browser;
 
+  public models: ModelHandler = new ModelHandler();
   public users: UserContext[] = [];
   public browserType_;
 
@@ -225,7 +238,7 @@ export class Client {
   async createUserContext({
     mobile = false,
   }: { mobile?: boolean } = {}): Promise<UserContext> {
-    const userContext = new UserContext(this.browser, mobile);
+    const userContext = new UserContext(this.browser, mobile, this.models);
     await userContext.init();
     this.users.push(userContext);
     return userContext;

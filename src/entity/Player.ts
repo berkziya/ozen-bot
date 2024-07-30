@@ -7,6 +7,8 @@ import { Party } from './Party';
 
 @Entity()
 export class Player {
+  lastUpdate: number = 0;
+
   @PrimaryColumn()
   id: number;
 
@@ -52,6 +54,9 @@ export class Player {
 
   storage: Storage = new Storage();
 
+  statePermits: State[] = [];
+  regionPermits: Region[] = [];
+
   constructor(id_: number) {
     this.id = id_;
     this.name = 'player/' + this.id.toString();
@@ -63,8 +68,73 @@ export class Player {
     this.party = null;
   }
 
+  public setName(name: string) {
+    const havePartyTag = name.match(/\[[^\]]{1,3}\]/g);
+    if (havePartyTag) {
+      this.name = name.replace(havePartyTag[0], '').trim();
+    } else {
+      this.name = name.trim();
+    }
+  }
+
+  public setRegion(region: Region) {
+    this.region = region;
+    region.citizens.push(this);
+  }
+
+  public setResidency(region: Region) {
+    this.residency = region;
+    region.residents.push(this);
+  }
+
+  public setLeader(state: State) {
+    this.leaderOfState = state;
+    state.leader = this;
+    this.econMinisterOfState = null;
+    this.foreignMinisterOfState = null;
+  }
+
+  public setEcon(state: State) {
+    this.econMinisterOfState = state;
+    state.econMinister = this;
+    this.leaderOfState = null;
+    this.foreignMinisterOfState = null;
+  }
+
+  public setForeign(state: State) {
+    this.foreignMinisterOfState = state;
+    state.foreignMinister = this;
+    this.leaderOfState = null;
+    this.econMinisterOfState = null;
+  }
+
+  public setGovernor(autonomy: Autonomy) {
+    this.governorOfAuto = autonomy;
+  }
+
+  public addStatePermit(state: State) {
+    if (!this.statePermits.includes(state)) {
+      this.statePermits.push(state);
+    }
+  }
+
+  public removeStatePermit(state: State) {
+    this.statePermits = this.statePermits.filter((s) => s !== state);
+  }
+
+  public addRegionPermit(region: Region) {
+    if (!this.regionPermits.includes(region)) {
+      this.regionPermits.push(region);
+    }
+  }
+
+  public removeRegionPermit(region: Region) {
+    this.regionPermits = this.regionPermits.filter((r) => r !== region);
+  }
+
   toJSON() {
     return {
+      lastUpdate: this.lastUpdate,
       id: this.id,
       name: this.name,
       level: this.level,
@@ -79,6 +149,8 @@ export class Player {
       governorOfAuto: this.governorOfAuto?.id,
       party: this.party?.id,
       storage: this.storage,
+      statePermits: this.statePermits.map((state) => state.id),
+      regionPermits: this.regionPermits.map((region) => region.id),
     };
   }
 }

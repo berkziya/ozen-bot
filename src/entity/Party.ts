@@ -4,6 +4,8 @@ import { Region } from './Region';
 
 @Entity()
 export class Party {
+  lastUpdate: number = 0;
+
   @PrimaryColumn()
   id: number;
 
@@ -33,6 +35,7 @@ export class Party {
 
   toJSON() {
     return {
+      lastUpdate: this.lastUpdate,
       id: this.id,
       name: this.name,
       region: this.region,

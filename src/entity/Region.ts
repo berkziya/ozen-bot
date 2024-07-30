@@ -5,6 +5,8 @@ import { Player } from './Player';
 
 @Entity()
 export class Region {
+  lastUpdate: number = 0;
+
   @PrimaryColumn()
   id: number;
 
@@ -120,6 +122,7 @@ export class Region {
 
   toJSON() {
     return {
+      lastUpdate: this.lastUpdate,
       id: this.id,
       name: this.name,
       state: this.state?.id,

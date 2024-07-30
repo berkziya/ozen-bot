@@ -14,8 +14,10 @@ import { Storage } from './shared/Storage';
 
 @Entity()
 export class Autonomy {
+  lastUpdate: number = 0;
+
   @PrimaryColumn()
-  id: Number;
+  id: number;
 
   @Column()
   name: string;
@@ -38,7 +40,7 @@ export class Autonomy {
 
   storage: Storage = new Storage();
 
-  constructor(id_: Number) {
+  constructor(id_: number) {
     this.id = id_;
     this.name = 'autonomy/' + this.id.toString();
     this.regions = [];
@@ -47,6 +49,7 @@ export class Autonomy {
 
   toJSON() {
     return {
+      lastUpdate: this.lastUpdate,
       id: this.id,
       name: this.name,
       state: this.state,

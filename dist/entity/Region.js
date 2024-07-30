@@ -15,6 +15,7 @@ const Autonomy_1 = require("./Autonomy");
 const typeorm_1 = require("typeorm");
 const Player_1 = require("./Player");
 let Region = class Region {
+    lastUpdate = 0;
     id;
     name;
     state = null;
@@ -78,6 +79,7 @@ let Region = class Region {
     }
     toJSON() {
         return {
+            lastUpdate: this.lastUpdate,
             id: this.id,
             name: this.name,
             state: this.state?.id,

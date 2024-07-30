@@ -3,16 +3,18 @@ import { Region } from './Region';
 import { State } from './State';
 import { Storage } from './shared/Storage';
 export declare class Autonomy {
-    id: Number;
+    lastUpdate: number;
+    id: number;
     name: string;
     state?: State;
     capital?: Region;
     regions: Region[];
     governor: Player | null;
     storage: Storage;
-    constructor(id_: Number);
+    constructor(id_: number);
     toJSON(): {
-        id: Number;
+        lastUpdate: number;
+        id: number;
         name: string;
         state: State | undefined;
         capital: Region | undefined;

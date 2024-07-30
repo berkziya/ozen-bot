@@ -15,6 +15,7 @@ const Player_1 = require("./Player");
 const Region_1 = require("./Region");
 const Autonomy_1 = require("./Autonomy");
 let State = class State {
+    lastUpdate = 0;
     id;
     name;
     regions;
@@ -33,6 +34,7 @@ let State = class State {
     }
     toJSON() {
         return {
+            lastUpdate: this.lastUpdate,
             id: this.id,
             name: this.name,
             regions: this.regions.map((region) => region.id),

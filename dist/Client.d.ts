@@ -1,18 +1,20 @@
 import { Browser, BrowserContext, Page } from 'playwright';
 import AsyncLock from 'async-lock';
 import { Player } from './entity/Player';
+import ModelHandler from './ModelHandler';
 /**
  * Represents the user context for interacting with the browser and web pages.
  */
 export declare class UserContext {
     private browser;
     mobile: boolean;
+    models: ModelHandler;
     /**
      * Creates an instance of UserContext.
      * @param browser The browser instance.
      * @param mobile Indicates whether the user is on a mobile device.
      */
-    constructor(browser: Browser, mobile: boolean);
+    constructor(browser: Browser, mobile: boolean, models: ModelHandler);
     /**
      * The browser context.
      */
@@ -56,12 +58,16 @@ export declare class UserContext {
      * @param data The additional data to include in the request.
      */
     ajax(url: string, data?: string): Promise<void>;
+    get(url: string): Promise<{
+        content: string;
+    }>;
 }
 /**
  * Represents a client that interacts with a browser and manages user contexts.
  */
 export declare class Client {
     private browser;
+    models: ModelHandler;
     users: UserContext[];
     browserType_: import("playwright").BrowserType<{}>;
     /**

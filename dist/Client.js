@@ -8,6 +8,7 @@ const playwright_1 = require("playwright");
 const async_lock_1 = __importDefault(require("async-lock"));
 const node_fs_1 = require("node:fs");
 const node_path_1 = __importDefault(require("node:path"));
+const ModelHandler_1 = __importDefault(require("./ModelHandler"));
 const iPhoneUserAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/128.0 Mobile/15E148 Safari/605.1.15';
 const mobileViewport = {
     width: 430,
@@ -19,14 +20,16 @@ const mobileViewport = {
 class UserContext {
     browser;
     mobile;
+    models;
     /**
      * Creates an instance of UserContext.
      * @param browser The browser instance.
      * @param mobile Indicates whether the user is on a mobile device.
      */
-    constructor(browser, mobile) {
+    constructor(browser, mobile, models) {
         this.browser = browser;
         this.mobile = mobile;
+        this.models = models;
     }
     /**
      * The browser context.
@@ -139,7 +142,7 @@ class UserContext {
      * @param data The additional data to include in the request.
      */
     async ajax(url, data = '') {
-        return await this.lock.acquire(['page'], async () => {
+        return await this.lock.acquire(['context', 'page'], async () => {
             const jsAjax = `
       $.ajax({
         url: '${url}',
@@ -149,6 +152,12 @@ class UserContext {
             await this.page.evaluate(jsAjax);
         });
     }
+    async get(url) {
+        return await this.lock.acquire(['context', 'page'], async () => {
+            await this.page.goto(url);
+            return { content: await this.page.content() };
+        });
+    }
 }
 exports.UserContext = UserContext;
 /**
@@ -156,6 +165,7 @@ exports.UserContext = UserContext;
  */
 class Client {
     browser;
+    models = new ModelHandler_1.default();
     users = [];
     browserType_;
     /**
@@ -194,7 +204,7 @@ class Client {
      * @returns A promise that resolves to the created UserContext instance.
      */
     async createUserContext({ mobile = false, } = {}) {
-        const userContext = new UserContext(this.browser, mobile);
+        const userContext = new UserContext(this.browser, mobile, this.models);
         await userContext.init();
         this.users.push(userContext);
         return userContext;

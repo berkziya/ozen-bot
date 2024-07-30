@@ -9,9 +9,12 @@ import {
 import { Player } from './Player';
 import { Region } from './Region';
 import { Autonomy } from './Autonomy';
+import { last } from 'cheerio/lib/api/traversing';
 
 @Entity()
 export class State {
+  lastUpdate: number = 0;
+
   @PrimaryColumn()
   id: number;
 
@@ -63,6 +66,7 @@ export class State {
 
   toJSON() {
     return {
+      lastUpdate: this.lastUpdate,
       id: this.id,
       name: this.name,
       regions: this.regions.map((region) => region.id),
