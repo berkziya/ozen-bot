@@ -13,4 +13,16 @@ export declare class State {
     foreignMinister: Player | null;
     leaderTermStart: Date | null;
     constructor(id_: number);
+    toJSON(): {
+        id: number;
+        name: string;
+        regions: number[];
+        autonomies: Number[];
+        governmentForm: string;
+        leader: number | undefined;
+        leaderIsCommander: boolean;
+        econMinister: number | undefined;
+        foreignMinister: number | undefined;
+        leaderTermStart: Date | null;
+    };
 }

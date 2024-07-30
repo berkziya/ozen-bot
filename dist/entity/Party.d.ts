@@ -8,4 +8,12 @@ export declare class Party {
     secretaries: Player[];
     members: Player[];
     constructor(id_: number);
+    toJSON(): {
+        id: number;
+        name: string;
+        region: Region | undefined;
+        leader: Player | undefined;
+        secretaries: Player[];
+        members: Player[];
+    };
 }

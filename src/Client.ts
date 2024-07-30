@@ -183,29 +183,28 @@ export class Client {
 
   public users: UserContext[] = [];
   public browserType_;
-  public headless;
 
   /**
-   * Creates a new instance of the Client class.
-   * @param browserType - The type of browser to launch (chromium or firefox).
-   * @param headless - Indicates whether the browser should be launched in headless mode.
+   * Represents a client object.
+   * @constructor
+   * @param {Object} options - The options for the client.
+   * @param {string} options.browserType - The type of browser to use (optional, defaults to 'firefox').
    */
   constructor({
     browserType = 'firefox',
-    headless = false,
-  }: { browserType?: 'chromium' | 'firefox'; headless?: boolean } = {}) {
+  }: { browserType?: 'chromium' | 'firefox' } = {}) {
     this.browserType_ = browserType == 'chromium' ? chromium : firefox;
-    this.headless = headless;
   }
 
   /**
-   * Initializes the client by launching the browser based on the specified browser type.
+   * Initializes the browser instance.
+   * @param headless - Whether to run the browser in headless mode. Defaults to true.
    * @returns A promise that resolves to the initialized browser instance, or null if initialization fails.
    */
-  async init(): Promise<Browser | null> {
+  async init(headless = true): Promise<Browser | null> {
     try {
       this.browser = await this.browserType_.launch({
-        headless: this.headless,
+        headless,
         slowMo: 1000,
       });
       if (!this.browser) {

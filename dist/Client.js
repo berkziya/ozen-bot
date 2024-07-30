@@ -13,20 +13,47 @@ const mobileViewport = {
     width: 430,
     height: 932,
 };
+/**
+ * Represents the user context for interacting with the browser and web pages.
+ */
 class UserContext {
     browser;
     mobile;
+    /**
+     * Creates an instance of UserContext.
+     * @param browser The browser instance.
+     * @param mobile Indicates whether the user is on a mobile device.
+     */
     constructor(browser, mobile) {
         this.browser = browser;
         this.mobile = mobile;
     }
+    /**
+     * The browser context.
+     */
     context;
+    /**
+     * The web page.
+     */
     page;
+    /**
+     * The user ID.
+     */
     id;
+    /**
+     * The player information.
+     */
     player;
+    /**
+     * The async lock for synchronizing access to context and page.
+     */
     lock = new async_lock_1.default();
+    /**
+     * Initializes the user context by creating a new browser context and page.
+     */
     async init() {
         await this.lock.acquire(['context', 'page'], async () => {
+            // Context options for the browser context
             const contextOptions = {
                 baseURL: 'https://rivalregions.com',
                 timezoneId: 'UTC',
@@ -40,6 +67,10 @@ class UserContext {
             this.page = await this.context.newPage();
         });
     }
+    /**
+     * Checks if the user is logged in.
+     * @returns A boolean indicating whether the user is logged in.
+     */
     async amILoggedIn() {
         try {
             await this.page.waitForSelector('#chat_send');
@@ -49,6 +80,13 @@ class UserContext {
             return false;
         }
     }
+    /**
+     * Logs in the user with the specified email and password.
+     * @param mail The user's email.
+     * @param password The user's password.
+     * @param useCookies Indicates whether to use cookies for login.
+     * @returns The user ID if login is successful, otherwise null.
+     */
     async login(mail, password, useCookies = true) {
         return this.lock.acquire(['context', 'page'], async () => {
             try {
@@ -82,10 +120,8 @@ class UserContext {
                     }
                     return null;
                 }
-                this.id = await this.page.evaluate(() => {
-                    // @ts-ignore
-                    return id;
-                });
+                // @ts-ignore
+                this.id = await this.page.evaluate(() => id);
                 // this.player = await this.models.getPlayer(this.id!);
                 const cookies = await this.page.context().cookies();
                 await node_fs_1.promises.writeFile(cookiesPath, JSON.stringify(cookies));
@@ -97,6 +133,11 @@ class UserContext {
             }
         });
     }
+    /**
+     * Sends an AJAX request to the specified URL with optional data.
+     * @param url The URL to send the AJAX request to.
+     * @param data The additional data to include in the request.
+     */
     async ajax(url, data = '') {
         return await this.lock.acquire(['page'], async () => {
             const jsAjax = `
@@ -110,25 +151,33 @@ class UserContext {
     }
 }
 exports.UserContext = UserContext;
+/**
+ * Represents a client that interacts with a browser and manages user contexts.
+ */
 class Client {
     browser;
     users = [];
-    browserType = 'firefox';
-    headless = false;
-    async init() {
+    browserType_;
+    /**
+     * Represents a client object.
+     * @constructor
+     * @param {Object} options - The options for the client.
+     * @param {string} options.browserType - The type of browser to use (optional, defaults to 'firefox').
+     */
+    constructor({ browserType = 'firefox', } = {}) {
+        this.browserType_ = browserType == 'chromium' ? playwright_1.chromium : playwright_1.firefox;
+    }
+    /**
+     * Initializes the browser instance.
+     * @param headless - Whether to run the browser in headless mode. Defaults to true.
+     * @returns A promise that resolves to the initialized browser instance, or null if initialization fails.
+     */
+    async init(headless = true) {
         try {
-            if (this.browserType === 'chromium') {
-                this.browser = await playwright_1.chromium.launch({
-                    headless: this.headless,
-                    slowMo: 1000,
-                });
-            } /*if (this.browserType === 'firefox')*/
-            else {
-                this.browser = await playwright_1.firefox.launch({
-                    headless: this.headless,
-                    slowMo: 1000,
-                });
-            }
+            this.browser = await this.browserType_.launch({
+                headless,
+                slowMo: 1000,
+            });
             if (!this.browser) {
                 throw new Error('Browser not initialized');
             }
@@ -139,7 +188,12 @@ class Client {
             return null;
         }
     }
-    async createUserContext(mobile = false) {
+    /**
+     * Creates a user context within the client's browser.
+     * @param mobile - Indicates whether the user context should simulate a mobile device.
+     * @returns A promise that resolves to the created UserContext instance.
+     */
+    async createUserContext({ mobile = false, } = {}) {
         const userContext = new UserContext(this.browser, mobile);
         await userContext.init();
         return userContext;

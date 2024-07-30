@@ -11,4 +11,12 @@ export declare class Autonomy {
     governor: Player | null;
     storage: Storage;
     constructor(id_: Number);
+    toJSON(): {
+        id: Number;
+        name: string;
+        state: State | undefined;
+        capital: Region | undefined;
+        regions: Region[];
+        governor: Player | null;
+    };
 }

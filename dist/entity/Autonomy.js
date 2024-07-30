@@ -29,6 +29,16 @@ let Autonomy = class Autonomy {
         this.regions = [];
         this.governor = null;
     }
+    toJSON() {
+        return {
+            id: this.id,
+            name: this.name,
+            state: this.state,
+            capital: this.capital,
+            regions: this.regions,
+            governor: this.governor,
+        };
+    }
 };
 exports.Autonomy = Autonomy;
 __decorate([

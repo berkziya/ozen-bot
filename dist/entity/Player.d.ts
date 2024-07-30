@@ -23,4 +23,24 @@ export declare class Player {
     party: Party | null;
     storage: Storage;
     constructor(id_: number);
+    toJSON(): {
+        id: number;
+        name: string;
+        level: number;
+        exp: number;
+        perks: {
+            str: number;
+            edu: number;
+            end: number;
+        };
+        region: number | undefined;
+        residency: number | undefined;
+        homelandBonus: number | undefined;
+        leaderOfState: number | undefined;
+        econMinisterOfState: number | undefined;
+        foreignMinisterOfState: number | undefined;
+        governorOfAuto: Number | undefined;
+        party: number | undefined;
+        storage: Storage;
+    };
 }
