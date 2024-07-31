@@ -22,8 +22,8 @@ class Player {
     governorOfAuto;
     party;
     storage = new Storage_1.Storage();
-    statePermits = [];
-    regionPermits = [];
+    statePermits;
+    regionPermits;
     constructor(id_) {
         this.id = id_;
         this.name = 'player/' + this.id.toString();
@@ -33,6 +33,8 @@ class Player {
         this.foreignMinisterOfState = null;
         this.governorOfAuto = null;
         this.party = null;
+        this.statePermits = new Set();
+        this.regionPermits = new Set();
     }
     setName(name) {
         const havePartyTag = name.match(/\[[^\]]{1,3}\]/g);
@@ -44,49 +46,66 @@ class Player {
         }
     }
     setRegion(region) {
+        if (this.region) {
+            this.region.citizens.delete(this);
+        }
         this.region = region;
-        region.citizens.push(this);
+        region.citizens.add(this);
     }
     setResidency(region) {
+        if (this.residency) {
+            this.residency.residents.delete(this);
+        }
         this.residency = region;
-        region.residents.push(this);
+        region.residents.add(this);
+    }
+    setParty(party) {
+        this.party = party;
+    }
+    setHomelandBonus(state) {
+        this.homelandBonus = state;
     }
     setLeader(state) {
+        if (this.leaderOfState && this.leaderOfState.leader === this) {
+            this.leaderOfState.leader = null;
+        }
         this.leaderOfState = state;
         state.leader = this;
         this.econMinisterOfState = null;
         this.foreignMinisterOfState = null;
     }
     setEcon(state) {
+        if (this.econMinisterOfState &&
+            this.econMinisterOfState.econMinister === this) {
+            this.econMinisterOfState.econMinister = null;
+        }
         this.econMinisterOfState = state;
         state.econMinister = this;
         this.leaderOfState = null;
         this.foreignMinisterOfState = null;
     }
     setForeign(state) {
+        if (this.foreignMinisterOfState &&
+            this.foreignMinisterOfState.foreignMinister === this) {
+            this.foreignMinisterOfState.foreignMinister = null;
+        }
         this.foreignMinisterOfState = state;
         state.foreignMinister = this;
         this.leaderOfState = null;
         this.econMinisterOfState = null;
     }
     setGovernor(autonomy) {
+        if (this.governorOfAuto && this.governorOfAuto.governor === this) {
+            this.governorOfAuto.governor = null;
+        }
         this.governorOfAuto = autonomy;
+        autonomy.governor = this;
     }
     addStatePermit(state) {
-        if (!this.statePermits.includes(state)) {
-            this.statePermits.push(state);
-        }
-    }
-    removeStatePermit(state) {
-        this.statePermits = this.statePermits.filter((s) => s !== state);
+        this.statePermits.add(state);
     }
     addRegionPermit(region) {
-        if (!this.regionPermits.includes(region)) {
-            this.regionPermits.push(region);
-        }
-    }
-    removeRegionPermit(region) {
-        this.regionPermits = this.regionPermits.filter((r) => r !== region);
+        this.regionPermits.add(region);
     }
     toJSON() {
         return {
@@ -105,8 +124,8 @@ class Player {
             governorOfAuto: this.governorOfAuto?.id,
             party: this.party?.id,
             storage: this.storage,
-            statePermits: this.statePermits.map((state) => state.id),
-            regionPermits: this.regionPermits.map((region) => region.id),
+            statePermits: Array.from(this.statePermits, (state) => state.id),
+            regionPermits: Array.from(this.regionPermits, (region) => region.id),
         };
     }
 }

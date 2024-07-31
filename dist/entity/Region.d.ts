@@ -1,13 +1,26 @@
 import { State } from './State';
 import { Autonomy } from './Autonomy';
 import { Player } from './Player';
+import { Party } from './Party';
 export declare class Region {
     lastUpdate: number;
     id: number;
     name: string;
     state: State | null;
+    needResidencyToWork: boolean;
+    taxRate: number;
+    marketTaxes: number;
+    factoryOutputTaxes: {
+        gold: number;
+        oil: number;
+        ore: number;
+        uranium: number;
+        diamonds: number;
+    };
     autonomy: Autonomy | null;
-    borderRegions: Region[];
+    profitShare: number;
+    borderRegions: Set<Region>;
+    parties: Set<Party>;
     buildings: {
         militaryAcademy: number;
         hospital: number;
@@ -21,8 +34,8 @@ export declare class Region {
         houseFund: number;
     };
     seaAccess: boolean;
-    citizens: Player[];
-    residents: Player[];
+    citizens: Set<Player>;
+    residents: Set<Player>;
     resources: {
         gold: number;
         oil: number;
@@ -35,12 +48,21 @@ export declare class Region {
     powerConsumption(): number;
     initialAttack(): number;
     initialDefense(): number;
+    setState(state: State): void;
+    setAutonomy(autonomy: Autonomy): void;
+    addCitizen(player: Player): void;
+    removeCitizen(player: Player): void;
+    addResident(player: Player): void;
+    removeResident(player: Player): void;
+    addParty(party: Party): void;
     toJSON(): {
         lastUpdate: number;
         id: number;
         name: string;
         state: number | undefined;
+        needResidencyToWork: boolean;
         autonomy: number | undefined;
+        profitShare: number;
         borderRegions: number[];
         buildings: {
             militaryAcademy: number;
@@ -57,6 +79,7 @@ export declare class Region {
         seaAccess: boolean;
         citizens: number[];
         residents: number[];
+        parties: number[];
         resources: {
             gold: number;
             oil: number;

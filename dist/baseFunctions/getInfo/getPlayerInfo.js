@@ -41,8 +41,8 @@ async function getPlayerInfo(user, playerId, force) {
     player.econMinisterOfState = null;
     player.foreignMinisterOfState = null;
     player.governorOfAuto = null;
-    // player.statePermits = [];
-    // player.regionPermits = [];
+    player.statePermits = new Set();
+    player.regionPermits = new Set();
     // player.image = img;
     const $ = cheerio.load(content);
     const nameMatch = $('body > div.margin > h1')

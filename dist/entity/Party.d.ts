@@ -6,16 +6,21 @@ export declare class Party {
     name: string;
     region?: Region;
     leader?: Player;
-    secretaries: Player[];
-    members: Player[];
+    secretaries: Set<Player>;
+    members: Set<Player>;
     constructor(id_: number);
+    setRegion(region: Region): void;
+    setLeader(player: Player): void;
+    addSecretary(player: Player): void;
+    addMember(player: Player): void;
+    removeMember(player: Player): void;
     toJSON(): {
         lastUpdate: number;
         id: number;
         name: string;
         region: Region | undefined;
         leader: Player | undefined;
-        secretaries: Player[];
-        members: Player[];
+        secretaries: number[];
+        members: number[];
     };
 }

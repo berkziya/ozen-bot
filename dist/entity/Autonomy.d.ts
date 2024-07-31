@@ -8,17 +8,22 @@ export declare class Autonomy {
     name: string;
     state?: State;
     capital?: Region;
-    regions: Region[];
+    regions: Set<Region>;
     governor: Player | null;
     storage: Storage;
     constructor(id_: number);
+    setState(state: State): void;
+    setCapital(region: Region): void;
+    setGovernor(player: Player): void;
+    addRegion(region: Region): void;
+    removeRegion(region: Region): void;
     toJSON(): {
         lastUpdate: number;
         id: number;
         name: string;
         state: State | undefined;
         capital: Region | undefined;
-        regions: Region[];
+        regions: number[];
         governor: Player | null;
     };
 }

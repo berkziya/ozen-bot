@@ -14,8 +14,28 @@ class Autonomy {
     constructor(id_) {
         this.id = id_;
         this.name = 'autonomy/' + this.id.toString();
-        this.regions = [];
+        this.regions = new Set();
         this.governor = null;
+    }
+    setState(state) {
+        if (this.state) {
+            this.state.autonomies.delete(this);
+        }
+        this.state = state;
+        state.autonomies.add(this);
+    }
+    setCapital(region) {
+        this.capital = region;
+        this.addRegion(region);
+    }
+    setGovernor(player) {
+        this.governor = player;
+    }
+    addRegion(region) {
+        this.regions.add(region);
+    }
+    removeRegion(region) {
+        this.regions.delete(region);
     }
     toJSON() {
         return {
@@ -24,7 +44,7 @@ class Autonomy {
             name: this.name,
             state: this.state,
             capital: this.capital,
-            regions: this.regions,
+            regions: Array.from(this.regions, (region) => region.id),
             governor: this.governor,
         };
     }

@@ -23,20 +23,20 @@ export declare class Player {
     governorOfAuto: Autonomy | null;
     party: Party | null;
     storage: Storage;
-    statePermits: State[];
-    regionPermits: Region[];
+    statePermits: Set<State>;
+    regionPermits: Set<Region>;
     constructor(id_: number);
     setName(name: string): void;
     setRegion(region: Region): void;
     setResidency(region: Region): void;
+    setParty(party: Party): void;
+    setHomelandBonus(state: State): void;
     setLeader(state: State): void;
     setEcon(state: State): void;
     setForeign(state: State): void;
     setGovernor(autonomy: Autonomy): void;
     addStatePermit(state: State): void;
-    removeStatePermit(state: State): void;
     addRegionPermit(region: Region): void;
-    removeRegionPermit(region: Region): void;
     toJSON(): {
         lastUpdate: number;
         id: number;
