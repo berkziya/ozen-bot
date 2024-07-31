@@ -97,7 +97,7 @@ export async function getPlayerInfo(
       );
       const regions = tr.find('[action^="map/details"]').toArray();
       await Promise.all(
-        states.map(async (el, i) => {
+        regions.map(async (el, i) => {
           const region = await user.models.getRegion(
             $(el).attr('action')?.split('/').pop()!
           );

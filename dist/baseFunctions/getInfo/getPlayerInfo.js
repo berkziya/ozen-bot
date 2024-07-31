@@ -104,7 +104,7 @@ async function getPlayerInfo(user, playerId, force) {
                 player.addStatePermit(state);
             }));
             const regions = tr.find('[action^="map/details"]').toArray();
-            await Promise.all(states.map(async (el, i) => {
+            await Promise.all(regions.map(async (el, i) => {
                 const region = await user.models.getRegion($(el).attr('action')?.split('/').pop());
                 region.name = $(el).text().trim();
                 player.addRegionPermit(region);
