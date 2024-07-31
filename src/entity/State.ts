@@ -1,6 +1,7 @@
 import { Player } from './Player';
 import { Region } from './Region';
 import { Autonomy } from './Autonomy';
+import { toCamelCase } from '../misc/utils';
 
 export class State {
   lastUpdate: number = 0;
@@ -9,11 +10,13 @@ export class State {
 
   name: string;
 
-  regions: Region[];
+  capital?: Region;
 
-  autonomies: Autonomy[];
+  regions: Set<Region>;
 
-  governmentForm: string = 'Dictatorship';
+  autonomies: Set<Autonomy>;
+
+  governmentForm: string = 'dictatorship';
 
   leader: Player | null = null;
 
@@ -25,11 +28,92 @@ export class State {
 
   leaderTermStart: Date | null = null;
 
+  // permits: Set<Player>;
+
   constructor(id_: number) {
     this.id = id_;
     this.name = 'state/' + this.id.toString();
-    this.regions = [];
-    this.autonomies = [];
+    this.regions = new Set();
+    this.autonomies = new Set();
+    // this.permits = new Set();
+  }
+
+  setCapital(region: Region) {
+    if (region.state) {
+      region.state.regions.delete(region);
+    }
+    this.capital = region;
+    region.state = this;
+    region.autonomy = null;
+  }
+
+  addRegion(region: Region) {
+    if (region.state) {
+      region.state.regions.delete(region);
+    }
+    this.regions.add(region);
+    region.state = this;
+  }
+
+  removeRegion(region: Region) {
+    this.regions.delete(region);
+    if (region.state === this) {
+      region.state = null;
+    }
+  }
+
+  addAutonomy(autonomy: Autonomy) {
+    if (autonomy.state) {
+      autonomy.state.autonomies.delete(autonomy);
+    }
+    this.autonomies.add(autonomy);
+    autonomy.state = this;
+  }
+
+  setgovernmentForm(form: string) {
+    this.governmentForm = toCamelCase(form);
+  }
+
+  setLeader(player: Player | null) {
+    if (this.leader && this.leader.leaderOfState === this) {
+      this.leader.leaderOfState = null;
+    }
+
+    this.leader = player;
+    if (player) {
+      player.leaderOfState = this;
+      player.econMinisterOfState = null;
+      player.foreignMinisterOfState = null;
+    }
+  }
+
+  setEconMinister(player: Player | null) {
+    if (this.econMinister && this.econMinister.econMinisterOfState === this) {
+      this.econMinister.econMinisterOfState = null;
+    }
+
+    this.econMinister = player;
+    if (player) {
+      player.econMinisterOfState = this;
+      player.leaderOfState = null;
+      player.foreignMinisterOfState = null;
+    }
+  }
+
+  setForeignMinister(player: Player | null) {
+    if (
+      this.foreignMinister &&
+      this.foreignMinister.foreignMinisterOfState === this
+    ) {
+      this.foreignMinister.foreignMinisterOfState = null;
+    }
+
+    this.foreignMinister = player;
+    if (player) {
+      player.foreignMinisterOfState = this;
+      player.econMinisterOfState = null;
+      player.leaderOfState = null;
+    }
   }
 
   toJSON() {
@@ -37,8 +121,8 @@ export class State {
       lastUpdate: this.lastUpdate,
       id: this.id,
       name: this.name,
-      regions: this.regions.map((region) => region.id),
-      autonomies: this.autonomies.map((autonomy) => autonomy.id),
+      regions: Array.from(this.regions, (region) => region.id),
+      autonomies: Array.from(this.autonomies, (autonomy) => autonomy.id),
       governmentForm: this.governmentForm,
       leader: this.leader?.id,
       leaderIsCommander: this.leaderIsCommander,

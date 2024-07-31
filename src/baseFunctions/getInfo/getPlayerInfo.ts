@@ -25,8 +25,8 @@ export async function getPlayerInfo(
   player.econMinisterOfState = null;
   player.foreignMinisterOfState = null;
   player.governorOfAuto = null;
-  // player.statePermits = [];
-  // player.regionPermits = [];
+  player.statePermits = new Set();
+  player.regionPermits = new Set();
 
   // player.image = img;
 

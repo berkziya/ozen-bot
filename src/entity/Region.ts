@@ -1,6 +1,7 @@
 import { State } from './State';
 import { Autonomy } from './Autonomy';
 import { Player } from './Player';
+import { Party } from './Party';
 
 export class Region {
   lastUpdate: number = 0;
@@ -10,10 +11,30 @@ export class Region {
   name: string;
 
   state: State | null = null;
+  needResidencyToWork: boolean = false;
+  taxRate: number = 0;
+  marketTaxes: number = 0;
+
+  factoryOutputTaxes: {
+    gold: number;
+    oil: number;
+    ore: number;
+    uranium: number;
+    diamonds: number;
+  } = {
+    gold: 0,
+    oil: 0,
+    ore: 0,
+    uranium: 0,
+    diamonds: 0,
+  };
 
   autonomy: Autonomy | null = null;
+  profitShare: number = 0;
 
-  borderRegions: Region[];
+  borderRegions: Set<Region>;
+
+  parties: Set<Party>;
 
   buildings: {
     militaryAcademy: number;
@@ -41,9 +62,9 @@ export class Region {
 
   seaAccess: boolean = false;
 
-  citizens: Player[];
+  citizens: Set<Player>;
 
-  residents: Player[];
+  residents: Set<Player>;
 
   resources: {
     gold: number;
@@ -62,9 +83,10 @@ export class Region {
   constructor(id_: number) {
     this.id = id_;
     this.name = 'region/' + this.id.toString();
-    this.citizens = [];
-    this.residents = [];
-    this.borderRegions = [];
+    this.citizens = new Set();
+    this.residents = new Set();
+    this.borderRegions = new Set();
+    this.parties = new Set();
   }
 
   powerProduction(): number {
@@ -102,18 +124,72 @@ export class Region {
     );
   }
 
+  setState(state: State) {
+    if (this.state) {
+      this.state.regions.delete(this);
+    }
+    this.state = state;
+    state.regions.add(this);
+  }
+
+  setAutonomy(autonomy: Autonomy) {
+    if (this.autonomy) {
+      this.autonomy.regions.delete(this);
+    }
+    this.autonomy = autonomy;
+    autonomy.regions.add(this);
+  }
+
+  addCitizen(player: Player) {
+    if (player.region) {
+      player.region.citizens.delete(player);
+    }
+    this.citizens.add(player);
+    player.region = this;
+  }
+
+  removeCitizen(player: Player) {
+    this.citizens.delete(player);
+    if (player.region === this) {
+      player.region = undefined;
+    }
+  }
+
+  addResident(player: Player) {
+    if (player.residency) {
+      player.residency.residents.delete(player);
+    }
+    this.residents.add(player);
+    player.residency = this;
+  }
+
+  removeResident(player: Player) {
+    this.residents.delete(player);
+    if (player.residency === this) {
+      player.residency = undefined;
+    }
+  }
+
+  addParty(party: Party) {
+    this.parties.add(party);
+    party.region = this;
+  }
+
   toJSON() {
     return {
       lastUpdate: this.lastUpdate,
       id: this.id,
       name: this.name,
       state: this.state?.id,
+      needResidencyToWork: this.needResidencyToWork,
       autonomy: this.autonomy?.id,
-      borderRegions: this.borderRegions.map((region) => region.id),
+      profitShare: this.profitShare,
+      borderRegions: Array.from(this.borderRegions, (region) => region.id),
       buildings: this.buildings,
       seaAccess: this.seaAccess,
-      citizens: this.citizens.map((player) => player.id),
-      residents: this.residents.map((player) => player.id),
+      citizens: Array.from(this.citizens, (citizen) => citizen.id),
+      residents: Array.from(this.residents, (resident) => resident.id),
+      parties: Array.from(this.parties, (party) => party.id),
       resources: this.resources,
     };
   }

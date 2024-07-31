@@ -12,15 +12,43 @@ export class Party {
 
   leader?: Player;
 
-  secretaries: Player[];
+  secretaries: Set<Player>;
 
-  members: Player[];
+  members: Set<Player>;
 
   constructor(id_: number) {
     this.id = id_;
     this.name = 'party/' + this.id.toString();
-    this.secretaries = [];
-    this.members = [];
+    this.secretaries = new Set();
+    this.members = new Set();
+  }
+
+  setRegion(region: Region) {
+    this.region = region;
+    region.parties.add(this);
+  }
+
+  setLeader(player: Player) {
+    this.leader = player;
+  }
+
+  addSecretary(player: Player) {
+    this.secretaries.add(player);
+  }
+
+  addMember(player: Player) {
+    if (player.party) {
+      player.party.members.delete(player);
+    }
+    this.members.add(player);
+    player.party = this;
+  }
+
+  removeMember(player: Player) {
+    if (player.party === this) {
+      player.party = null;
+    }
+    this.members.delete(player);
   }
 
   toJSON() {
@@ -30,8 +58,8 @@ export class Party {
       name: this.name,
       region: this.region,
       leader: this.leader,
-      secretaries: this.secretaries,
-      members: this.members,
+      secretaries: Array.from(this.secretaries, (secretary) => secretary.id),
+      members: Array.from(this.members, (member) => member.id),
     };
   }
 }

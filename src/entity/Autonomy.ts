@@ -1,3 +1,4 @@
+import { add } from 'cheerio/lib/api/traversing';
 import { Player } from './Player';
 import { Region } from './Region';
 import { State } from './State';
@@ -14,7 +15,7 @@ export class Autonomy {
 
   capital?: Region;
 
-  regions: Region[];
+  regions: Set<Region>;
 
   governor: Player | null;
 
@@ -23,8 +24,33 @@ export class Autonomy {
   constructor(id_: number) {
     this.id = id_;
     this.name = 'autonomy/' + this.id.toString();
-    this.regions = [];
+    this.regions = new Set();
     this.governor = null;
+  }
+
+  setState(state: State) {
+    if (this.state) {
+      this.state.autonomies.delete(this);
+    }
+    this.state = state;
+    state.autonomies.add(this);
+  }
+
+  setCapital(region: Region) {
+    this.capital = region;
+    this.addRegion(region);
+  }
+
+  setGovernor(player: Player) {
+    this.governor = player;
+  }
+
+  addRegion(region: Region) {
+    this.regions.add(region);
+  }
+
+  removeRegion(region: Region) {
+    this.regions.delete(region);
   }
 
   toJSON() {
@@ -34,7 +60,7 @@ export class Autonomy {
       name: this.name,
       state: this.state,
       capital: this.capital,
-      regions: this.regions,
+      regions: Array.from(this.regions, (region) => region.id),
       governor: this.governor,
     };
   }
