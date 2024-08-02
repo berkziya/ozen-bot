@@ -3,18 +3,16 @@ import { Region } from './Region';
 import { State } from './State';
 import { Autonomy } from './Autonomy';
 import { Party } from './Party';
+import { Factory } from './Factory';
 
 export class Player {
-  lastUpdate: number = 0;
-
+  lastUpdate: Date = new Date(0);
   id: number;
 
   name: string;
 
   level: number = 30;
-
   exp: number = 0;
-
   perks: { str: number; edu: number; end: number } = {
     str: 30,
     edu: 30,
@@ -22,22 +20,18 @@ export class Player {
   };
 
   region?: Region;
-
   residency?: Region;
-
   homelandBonus: State | null;
 
   leaderOfState: State | null;
-
   econMinisterOfState: State | null;
-
   foreignMinisterOfState: State | null;
-
   governorOfAuto: Autonomy | null;
 
   party: Party | null;
 
-  storage: Storage = new Storage();
+  storage: Storage = new Storage(this);
+  factories: Set<Factory>;
 
   statePermits: Set<State>;
   regionPermits: Set<Region>;
@@ -53,6 +47,7 @@ export class Player {
     this.party = null;
     this.statePermits = new Set();
     this.regionPermits = new Set();
+    this.factories = new Set();
   }
 
   setName(name: string) {
@@ -132,6 +127,10 @@ export class Player {
     autonomy.governor = this;
   }
 
+  addFactory(factory: Factory) {
+    this.factories.add(factory);
+  }
+
   addStatePermit(state: State) {
     this.statePermits.add(state);
   }
@@ -157,6 +156,7 @@ export class Player {
       governorOfAuto: this.governorOfAuto?.id,
       party: this.party?.id,
       storage: this.storage,
+      factories: Array.from(this.factories, (factory) => factory.id),
       statePermits: Array.from(this.statePermits, (state) => state.id),
       regionPermits: Array.from(this.regionPermits, (region) => region.id),
     };

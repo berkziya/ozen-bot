@@ -11,7 +11,7 @@ export async function getRegionInfo(
 ) {
   const region = await user.models.getRegion(regionId);
 
-  if (!force && region.lastUpdate && Date.now() - region.lastUpdate < 60 * 15) {
+  if (!force && region.lastUpdate && Date.now() - region.lastUpdate.getTime() < 60 * 15) {
     return region;
   }
 

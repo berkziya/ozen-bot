@@ -29,7 +29,7 @@ const utils_1 = require("../../misc/utils");
 // import { getRegionInfo } from './';
 async function getPlayerInfo(user, playerId, force) {
     const player = await user.models.getPlayer(playerId);
-    if (!force && player.lastUpdate && Date.now() - player.lastUpdate < 60 * 3) {
+    if (!force && player.lastUpdate && Date.now() - player.lastUpdate.getTime() < 60 * 3) {
         return player;
     }
     const url = '/slide/profile/' + playerId;

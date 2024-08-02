@@ -29,7 +29,7 @@ const cheerio = __importStar(require("cheerio"));
 const utils_1 = require("../../misc/utils");
 async function getRegionInfo(user, regionId, force) {
     const region = await user.models.getRegion(regionId);
-    if (!force && region.lastUpdate && Date.now() - region.lastUpdate < 60 * 15) {
+    if (!force && region.lastUpdate && Date.now() - region.lastUpdate.getTime() < 60 * 15) {
         return region;
     }
     return getRegionInfoInner(user, regionId);

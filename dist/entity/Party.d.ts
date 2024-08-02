@@ -1,7 +1,7 @@
 import { Player } from './Player';
 import { Region } from './Region';
 export declare class Party {
-    lastUpdate: number;
+    lastUpdate: Date;
     id: number;
     name: string;
     region?: Region;
@@ -15,7 +15,7 @@ export declare class Party {
     addMember(player: Player): void;
     removeMember(player: Player): void;
     toJSON(): {
-        lastUpdate: number;
+        lastUpdate: Date;
         id: number;
         name: string;
         region: Region | undefined;

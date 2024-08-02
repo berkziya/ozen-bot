@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Region = void 0;
 class Region {
-    lastUpdate = 0;
+    lastUpdate = new Date(0);
     id;
     name;
     state = null;
@@ -19,6 +19,7 @@ class Region {
     autonomy = null;
     profitShare = 0;
     borderRegions;
+    seaAccess = false;
     parties;
     buildings = {
         militaryAcademy: 0,
@@ -32,9 +33,9 @@ class Region {
         airport: 0,
         houseFund: 0,
     };
-    seaAccess = false;
     citizens;
     residents;
+    factories;
     resources = {
         gold: 0,
         oil: 0,
@@ -49,6 +50,7 @@ class Region {
         this.residents = new Set();
         this.borderRegions = new Set();
         this.parties = new Set();
+        this.factories = new Set();
     }
     powerProduction() {
         return this.buildings.powerPlant * 10;

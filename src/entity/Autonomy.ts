@@ -1,12 +1,10 @@
-import { add } from 'cheerio/lib/api/traversing';
 import { Player } from './Player';
 import { Region } from './Region';
 import { State } from './State';
 import { Storage } from './shared/Storage';
 
 export class Autonomy {
-  lastUpdate: number = 0;
-
+  lastUpdate: Date = new Date(0);
   id: number;
 
   name: string;
@@ -14,12 +12,11 @@ export class Autonomy {
   state?: State;
 
   capital?: Region;
-
   regions: Set<Region>;
 
   governor: Player | null;
 
-  storage: Storage = new Storage();
+  storage: Storage = new Storage(this);
 
   constructor(id_: number) {
     this.id = id_;

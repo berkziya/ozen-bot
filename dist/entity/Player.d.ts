@@ -3,8 +3,9 @@ import { Region } from './Region';
 import { State } from './State';
 import { Autonomy } from './Autonomy';
 import { Party } from './Party';
+import { Factory } from './Factory';
 export declare class Player {
-    lastUpdate: number;
+    lastUpdate: Date;
     id: number;
     name: string;
     level: number;
@@ -23,6 +24,7 @@ export declare class Player {
     governorOfAuto: Autonomy | null;
     party: Party | null;
     storage: Storage;
+    factories: Set<Factory>;
     statePermits: Set<State>;
     regionPermits: Set<Region>;
     constructor(id_: number);
@@ -35,10 +37,11 @@ export declare class Player {
     setEcon(state: State): void;
     setForeign(state: State): void;
     setGovernor(autonomy: Autonomy): void;
+    addFactory(factory: Factory): void;
     addStatePermit(state: State): void;
     addRegionPermit(region: Region): void;
     toJSON(): {
-        lastUpdate: number;
+        lastUpdate: Date;
         id: number;
         name: string;
         level: number;
@@ -57,6 +60,7 @@ export declare class Player {
         governorOfAuto: number | undefined;
         party: number | undefined;
         storage: Storage;
+        factories: number[];
         statePermits: number[];
         regionPermits: number[];
     };

@@ -1,8 +1,10 @@
 import { Player } from './Player';
 import { Region } from './Region';
 import { Autonomy } from './Autonomy';
+import { Storage } from './shared/Storage';
+import { Bloc } from './Bloc';
 export declare class State {
-    lastUpdate: number;
+    lastUpdate: Date;
     id: number;
     name: string;
     capital?: Region;
@@ -14,6 +16,12 @@ export declare class State {
     econMinister: Player | null;
     foreignMinister: Player | null;
     leaderTermStart: Date | null;
+    entryFee: number;
+    bordersOpen: boolean;
+    needResidencyToWork: boolean;
+    residencyIssuedByLeader: boolean;
+    storage: Storage;
+    bloc: Bloc | null;
     constructor(id_: number);
     setCapital(region: Region): void;
     addRegion(region: Region): void;
@@ -24,7 +32,7 @@ export declare class State {
     setEconMinister(player: Player | null): void;
     setForeignMinister(player: Player | null): void;
     toJSON(): {
-        lastUpdate: number;
+        lastUpdate: Date;
         id: number;
         name: string;
         regions: number[];

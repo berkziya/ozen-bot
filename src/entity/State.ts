@@ -2,31 +2,36 @@ import { Player } from './Player';
 import { Region } from './Region';
 import { Autonomy } from './Autonomy';
 import { toCamelCase } from '../misc/utils';
+import { Storage } from './shared/Storage';
+import { Bloc } from './Bloc';
 
 export class State {
-  lastUpdate: number = 0;
-
+  lastUpdate: Date = new Date(0);
   id: number;
 
   name: string;
 
   capital?: Region;
-
   regions: Set<Region>;
-
   autonomies: Set<Autonomy>;
 
   governmentForm: string = 'dictatorship';
 
   leader: Player | null = null;
-
   leaderIsCommander: boolean = false;
 
   econMinister: Player | null = null;
-
   foreignMinister: Player | null = null;
 
   leaderTermStart: Date | null = null;
+
+  entryFee: number = 0;
+  bordersOpen: boolean = false;
+  needResidencyToWork: boolean = false;
+  residencyIssuedByLeader: boolean = false;
+
+  storage: Storage = new Storage(this);
+  bloc: Bloc | null = null;
 
   // permits: Set<Player>;
 

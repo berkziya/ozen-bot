@@ -2,8 +2,9 @@ import { State } from './State';
 import { Autonomy } from './Autonomy';
 import { Player } from './Player';
 import { Party } from './Party';
+import { Factory } from './Factory';
 export declare class Region {
-    lastUpdate: number;
+    lastUpdate: Date;
     id: number;
     name: string;
     state: State | null;
@@ -20,6 +21,7 @@ export declare class Region {
     autonomy: Autonomy | null;
     profitShare: number;
     borderRegions: Set<Region>;
+    seaAccess: boolean;
     parties: Set<Party>;
     buildings: {
         militaryAcademy: number;
@@ -33,9 +35,9 @@ export declare class Region {
         airport: number;
         houseFund: number;
     };
-    seaAccess: boolean;
     citizens: Set<Player>;
     residents: Set<Player>;
+    factories: Set<Factory>;
     resources: {
         gold: number;
         oil: number;
@@ -56,7 +58,7 @@ export declare class Region {
     removeResident(player: Player): void;
     addParty(party: Party): void;
     toJSON(): {
-        lastUpdate: number;
+        lastUpdate: Date;
         id: number;
         name: string;
         state: number | undefined;

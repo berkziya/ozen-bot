@@ -2,8 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.State = void 0;
 const utils_1 = require("../misc/utils");
+const Storage_1 = require("./shared/Storage");
 class State {
-    lastUpdate = 0;
+    lastUpdate = new Date(0);
     id;
     name;
     capital;
@@ -15,6 +16,12 @@ class State {
     econMinister = null;
     foreignMinister = null;
     leaderTermStart = null;
+    entryFee = 0;
+    bordersOpen = false;
+    needResidencyToWork = false;
+    residencyIssuedByLeader = false;
+    storage = new Storage_1.Storage(this);
+    bloc = null;
     // permits: Set<Player>;
     constructor(id_) {
         this.id = id_;

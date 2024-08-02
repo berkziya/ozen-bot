@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Player = void 0;
 const Storage_1 = require("./shared/Storage");
 class Player {
-    lastUpdate = 0;
+    lastUpdate = new Date(0);
     id;
     name;
     level = 30;
@@ -21,7 +21,8 @@ class Player {
     foreignMinisterOfState;
     governorOfAuto;
     party;
-    storage = new Storage_1.Storage();
+    storage = new Storage_1.Storage(this);
+    factories;
     statePermits;
     regionPermits;
     constructor(id_) {
@@ -35,6 +36,7 @@ class Player {
         this.party = null;
         this.statePermits = new Set();
         this.regionPermits = new Set();
+        this.factories = new Set();
     }
     setName(name) {
         const havePartyTag = name.match(/\[[^\]]{1,3}\]/g);
@@ -101,6 +103,9 @@ class Player {
         this.governorOfAuto = autonomy;
         autonomy.governor = this;
     }
+    addFactory(factory) {
+        this.factories.add(factory);
+    }
     addStatePermit(state) {
         this.statePermits.add(state);
     }
@@ -124,6 +129,7 @@ class Player {
             governorOfAuto: this.governorOfAuto?.id,
             party: this.party?.id,
             storage: this.storage,
+            factories: Array.from(this.factories, (factory) => factory.id),
             statePermits: Array.from(this.statePermits, (state) => state.id),
             regionPermits: Array.from(this.regionPermits, (region) => region.id),
         };

@@ -10,14 +10,16 @@
     "dist"
   ],
   "license": "MIT",
-  "devDependencies": {
-    "@types/async-lock": "^1.4.2",
-    "@types/node": "^22.0.1",
-    "typescript": "^5.5.4"
-  },
   "dependencies": {
+    "@prisma/client": "5.17.0",
     "async-lock": "^1.4.1",
     "cheerio": "1.0.0-rc.12",
     "playwright": "^1.45.3"
+  },
+  "devDependencies": {
+    "@types/async-lock": "^1.4.2",
+    "@types/node": "^22.1.0",
+    "prisma": "^5.17.0",
+    "typescript": "^5.5.4"
   }
 }

@@ -2,7 +2,7 @@ import { Player } from './Player';
 import { Region } from './Region';
 
 export class Party {
-  lastUpdate: number = 0;
+  lastUpdate: Date = new Date(0);
 
   id: number;
 
@@ -11,9 +11,7 @@ export class Party {
   region?: Region;
 
   leader?: Player;
-
   secretaries: Set<Player>;
-
   members: Set<Player>;
 
   constructor(id_: number) {
@@ -30,10 +28,12 @@ export class Party {
 
   setLeader(player: Player) {
     this.leader = player;
+    player.party = this;
   }
 
   addSecretary(player: Player) {
     this.secretaries.add(player);
+    player.party = this;
   }
 
   addMember(player: Player) {

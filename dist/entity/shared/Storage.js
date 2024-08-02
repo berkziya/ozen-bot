@@ -2,8 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Storage = void 0;
 class Storage {
-    owner = null;
-    subStorage = [];
+    owner;
+    constructor(owner) {
+        this.owner = owner;
+    }
+    subStorages = [];
     stateMoney = 0;
     stateGold = 0;
     stateOil = 0;

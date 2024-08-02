@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Party = void 0;
 class Party {
-    lastUpdate = 0;
+    lastUpdate = new Date(0);
     id;
     name;
     region;
@@ -21,9 +21,11 @@ class Party {
     }
     setLeader(player) {
         this.leader = player;
+        player.party = this;
     }
     addSecretary(player) {
         this.secretaries.add(player);
+        player.party = this;
     }
     addMember(player) {
         if (player.party) {

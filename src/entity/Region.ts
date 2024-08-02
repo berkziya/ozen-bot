@@ -2,15 +2,16 @@ import { State } from './State';
 import { Autonomy } from './Autonomy';
 import { Player } from './Player';
 import { Party } from './Party';
+import { Factory } from './Factory';
 
 export class Region {
-  lastUpdate: number = 0;
-
+  lastUpdate: Date = new Date(0);
   id: number;
 
   name: string;
 
   state: State | null = null;
+
   needResidencyToWork: boolean = false;
   taxRate: number = 0;
   marketTaxes: number = 0;
@@ -33,6 +34,7 @@ export class Region {
   profitShare: number = 0;
 
   borderRegions: Set<Region>;
+  seaAccess: boolean = false;
 
   parties: Set<Party>;
 
@@ -60,11 +62,10 @@ export class Region {
     houseFund: 0,
   };
 
-  seaAccess: boolean = false;
-
   citizens: Set<Player>;
-
   residents: Set<Player>;
+
+  factories: Set<Factory>;
 
   resources: {
     gold: number;
@@ -87,6 +88,7 @@ export class Region {
     this.residents = new Set();
     this.borderRegions = new Set();
     this.parties = new Set();
+    this.factories = new Set();
   }
 
   powerProduction(): number {

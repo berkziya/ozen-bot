@@ -3,7 +3,7 @@ import { Region } from './Region';
 import { State } from './State';
 import { Storage } from './shared/Storage';
 export declare class Autonomy {
-    lastUpdate: number;
+    lastUpdate: Date;
     id: number;
     name: string;
     state?: State;
@@ -18,7 +18,7 @@ export declare class Autonomy {
     addRegion(region: Region): void;
     removeRegion(region: Region): void;
     toJSON(): {
-        lastUpdate: number;
+        lastUpdate: Date;
         id: number;
         name: string;
         state: State | undefined;

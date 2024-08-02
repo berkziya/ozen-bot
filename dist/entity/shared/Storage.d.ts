@@ -2,8 +2,9 @@ import { Autonomy } from '../Autonomy';
 import { Player } from '../Player';
 import { State } from '../State';
 export declare class Storage {
-    owner: Player | State | Autonomy | null;
-    subStorage: Storage[];
+    owner: Player | State | Autonomy;
+    constructor(owner: Player | State | Autonomy);
+    subStorages: Storage[];
     stateMoney: number;
     stateGold: number;
     stateOil: number;
