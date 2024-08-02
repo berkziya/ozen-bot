@@ -30,7 +30,7 @@ export class Player {
 
   party: Party | null;
 
-  storage: Storage = new Storage(this);
+  storage: Storage = new Storage();
   factories: Set<Factory>;
 
   statePermits: Set<State>;
@@ -48,6 +48,7 @@ export class Player {
     this.statePermits = new Set();
     this.regionPermits = new Set();
     this.factories = new Set();
+    this.storage.setOwner(this);
   }
 
   setName(name: string) {

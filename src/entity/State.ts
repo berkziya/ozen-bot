@@ -30,7 +30,7 @@ export class State {
   needResidencyToWork: boolean = false;
   residencyIssuedByLeader: boolean = false;
 
-  storage: Storage = new Storage(this);
+  storage: Storage = new Storage();
   bloc: Bloc | null = null;
 
   // permits: Set<Player>;
@@ -41,6 +41,7 @@ export class State {
     this.regions = new Set();
     this.autonomies = new Set();
     // this.permits = new Set();
+    this.storage.setOwner(this);
   }
 
   setCapital(region: Region) {

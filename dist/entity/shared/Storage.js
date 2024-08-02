@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Storage = void 0;
 class Storage {
-    owner;
-    constructor(owner) {
-        this.owner = owner;
+    constructor() {
+        this.subStorages = [];
     }
-    subStorages = [];
+    owner = null;
+    subStorages;
     stateMoney = 0;
     stateGold = 0;
     stateOil = 0;
@@ -34,5 +34,8 @@ class Storage {
     laserDrones = 0;
     moonTanks = 0;
     spaceStations = 0;
+    setOwner(owner) {
+        this.owner = owner;
+    }
 }
 exports.Storage = Storage;

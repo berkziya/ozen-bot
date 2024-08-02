@@ -21,7 +21,7 @@ class Player {
     foreignMinisterOfState;
     governorOfAuto;
     party;
-    storage = new Storage_1.Storage(this);
+    storage = new Storage_1.Storage();
     factories;
     statePermits;
     regionPermits;
@@ -37,6 +37,7 @@ class Player {
         this.statePermits = new Set();
         this.regionPermits = new Set();
         this.factories = new Set();
+        this.storage.setOwner(this);
     }
     setName(name) {
         const havePartyTag = name.match(/\[[^\]]{1,3}\]/g);

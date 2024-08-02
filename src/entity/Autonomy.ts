@@ -16,13 +16,14 @@ export class Autonomy {
 
   governor: Player | null;
 
-  storage: Storage = new Storage(this);
+  storage: Storage = new Storage();
 
   constructor(id_: number) {
     this.id = id_;
     this.name = 'autonomy/' + this.id.toString();
     this.regions = new Set();
     this.governor = null;
+    this.storage.setOwner(this);
   }
 
   setState(state: State) {

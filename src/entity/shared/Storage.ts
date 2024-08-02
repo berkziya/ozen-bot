@@ -3,9 +3,13 @@ import { Player } from '../Player';
 import { State } from '../State';
 
 export class Storage {
-  constructor(public owner: Player | State | Autonomy) {}
+  constructor() {
+    this.subStorages = [];
+  }
 
-  subStorages: Storage[] = [];
+  owner: Player | State | Autonomy | null = null;
+
+  subStorages: Storage[];
 
   stateMoney = 0;
   stateGold = 0;
@@ -37,4 +41,8 @@ export class Storage {
   laserDrones = 0;
   moonTanks = 0;
   spaceStations = 0;
+
+  setOwner(owner: Player | State | Autonomy) {
+    this.owner = owner;
+  }
 }

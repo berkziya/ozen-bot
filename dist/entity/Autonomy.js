@@ -10,12 +10,13 @@ class Autonomy {
     capital;
     regions;
     governor;
-    storage = new Storage_1.Storage(this);
+    storage = new Storage_1.Storage();
     constructor(id_) {
         this.id = id_;
         this.name = 'autonomy/' + this.id.toString();
         this.regions = new Set();
         this.governor = null;
+        this.storage.setOwner(this);
     }
     setState(state) {
         if (this.state) {

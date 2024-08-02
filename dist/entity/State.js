@@ -20,7 +20,7 @@ class State {
     bordersOpen = false;
     needResidencyToWork = false;
     residencyIssuedByLeader = false;
-    storage = new Storage_1.Storage(this);
+    storage = new Storage_1.Storage();
     bloc = null;
     // permits: Set<Player>;
     constructor(id_) {
@@ -29,6 +29,7 @@ class State {
         this.regions = new Set();
         this.autonomies = new Set();
         // this.permits = new Set();
+        this.storage.setOwner(this);
     }
     setCapital(region) {
         if (region.state) {

@@ -2,8 +2,8 @@ import { Autonomy } from '../Autonomy';
 import { Player } from '../Player';
 import { State } from '../State';
 export declare class Storage {
-    owner: Player | State | Autonomy;
-    constructor(owner: Player | State | Autonomy);
+    constructor();
+    owner: Player | State | Autonomy | null;
     subStorages: Storage[];
     stateMoney: number;
     stateGold: number;
@@ -32,4 +32,5 @@ export declare class Storage {
     laserDrones: number;
     moonTanks: number;
     spaceStations: number;
+    setOwner(owner: Player | State | Autonomy): void;
 }
