@@ -45,4 +45,37 @@ export class Storage {
   setOwner(owner: Player | State | Autonomy) {
     this.owner = owner;
   }
+
+  toJSON() {
+    return {
+      subStorages: this.subStorages,
+      stateMoney: this.stateMoney,
+      stateGold: this.stateGold,
+      stateOil: this.stateOil,
+      stateOre: this.stateOre,
+      stateUranium: this.stateUranium,
+      stateDiamonds: this.stateDiamonds,
+      money: this.money,
+      gold: this.gold,
+      oil: this.oil,
+      ore: this.ore,
+      uranium: this.uranium,
+      diamonds: this.diamonds,
+      liquidOxygen: this.liquidOxygen,
+      helium3: this.helium3,
+      rivalium: this.rivalium,
+      antirad: this.antirad,
+      energyDrink: this.energyDrink,
+      spaceRockets: this.spaceRockets,
+      lss: this.lss,
+      tanks: this.tanks,
+      aircrafts: this.aircrafts,
+      missiles: this.missiles,
+      bombers: this.bombers,
+      battleships: this.battleships,
+      laserDrones: this.laserDrones,
+      moonTanks: this.moonTanks,
+      spaceStations: this.spaceStations,
+    };
+  }
 }
