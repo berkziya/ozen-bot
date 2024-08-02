@@ -142,5 +142,6 @@ export async function getPlayerInfo(
       }
     }
   }
+  player.lastUpdate = new Date();
   return player;
 }

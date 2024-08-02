@@ -82,5 +82,6 @@ async function getAutonomyInfo(user, autonomyId, force) {
             }));
         }
     }
+    autonomy.lastUpdate = new Date();
     return autonomy;
 }

@@ -184,7 +184,9 @@ async function getRegionInfoInner(user, regionId, getAutonomy = false) {
         }
     }
     if (getAutonomy && autonomy) {
+        autonomy.lastUpdate = new Date();
         return autonomy;
     }
+    region.lastUpdate = new Date();
     return region;
 }

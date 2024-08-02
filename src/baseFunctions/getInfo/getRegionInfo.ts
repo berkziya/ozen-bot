@@ -180,7 +180,9 @@ export async function getRegionInfoInner(
     }
   }
   if (getAutonomy && autonomy) {
+    autonomy.lastUpdate = new Date();
     return autonomy;
   }
+  region.lastUpdate = new Date();
   return region;
 }

@@ -115,5 +115,6 @@ async function getStateInfo(user, stateId, force) {
             }));
         }
     }
+    state.lastUpdate = new Date();
     return state;
 }

@@ -80,5 +80,6 @@ export async function getAutonomyInfo(
       );
     }
   }
+  autonomy.lastUpdate = new Date();
   return autonomy;
 }

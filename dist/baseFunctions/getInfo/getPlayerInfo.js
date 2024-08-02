@@ -145,5 +145,6 @@ async function getPlayerInfo(user, playerId, force) {
             }
         }
     }
+    player.lastUpdate = new Date();
     return player;
 }

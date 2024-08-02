@@ -104,5 +104,6 @@ export async function getStateInfo(
       );
     }
   }
+  state.lastUpdate = new Date();
   return state;
 }
