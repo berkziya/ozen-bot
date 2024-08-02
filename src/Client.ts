@@ -90,6 +90,7 @@ export class UserContext {
       await this.page.waitForSelector('#chat_send');
       return true;
     } catch (e) {
+      console.error(e);
       return false;
     }
   }

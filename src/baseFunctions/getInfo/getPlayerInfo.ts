@@ -10,7 +10,11 @@ export async function getPlayerInfo(
 ) {
   const player = await user.models.getPlayer(playerId);
 
-  if (!force && player.lastUpdate && Date.now() - player.lastUpdate.getTime() < 60 * 3) {
+  if (
+    !force &&
+    player.lastUpdate &&
+    Date.now() - player.lastUpdate.getTime() < 60 * 3
+  ) {
     return player;
   }
 
