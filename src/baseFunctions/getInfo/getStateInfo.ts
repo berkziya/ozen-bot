@@ -17,8 +17,19 @@ export async function getStateInfo(
     return state;
   }
 
-  const url = '/map/state_details/' + stateId;
-  const { content } = await user.get(url);
+  // const url = '/map/state_details/' + stateId;
+  // const { content } = await user.get(url);
+
+  const x = await fetch(
+    `https://rivalregions.com/map/state_details/${stateId}`,
+    {
+      headers: {
+        cookie: user.cookie,
+      },
+    }
+  );
+
+  const content = await x.text();
 
   if (!content || content.length < 100) {
     return null;
