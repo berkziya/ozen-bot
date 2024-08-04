@@ -17,14 +17,11 @@ export async function getStateInfo(
     return state;
   }
 
-  // const url = '/map/state_details/' + stateId;
-  // const { content } = await user.get(url);
-
   const x = await fetch(
     `https://rivalregions.com/map/state_details/${stateId}`,
     {
       headers: {
-        cookie: user.cookie,
+        cookie: user.cookies,
       },
     }
   );
@@ -84,9 +81,9 @@ export async function getStateInfo(
       }
     } else if (key === 'governmentForm') {
       state.governmentForm = toCamelCase(div.find('span').first().text());
-    // } else if (key === 'geopoliticalBloc') {
-    //   const blocDiv = div.find('div[action^="blocs/show/"]');
-    //   state.bloc = user.models.getBloc(blocDiv.attr('action')!.split('/').pop()!);
+      // } else if (key === 'geopoliticalBloc') {
+      //   const blocDiv = div.find('div[action^="blocs/show/"]');
+      //   state.bloc = user.models.getBloc(blocDiv.attr('action')!.split('/').pop()!);
     } else if (key === 'stateLeader') {
       const leader = await playerFromDiv(div);
       state.setLeader(leader);

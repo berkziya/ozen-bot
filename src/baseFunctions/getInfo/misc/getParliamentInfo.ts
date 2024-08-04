@@ -10,7 +10,14 @@ export async function getParliamentInfo(
   const url = isAutonomy
     ? 'parliament/auto/' + capitalId
     : 'parliament/index/' + capitalId;
-  const { content } = await user.get(url);
+
+  const x = await fetch(`https://rivalregions.com/${url}`, {
+    headers: {
+      cookie: user.cookies,
+    },
+  });
+
+  const content = await x.text();
 
   if (!content) {
     return null;

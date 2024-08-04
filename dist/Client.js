@@ -51,7 +51,7 @@ class UserContext {
      * The async lock for synchronizing access to context and page.
      */
     lock = new async_lock_1.default();
-    cookie = '';
+    cookies = '';
     /**
      * Initializes the user context by creating a new browser context and page.
      */
@@ -79,7 +79,7 @@ class UserContext {
         try {
             await this.page.waitForSelector('#chat_send');
             const cookiesFromContext = await this.context.cookies();
-            this.cookie = cookiesFromContext
+            this.cookies = cookiesFromContext
                 .map((x) => `${x.name}=${x.value}`)
                 .join('; ');
             return true;

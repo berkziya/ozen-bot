@@ -60,7 +60,7 @@ export class UserContext {
    */
   public lock = new AsyncLock();
 
-  public cookie = '';
+  public cookies = '';
 
   /**
    * Initializes the user context by creating a new browser context and page.
@@ -91,7 +91,7 @@ export class UserContext {
     try {
       await this.page.waitForSelector('#chat_send');
       const cookiesFromContext = await this.context.cookies();
-      this.cookie = cookiesFromContext
+      this.cookies = cookiesFromContext
         .map((x) => `${x.name}=${x.value}`)
         .join('; ');
       return true;

@@ -27,8 +27,13 @@ export async function getRegionInfoInner(
   regionId: number,
   getAutonomy: boolean = false
 ): Promise<Autonomy | Region | null> {
-  const url = '/map/details/' + regionId;
-  const { content } = await user.get(url);
+  const x = await fetch(`https://rivalregions.com/map/details/${regionId}`, {
+    headers: {
+      cookie: user.cookies,
+    },
+  });
+
+  const content = await x.text();
 
   if (!content || content.length < 100) {
     return null;

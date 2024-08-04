@@ -34,8 +34,12 @@ async function getPlayerInfo(user, playerId, force) {
         Date.now() - player.lastUpdate.getTime() < 60 * 3) {
         return player;
     }
-    const url = '/slide/profile/' + playerId;
-    const { content } = await user.get(url);
+    const x = await fetch(`https://rivalregions.com/slide/profile/${playerId}`, {
+        headers: {
+            cookie: user.cookies,
+        },
+    });
+    const content = await x.text();
     if (!content || content.length < 100) {
         return null;
     }
