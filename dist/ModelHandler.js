@@ -5,7 +5,6 @@ const Player_1 = require("./entity/Player");
 const Region_1 = require("./entity/Region");
 const State_1 = require("./entity/State");
 const utils_1 = require("./misc/utils");
-// import { Factory } from './entity/Factory';
 class ModelHandler {
     models = {
         autonomies: new Map(),

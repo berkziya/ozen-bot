@@ -172,7 +172,7 @@ exports.UserContext = UserContext;
 class Client {
     browser;
     models = new ModelHandler_1.default();
-    users = [];
+    users = new Set();
     browserType_;
     /**
      * Represents a client object.
@@ -212,7 +212,7 @@ class Client {
     async createUserContext({ mobile = false, } = {}) {
         const userContext = new UserContext(this.browser, mobile, this.models);
         await userContext.init();
-        this.users.push(userContext);
+        this.users.add(userContext);
         return userContext;
     }
 }

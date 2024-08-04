@@ -2,9 +2,8 @@ import { Autonomy } from './entity/Autonomy';
 import { Player } from './entity/Player';
 import { Region } from './entity/Region';
 import { State } from './entity/State';
-import { dotless } from './misc/utils';
 
-// import { Factory } from './entity/Factory';
+import { dotless } from './misc/utils';
 
 export default class ModelHandler {
   private models = {

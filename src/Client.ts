@@ -201,7 +201,7 @@ export class Client {
   private browser!: Browser;
 
   public models: ModelHandler = new ModelHandler();
-  public users: UserContext[] = [];
+  public users: Set<UserContext> = new Set();
   public browserType_;
 
   /**
@@ -247,7 +247,7 @@ export class Client {
   }: { mobile?: boolean } = {}): Promise<UserContext> {
     const userContext = new UserContext(this.browser, mobile, this.models);
     await userContext.init();
-    this.users.push(userContext);
+    this.users.add(userContext);
     return userContext;
   }
 }

@@ -69,7 +69,7 @@ export declare class UserContext {
 export declare class Client {
     private browser;
     models: ModelHandler;
-    users: UserContext[];
+    users: Set<UserContext>;
     browserType_: import("playwright").BrowserType<{}>;
     /**
      * Represents a client object.

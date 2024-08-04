@@ -58,31 +58,35 @@ export async function getStateInfo(
   for (let i = 0; i < divs.length; i++) {
     const div = divs.eq(i);
     const key = toCamelCase(div.find('h2').first().text());
+    console.log(key);
     if (key === 'entryFee') {
       const fee = dotless(
         div.find('div.slide_profile_data > h2').first().text()
       );
       state.entryFee = fee;
     } else if (key === 'borders') {
-      if (div.text().includes('open')) {
+      if (div.text().toLowerCase().includes('opened')) {
         state.bordersOpen = true;
       } else {
         state.bordersOpen = false;
       }
     } else if (key === 'residencyForWork') {
-      if (div.text().includes('Not')) {
+      if (div.text().toLowerCase().includes('not')) {
         state.needResidencyToWork = false;
       } else {
         state.needResidencyToWork = true;
       }
     } else if (key === 'residency') {
-      if (div.text().includes('leader')) {
+      if (div.text().toLowerCase().includes('leader')) {
         state.residencyIssuedByLeader = true;
       } else {
         state.residencyIssuedByLeader = false;
       }
     } else if (key === 'governmentForm') {
       state.governmentForm = toCamelCase(div.find('span').first().text());
+    // } else if (key === 'geopoliticalBloc') {
+    //   const blocDiv = div.find('div[action^="blocs/show/"]');
+    //   state.bloc = user.models.getBloc(blocDiv.attr('action')!.split('/').pop()!);
     } else if (key === 'stateLeader') {
       const leader = await playerFromDiv(div);
       state.setLeader(leader);
@@ -102,18 +106,16 @@ export async function getStateInfo(
       state.setForeignMinister(foreign);
     } else if (key === 'stateRegions') {
       const regions = div.find('div[action^="map/details/"]').toArray();
-      await Promise.all(
-        regions.map(async (el, i) => {
-          const region = await user.models.getRegion(
-            $(el).attr('action')!.split('/').pop()!
-          );
-          region.name = $(el).text().trim();
-          state.addRegion(region);
-          if (i === 0) {
-            state.setCapital(region);
-          }
-        })
-      );
+      for (const [i, el] of regions.entries()) {
+        const region = await user.models.getRegion(
+          $(el).attr('action')!.split('/').pop()!
+        );
+        region.name = $(el).text().trim();
+        state.addRegion(region);
+        if (i === 0) {
+          state.setCapital(region);
+        }
+      }
     }
   }
   state.lastUpdate = new Date();
