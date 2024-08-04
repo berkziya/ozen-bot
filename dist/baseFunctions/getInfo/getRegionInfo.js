@@ -29,14 +29,22 @@ const cheerio = __importStar(require("cheerio"));
 const utils_1 = require("../../misc/utils");
 async function getRegionInfo(user, regionId, force) {
     const region = await user.models.getRegion(regionId);
-    if (!force && region.lastUpdate && Date.now() - region.lastUpdate.getTime() < 60 * 15) {
+    if (!force &&
+        region.lastUpdate &&
+        Date.now() - region.lastUpdate.getTime() < 60 * 15) {
         return region;
     }
     return getRegionInfoInner(user, regionId);
 }
 async function getRegionInfoInner(user, regionId, getAutonomy = false) {
-    const url = '/map/details/' + regionId;
-    const { content } = await user.get(url);
+    // const url = '/map/details/' + regionId;
+    // const { content } = await user.get(url);
+    const x = await fetch('https://rivalregions.com/map/state_details/5043?c=3f116409cf4c01f2c853d9a17591b061', {
+        headers: {
+            cookie: 'PHPSESSID=s3u0ihrihv79ej0psvmo3sm0ft; rr=310542c8a1f8d140be3c61915000572b; rr_id=2000346579; rr_add=360b7c6f06cd50348b8f2419d1e0b4b0; rr_f=0ee6f882487d41c5824e15253840d919',
+        },
+    });
+    const content = await x.text();
     if (!content || content.length < 100) {
         return null;
     }
@@ -80,14 +88,12 @@ async function getRegionInfoInner(user, regionId, getAutonomy = false) {
             autonomy.setState(state);
         }
     }
-    // const buildingSpans = $(
-    //   'body > div.minwidth > div.slide_profile_photo > div.imp.tc.small'
-    // ).find('span');
-    // for (let i = 0; i < buildingSpans.length; i++) {
-    //   const buildingSpan = buildingSpans.eq(i);
-    //   const buldingText = buildingSpan.text().split(': ');
-    //   region.buildings.setBuilding(buldingText[0], buldingText[1]);
-    // }
+    const buildingSpans = $('body > div.minwidth > div.slide_profile_photo > div.imp.tc.small').find('span');
+    for (let i = 0; i < buildingSpans.length; i++) {
+        const buildingSpan = buildingSpans.eq(i);
+        const buldingText = buildingSpan.text().split(': ');
+        region.buildings[buldingText[0]] = (0, utils_1.dotless)(buldingText[1]);
+    }
     const divs = $('#region_scroll > div');
     for (let i = 0; i < divs.length; i++) {
         const div = divs.eq(i);
@@ -103,9 +109,8 @@ async function getRegionInfoInner(user, regionId, getAutonomy = false) {
             const governorName = governorDiv.text().match(/([^]*)Wage:/);
             governor.setName(governorName ? governorName[1] : governor.name);
             governor.setGovernor(autonomy);
-            // autonomy.budget.setBudgetFromDiv(
-            //   $('div.slide_profile_photo').find('div').last()
-            // );
+            const budgetDiv = $('div.slide_profile_photo').find('div').last();
+            autonomy.storage.setBudgetFromDiv(budgetDiv);
         }
         if (key === 'profitShare') {
             const profitShare = div
@@ -149,18 +154,6 @@ async function getRegionInfoInner(user, regionId, getAutonomy = false) {
             if (div.text().includes('Yes')) {
                 region.seaAccess = true;
             }
-            // } else if (key === 'healthIndex') {
-            //   const hospital = div.find('span').text().split('/')[0];
-            //   region.indexes['hospital'] = parseInt(hospital);
-            // } else if (key === 'militaryIndex') {
-            //   const militaryBase = div.find('span').text().split('/')[0];
-            //   region.indexes['militaryBase'] = parseInt(militaryBase);
-            // } else if (key === 'educationIndex') {
-            //   const school = div.find('span').text().split('/')[0];
-            //   region.indexes['school'] = parseInt(school);
-            // } else if (key === 'developmentIndex') {
-            //   const houseFund = div.find('span').text().split('/')[0];
-            //   region.indexes['houseFund'] = parseInt(houseFund);
         }
         else if (key === 'residencyForWork') {
             if (div.text().includes('Not')) {

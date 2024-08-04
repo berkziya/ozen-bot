@@ -54,7 +54,8 @@ model Player {
   governorOfAutoId         Int?      @unique
   party                    Party?    @relation("PartyPlayers", fields: [partyId], references: [id])
   partyId                  Int?
-  // storage                  Storage   @relation(fields: [id], references: [ownerId])
+  storage                  Storage   @relation("PlayerStorage", fields: [storageId], references: [id])
+  storageId                Int       @unique
   factories                Factory[] @relation("PlayerFactories")
   statePermits             State[]
   regionPermits            Region[]
@@ -65,14 +66,15 @@ model State {
   lastUpdate        DateTime   @default(now())
   name              String
   // capital           Region
-  capitalId         Int
+  // capitalId         Int
   governmentForm    String     @default("dictatorship")
   leader            Player?    @relation("LeaderOfState")
   leaderIsCommander Boolean    @default(false)
   econMinister      Player?    @relation("EconMinisterOfState")
   foreignMinister   Player?    @relation("ForeignMinisterOfState")
   leaderTermStart   DateTime?
-  // storage           Storage    @relation(fields: [id], references: [ownerId])
+  storage           Storage    @relation("StateStorage", fields: [storageId], references: [id])
+  storageId         Int        @unique
   Bloc              Bloc?      @relation(fields: [blocId], references: [id])
   blocId            Int?
   regions           Region[]   @relation("StateRegions")
@@ -88,43 +90,44 @@ model Autonomy {
   stateId    Int?
   governor   Player?  @relation("GovernorOfAuto")
   governorId Int?
-  // storage    Storage  @relation(fields: [id], references: [ownerId])
+  storage    Storage  @relation("AutonomyStorage", fields: [storageId], references: [id])
+  storageId  Int      @unique
   regions    Region[] @relation("AutonomyRegions")
 }
 
-// model Storage {
-//   ownerId       Int        @id @default(autoincrement())
-//   stateMoney    Int        @default(0)
-//   stateGold     Int        @default(0)
-//   stateOil      Int        @default(0)
-//   stateOre      Int        @default(0)
-//   stateUranium  Int        @default(0)
-//   stateDiamonds Int        @default(0)
-//   money         Int        @default(0)
-//   gold          Int        @default(0)
-//   oil           Int        @default(0)
-//   ore           Int        @default(0)
-//   uranium       Int        @default(0)
-//   diamonds      Int        @default(0)
-//   liquidOxygen  Int        @default(0)
-//   helium3       Int        @default(0)
-//   rivalium      Int        @default(0)
-//   antirad       Int        @default(0)
-//   energyDrink   Int        @default(0)
-//   spaceRockets  Int        @default(0)
-//   lss           Int        @default(0)
-//   tanks         Int        @default(0)
-//   aircrafts     Int        @default(0)
-//   missiles      Int        @default(0)
-//   bombers       Int        @default(0)
-//   battleships   Int        @default(0)
-//   laserDrones   Int        @default(0)
-//   moonTanks     Int        @default(0)
-//   spaceStations Int        @default(0)
-//   Player        Player?
-//   State         State?
-//   Autonomy      Autonomy?
-// }
+model Storage {
+  id            Int       @id @default(autoincrement())
+  ownerPlayer   Player?   @relation("PlayerStorage")
+  ownerState    State?    @relation("StateStorage")
+  ownerAutonomy Autonomy? @relation("AutonomyStorage")
+  stateMoney    Int       @default(0)
+  stateGold     Int       @default(0)
+  stateOil      Int       @default(0)
+  stateOre      Int       @default(0)
+  stateUranium  Int       @default(0)
+  stateDiamonds Int       @default(0)
+  money         Int       @default(0)
+  gold          Int       @default(0)
+  oil           Int       @default(0)
+  ore           Int       @default(0)
+  uranium       Int       @default(0)
+  diamonds      Int       @default(0)
+  liquidOxygen  Int       @default(0)
+  helium3       Int       @default(0)
+  rivalium      Int       @default(0)
+  antirad       Int       @default(0)
+  energyDrink   Int       @default(0)
+  spaceRockets  Int       @default(0)
+  lss           Int       @default(0)
+  tanks         Int       @default(0)
+  aircrafts     Int       @default(0)
+  missiles      Int       @default(0)
+  bombers       Int       @default(0)
+  battleships   Int       @default(0)
+  laserDrones   Int       @default(0)
+  moonTanks     Int       @default(0)
+  spaceStations Int       @default(0)
+}
 
 model Party {
   id       Int     @id

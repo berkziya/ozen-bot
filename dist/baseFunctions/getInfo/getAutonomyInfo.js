@@ -57,8 +57,8 @@ async function getAutonomyInfo(user, autonomyId, force) {
         .text()
         .replace(', ', '')
         .trim();
-    // const budgetDiv = $('div.slide_profile_photo > div.imp');
-    // autonomy.budget.setBudgetFromDiv(budgetDiv);
+    const budgetDiv = $('div.slide_profile_photo > div.imp');
+    autonomy.storage.setBudgetFromDiv(budgetDiv);
     const divs = $('#region_scroll > div');
     for (let i = 0; i < divs.length; i++) {
         const div = divs.eq(i);

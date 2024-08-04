@@ -48,8 +48,8 @@ export async function getAutonomyInfo(
     .replace(', ', '')
     .trim();
 
-  // const budgetDiv = $('div.slide_profile_photo > div.imp');
-  // autonomy.budget.setBudgetFromDiv(budgetDiv);
+  const budgetDiv = $('div.slide_profile_photo > div.imp');
+  autonomy.storage.setBudgetFromDiv(budgetDiv);
 
   const divs = $('#region_scroll > div');
   for (let i = 0; i < divs.length; i++) {

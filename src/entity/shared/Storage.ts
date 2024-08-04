@@ -1,6 +1,8 @@
+import { Cheerio, Element } from 'cheerio';
 import { Autonomy } from '../Autonomy';
 import { Player } from '../Player';
 import { State } from '../State';
+import { dotless } from '../../misc/utils';
 
 export class Storage {
   constructor() {
@@ -44,6 +46,16 @@ export class Storage {
 
   setOwner(owner: Player | State | Autonomy) {
     this.owner = owner;
+  }
+
+  async setBudgetFromDiv(div: Cheerio<Element>) {
+    const spans = div.find('span');
+    this.stateMoney = dotless(spans.eq(0).text());
+    this.stateGold = dotless(spans.eq(1).text());
+    this.stateOil = dotless(spans.eq(2).text());
+    this.stateOre = dotless(spans.eq(3).text());
+    this.stateUranium = dotless(spans.eq(4).text());
+    this.stateDiamonds = dotless(spans.eq(5).text());
   }
 
   toJSON() {

@@ -41,7 +41,8 @@ async function getStateInfo(user, stateId, force) {
     // state.image = img;
     const $ = cheerio.load(content);
     state.name = $('body > div.margin > h1 > a').text().trim();
-    // state.budget.setBudgetFromDiv($('div.slide_profile_photo > div.imp'));
+    const budgetDiv = $('div.slide_profile_photo > div.imp');
+    state.storage.setBudgetFromDiv(budgetDiv);
     async function playerFromDiv(div) {
         const playerDiv = div.find('div[action*="profile"]');
         const player = await user.models.getPlayer(playerDiv.attr('action')?.split('/').pop());

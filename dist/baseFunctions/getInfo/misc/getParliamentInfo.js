@@ -25,6 +25,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getParliamentInfo = getParliamentInfo;
 const cheerio = __importStar(require("cheerio"));
+const Parliament_1 = require("../../../entity/shared/Parliament");
 async function getParliamentInfo(user, capitalId, isAutonomy = false) {
     const url = isAutonomy
         ? 'parliament/auto/' + capitalId
@@ -33,14 +34,20 @@ async function getParliamentInfo(user, capitalId, isAutonomy = false) {
     if (!content) {
         return null;
     }
+    const parliament = new Parliament_1.Parliament();
+    parliament.isAutonomy = isAutonomy;
+    parliament.capitalRegion = await user.models.getRegion(capitalId);
     const $ = cheerio.load(content);
-    const laws = [];
-    $('div.parliament_law').each((i, el) => {
+    $('div.parliament_law').map(async (i, el) => {
         const action = $(el).attr('action').split('/');
         const lawId = parseInt(action[action.length - 1]);
         const by = parseInt(action[action.length - 2]);
         const text = $(el).find('div > span').text().trim();
-        laws.push({ capitalId, lawId, by, text });
+        const law = new Parliament_1.Law();
+        law.id = lawId;
+        law.by = await user.models.getPlayer(by);
+        law.text = text;
+        parliament.laws.push(law);
     });
-    return laws;
+    return Parliament_1.Parliament;
 }

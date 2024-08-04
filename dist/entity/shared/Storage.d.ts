@@ -1,3 +1,4 @@
+import { Cheerio, Element } from 'cheerio';
 import { Autonomy } from '../Autonomy';
 import { Player } from '../Player';
 import { State } from '../State';
@@ -33,6 +34,7 @@ export declare class Storage {
     moonTanks: number;
     spaceStations: number;
     setOwner(owner: Player | State | Autonomy): void;
+    setBudgetFromDiv(div: Cheerio<Element>): Promise<void>;
     toJSON(): {
         subStorages: Storage[];
         stateMoney: number;

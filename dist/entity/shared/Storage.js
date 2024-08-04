@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Storage = void 0;
+const utils_1 = require("../../misc/utils");
 class Storage {
     constructor() {
         this.subStorages = [];
@@ -36,6 +37,15 @@ class Storage {
     spaceStations = 0;
     setOwner(owner) {
         this.owner = owner;
+    }
+    async setBudgetFromDiv(div) {
+        const spans = div.find('span');
+        this.stateMoney = (0, utils_1.dotless)(spans.eq(0).text());
+        this.stateGold = (0, utils_1.dotless)(spans.eq(1).text());
+        this.stateOil = (0, utils_1.dotless)(spans.eq(2).text());
+        this.stateOre = (0, utils_1.dotless)(spans.eq(3).text());
+        this.stateUranium = (0, utils_1.dotless)(spans.eq(4).text());
+        this.stateDiamonds = (0, utils_1.dotless)(spans.eq(5).text());
     }
     toJSON() {
         return {

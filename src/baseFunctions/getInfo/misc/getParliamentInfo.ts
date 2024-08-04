@@ -1,5 +1,6 @@
 import { UserContext } from '../../../Client';
 import * as cheerio from 'cheerio';
+import { Law, Parliament } from '../../../entity/shared/Parliament';
 
 export async function getParliamentInfo(
   user: UserContext,
@@ -15,16 +16,22 @@ export async function getParliamentInfo(
     return null;
   }
 
+  const parliament = new Parliament();
+  parliament.isAutonomy = isAutonomy;
+  parliament.capitalRegion = await user.models.getRegion(capitalId);
+
   const $ = cheerio.load(content);
-  const laws: { capitalId: number; lawId: number; by: number; text: string }[] =
-    [];
-  $('div.parliament_law').each((i, el) => {
+  $('div.parliament_law').map(async (i, el) => {
     const action = $(el).attr('action')!.split('/');
     const lawId = parseInt(action[action.length - 1]);
     const by = parseInt(action[action.length - 2]);
     const text = $(el).find('div > span').text().trim();
-    laws.push({ capitalId, lawId, by, text });
+    const law = new Law();
+    law.id = lawId;
+    law.by = await user.models.getPlayer(by);
+    law.text = text;
+    parliament.laws.push(law);
   });
 
-  return laws;
+  return Parliament;
 }

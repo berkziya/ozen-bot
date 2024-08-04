@@ -35,6 +35,7 @@ export declare class UserContext {
      * The async lock for synchronizing access to context and page.
      */
     lock: AsyncLock;
+    cookie: string;
     /**
      * Initializes the user context by creating a new browser context and page.
      */

@@ -30,7 +30,8 @@ export async function getStateInfo(
 
   state.name = $('body > div.margin > h1 > a').text().trim();
 
-  // state.budget.setBudgetFromDiv($('div.slide_profile_photo > div.imp'));
+  const budgetDiv = $('div.slide_profile_photo > div.imp');
+  state.storage.setBudgetFromDiv(budgetDiv);
 
   async function playerFromDiv(div: cheerio.Cheerio<cheerio.Element>) {
     const playerDiv = div.find('div[action*="profile"]');
