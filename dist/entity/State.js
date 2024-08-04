@@ -35,6 +35,7 @@ class State {
         if (region.state) {
             region.state.regions.delete(region);
         }
+        this.regions.add(region);
         this.capital = region;
         region.state = this;
         region.autonomy = null;
@@ -101,8 +102,13 @@ class State {
             lastUpdate: this.lastUpdate,
             id: this.id,
             name: this.name,
+            capital: this.capital?.id,
             regions: Array.from(this.regions, (region) => region.id),
             autonomies: Array.from(this.autonomies, (autonomy) => autonomy.id),
+            entryFee: this.entryFee,
+            bordersOpen: this.bordersOpen,
+            needResidencyToWork: this.needResidencyToWork,
+            residencyIssuedByLeader: this.residencyIssuedByLeader,
             governmentForm: this.governmentForm,
             leader: this.leader?.id,
             leaderIsCommander: this.leaderIsCommander,

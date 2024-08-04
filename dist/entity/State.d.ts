@@ -35,8 +35,13 @@ export declare class State {
         lastUpdate: Date;
         id: number;
         name: string;
+        capital: number | undefined;
         regions: number[];
         autonomies: number[];
+        entryFee: number;
+        bordersOpen: boolean;
+        needResidencyToWork: boolean;
+        residencyIssuedByLeader: boolean;
         governmentForm: string;
         leader: number | undefined;
         leaderIsCommander: boolean;

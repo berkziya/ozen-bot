@@ -63,6 +63,15 @@ export declare class Region {
         name: string;
         state: number | undefined;
         needResidencyToWork: boolean;
+        taxRate: number;
+        marketTaxes: number;
+        factoryOutputTaxes: {
+            gold: number;
+            oil: number;
+            ore: number;
+            uranium: number;
+            diamonds: number;
+        };
         autonomy: number | undefined;
         profitShare: number;
         borderRegions: number[];

@@ -43,10 +43,10 @@ class Autonomy {
             lastUpdate: this.lastUpdate,
             id: this.id,
             name: this.name,
-            state: this.state,
-            capital: this.capital,
+            state: this.state?.id,
+            capital: this.capital?.id,
             regions: Array.from(this.regions, (region) => region.id),
-            governor: this.governor,
+            governor: this.governor?.id,
         };
     }
 }

@@ -21,9 +21,9 @@ export declare class Autonomy {
         lastUpdate: Date;
         id: number;
         name: string;
-        state: State | undefined;
-        capital: Region | undefined;
+        state: number | undefined;
+        capital: number | undefined;
         regions: number[];
-        governor: Player | null;
+        governor: number | undefined;
     };
 }

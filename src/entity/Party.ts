@@ -56,8 +56,8 @@ export class Party {
       lastUpdate: this.lastUpdate,
       id: this.id,
       name: this.name,
-      region: this.region,
-      leader: this.leader,
+      region: this.region?.id,
+      leader: this.leader?.id,
       secretaries: Array.from(this.secretaries, (secretary) => secretary.id),
       members: Array.from(this.members, (member) => member.id),
     };

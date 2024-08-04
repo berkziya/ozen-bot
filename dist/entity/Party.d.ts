@@ -18,8 +18,8 @@ export declare class Party {
         lastUpdate: Date;
         id: number;
         name: string;
-        region: Region | undefined;
-        leader: Player | undefined;
+        region: number | undefined;
+        leader: number | undefined;
         secretaries: number[];
         members: number[];
     };
