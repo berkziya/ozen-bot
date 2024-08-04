@@ -27,20 +27,8 @@ export async function getRegionInfoInner(
   regionId: number,
   getAutonomy: boolean = false
 ): Promise<Autonomy | Region | null> {
-  // const url = '/map/details/' + regionId;
-  // const { content } = await user.get(url);
-
-  const x = await fetch(
-    'https://rivalregions.com/map/state_details/5043?c=3f116409cf4c01f2c853d9a17591b061',
-    {
-      headers: {
-        cookie:
-          'PHPSESSID=s3u0ihrihv79ej0psvmo3sm0ft; rr=310542c8a1f8d140be3c61915000572b; rr_id=2000346579; rr_add=360b7c6f06cd50348b8f2419d1e0b4b0; rr_f=0ee6f882487d41c5824e15253840d919',
-      },
-    }
-  );
-
-  const content = await x.text();
+  const url = '/map/details/' + regionId;
+  const { content } = await user.get(url);
 
   if (!content || content.length < 100) {
     return null;
