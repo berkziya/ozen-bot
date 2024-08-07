@@ -58,7 +58,6 @@ async function getStateInfo(user, stateId, force) {
     for (let i = 0; i < divs.length; i++) {
         const div = divs.eq(i);
         const key = (0, utils_1.toCamelCase)(div.find('h2').first().text());
-        console.log(key);
         if (key === 'entryFee') {
             const fee = (0, utils_1.dotless)(div.find('div.slide_profile_data > h2').first().text());
             state.entryFee = fee;

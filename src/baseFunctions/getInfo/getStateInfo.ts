@@ -55,7 +55,6 @@ export async function getStateInfo(
   for (let i = 0; i < divs.length; i++) {
     const div = divs.eq(i);
     const key = toCamelCase(div.find('h2').first().text());
-    console.log(key);
     if (key === 'entryFee') {
       const fee = dotless(
         div.find('div.slide_profile_data > h2').first().text()
