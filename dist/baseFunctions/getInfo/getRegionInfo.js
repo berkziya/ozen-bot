@@ -37,12 +37,14 @@ async function getRegionInfo(user, regionId, force) {
     return getRegionInfoInner(user, regionId);
 }
 async function getRegionInfoInner(user, regionId, getAutonomy = false) {
-    const x = await fetch(`https://rivalregions.com/map/details/${regionId}`, {
-        headers: {
-            cookie: user.cookies,
-        },
-    });
-    const content = await x.text();
+    // const x = await fetch(`https://rivalregions.com/map/details/${regionId}`, {
+    //   headers: {
+    //     cookie: user.cookies,
+    //   },
+    // });
+    const x = await user.get(`https://rivalregions.com/map/details/${regionId}`);
+    // const content = await x.text();
+    const content = x.content;
     if (!content || content.length < 100) {
         return null;
     }
