@@ -131,7 +131,7 @@ class UserContext {
                 }
                 // @ts-ignore
                 this.id = await this.page.evaluate(() => id);
-                // this.player = await this.models.getPlayer(this.id!);
+                this.player = await this.models.getPlayer(this.id);
                 const cookies = await this.page.context().cookies();
                 await node_fs_1.promises.writeFile(cookiesPath, JSON.stringify(cookies));
                 return this.id;

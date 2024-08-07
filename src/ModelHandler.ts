@@ -1,4 +1,5 @@
 import { Autonomy } from './entity/Autonomy';
+import { Factory } from './entity/Factory';
 import { Player } from './entity/Player';
 import { Region } from './entity/Region';
 import { State } from './entity/State';
@@ -9,7 +10,7 @@ export default class ModelHandler {
   private models = {
     autonomies: new Map<number, Autonomy>(),
     // blocs: new Map<number, Bloc>(),
-    // factories: new Map<number, Factory>(),
+    factories: new Map<number, Factory>(),
     players: new Map<number, Player>(),
     regions: new Map<number, Region>(),
     states: new Map<number, State>(),
@@ -42,18 +43,18 @@ export default class ModelHandler {
   //   return bloc;
   // }
 
-  // async getFactory(factoryId: number | string) {
-  //   if (typeof factoryId === 'string') {
-  //     factoryId = dotless(factoryId);
-  //   }
+  async getFactory(factoryId: number | string) {
+    if (typeof factoryId === 'string') {
+      factoryId = dotless(factoryId);
+    }
 
-  //   let factory = this.models.factories.get(factoryId);
-  //   if (!factory) {
-  //     factory = new Factory(factoryId);
-  //     this.models.factories.set(factoryId, factory);
-  //   }
-  //   return factory;
-  // }
+    let factory = this.models.factories.get(factoryId);
+    if (!factory) {
+      factory = new Factory(factoryId);
+      this.models.factories.set(factoryId, factory);
+    }
+    return factory;
+  }
 
   async getPlayer(playerId: number | string) {
     if (typeof playerId === 'string') {

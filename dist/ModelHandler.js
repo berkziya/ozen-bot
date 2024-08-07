@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Autonomy_1 = require("./entity/Autonomy");
+const Factory_1 = require("./entity/Factory");
 const Player_1 = require("./entity/Player");
 const Region_1 = require("./entity/Region");
 const State_1 = require("./entity/State");
@@ -9,7 +10,7 @@ class ModelHandler {
     models = {
         autonomies: new Map(),
         // blocs: new Map<number, Bloc>(),
-        // factories: new Map<number, Factory>(),
+        factories: new Map(),
         players: new Map(),
         regions: new Map(),
         states: new Map(),
@@ -37,17 +38,17 @@ class ModelHandler {
     //   }
     //   return bloc;
     // }
-    // async getFactory(factoryId: number | string) {
-    //   if (typeof factoryId === 'string') {
-    //     factoryId = dotless(factoryId);
-    //   }
-    //   let factory = this.models.factories.get(factoryId);
-    //   if (!factory) {
-    //     factory = new Factory(factoryId);
-    //     this.models.factories.set(factoryId, factory);
-    //   }
-    //   return factory;
-    // }
+    async getFactory(factoryId) {
+        if (typeof factoryId === 'string') {
+            factoryId = (0, utils_1.dotless)(factoryId);
+        }
+        let factory = this.models.factories.get(factoryId);
+        if (!factory) {
+            factory = new Factory_1.Factory(factoryId);
+            this.models.factories.set(factoryId, factory);
+        }
+        return factory;
+    }
     async getPlayer(playerId) {
         if (typeof playerId === 'string') {
             playerId = (0, utils_1.dotless)(playerId);
