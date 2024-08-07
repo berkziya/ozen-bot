@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseRegionsTable = parseRegionsTable;
-const utils_1 = require("../../../misc/utils");
 async function parseRegionsTable(user, stateId = null) {
     let url = '/info/regions/';
     const page = await user.context.newPage();
@@ -15,7 +14,14 @@ async function parseRegionsTable(user, stateId = null) {
         await page.goto(url);
         await page.waitForLoadState('load');
         const selector = 'body > table';
-        const data = await page.$$eval(selector, (rows, toCamelCaseFn) => {
+        const data = await page.$$eval(selector, (rows) => {
+            const toCamelCaseFn = (str) => {
+                return str
+                    .replace(/\u00a0/g, ' ')
+                    .replace(/[^a-zA-Z0-9 ]+/g, '')
+                    .toLowerCase()
+                    .replace(/ +(.)/g, (m, chr) => chr.toUpperCase());
+            };
             const headerRow = rows.shift();
             const headers = Array.from(headerRow.querySelectorAll('th'), (cell) => toCamelCaseFn(cell.textContent?.trim() || ''));
             return rows.map((row) => {
@@ -39,7 +45,7 @@ async function parseRegionsTable(user, stateId = null) {
                 });
                 return rowObject;
             });
-        }, utils_1.toCamelCase);
+        });
         return data;
     }
     finally {
