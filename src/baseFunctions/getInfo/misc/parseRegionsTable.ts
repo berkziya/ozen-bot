@@ -21,35 +21,39 @@ export async function parseRegionsTable(
     await page.waitForLoadState('load');
 
     const selector = 'body > table';
-    const data = await page.$$eval(selector, (rows: Element[]) => {
-      const headerRow = rows.shift();
-      const headers = Array.from(headerRow!.querySelectorAll('th'), (cell) =>
-        toCamelCase(cell.textContent?.trim() || '')
-      );
-      return rows.map((row: Element) => {
-        const cells = row.querySelectorAll('td');
-        const rowData = Array.from(
-          cells,
-          (cell) => cell.textContent?.trim() || ''
+    const data = await page.$$eval(
+      selector,
+      (rows: Element[], toCamelCaseFn) => {
+        const headerRow = rows.shift();
+        const headers = Array.from(headerRow!.querySelectorAll('th'), (cell) =>
+          toCamelCaseFn(cell.textContent?.trim() || '')
         );
-        const rowObject: { [key: string]: string } = {};
-        headers.forEach(async (header, index) => {
-          if (index === 0) {
-            const [name, id] = rowData[index].split(', id: ');
-            rowObject.name = name;
-            rowObject.id = id;
-            if (state) {
-              const region = await user.models.getRegion(id);
-              region.name = name;
-              region.setState(state);
+        return rows.map((row: Element) => {
+          const cells = row.querySelectorAll('td');
+          const rowData = Array.from(
+            cells,
+            (cell) => cell.textContent?.trim() || ''
+          );
+          const rowObject: { [key: string]: string } = {};
+          headers.forEach(async (header, index) => {
+            if (index === 0) {
+              const [name, id] = rowData[index].split(', id: ');
+              rowObject.name = name;
+              rowObject.id = id;
+              if (state) {
+                const region = await user.models.getRegion(id);
+                region.name = name;
+                region.setState(state);
+              }
+            } else {
+              rowObject[header] = rowData[index];
             }
-          } else {
-            rowObject[header] = rowData[index];
-          }
+          });
+          return rowObject;
         });
-        return rowObject;
-      });
-    });
+      },
+      toCamelCase
+    );
     return data;
   } finally {
     await page.close();

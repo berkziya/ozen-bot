@@ -15,9 +15,9 @@ async function parseRegionsTable(user, stateId = null) {
         await page.goto(url);
         await page.waitForLoadState('load');
         const selector = 'body > table';
-        const data = await page.$$eval(selector, (rows) => {
+        const data = await page.$$eval(selector, (rows, toCamelCaseFn) => {
             const headerRow = rows.shift();
-            const headers = Array.from(headerRow.querySelectorAll('th'), (cell) => (0, utils_1.toCamelCase)(cell.textContent?.trim() || ''));
+            const headers = Array.from(headerRow.querySelectorAll('th'), (cell) => toCamelCaseFn(cell.textContent?.trim() || ''));
             return rows.map((row) => {
                 const cells = row.querySelectorAll('td');
                 const rowData = Array.from(cells, (cell) => cell.textContent?.trim() || '');
@@ -39,7 +39,7 @@ async function parseRegionsTable(user, stateId = null) {
                 });
                 return rowObject;
             });
-        });
+        }, utils_1.toCamelCase);
         return data;
     }
     finally {
