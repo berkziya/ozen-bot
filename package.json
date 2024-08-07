@@ -12,19 +12,22 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@prisma/client": "5.17.0",
+    "@prisma/adapter-pg": "^5.18.0",
+    "@prisma/client": "^5.18.0",
     "async-lock": "^1.4.1",
     "cheerio": "1.0.0-rc.12",
-    "playwright": "^1.45.3"
+    "pg": "^8.12.0",
+    "playwright": "^1.46.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
     "@types/async-lock": "^1.4.2",
     "@types/eslint__js": "^8.42.3",
     "@types/node": "^22.1.0",
+    "@types/pg": "^8.11.6",
     "eslint": "^9.8.0",
-    "prisma": "^5.17.0",
+    "prisma": "^5.18.0",
     "typescript": "^5.5.4",
-    "typescript-eslint": "^8.0.0"
+    "typescript-eslint": "^8.0.1"
   }
 }

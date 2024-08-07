@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
@@ -28,7 +29,7 @@ model Region {
   parties             Party[]
   factories           Factory[] @relation("RegionFactories")
   // borderRegions       Region[] @relation("BorderRegions")
-  regionPermits       Player[]
+  // regionPermits       Player[]
 }
 
 model Player {
@@ -54,11 +55,11 @@ model Player {
   governorOfAutoId         Int?      @unique
   party                    Party?    @relation("PartyPlayers", fields: [partyId], references: [id])
   partyId                  Int?
-  storage                  Storage   @relation("PlayerStorage", fields: [storageId], references: [id])
-  storageId                Int       @unique
+  // storage                  Storage   @relation(fields: [storageId], references: [id])
+  // storageId                Int
   factories                Factory[] @relation("PlayerFactories")
-  statePermits             State[]
-  regionPermits            Region[]
+  // statePermits             State[]
+  // regionPermits            Region[]
 }
 
 model State {
@@ -73,60 +74,59 @@ model State {
   econMinister      Player?    @relation("EconMinisterOfState")
   foreignMinister   Player?    @relation("ForeignMinisterOfState")
   leaderTermStart   DateTime?
-  storage           Storage    @relation("StateStorage", fields: [storageId], references: [id])
-  storageId         Int        @unique
+  // storage           Storage    @relation(fields: [storageId], references: [id])
+  // storageId         Int
   Bloc              Bloc?      @relation(fields: [blocId], references: [id])
   blocId            Int?
   regions           Region[]   @relation("StateRegions")
   autonomies        Autonomy[] @relation("StateAutonomies")
-  permits           Player[]
+  // statePermits      Player[]
 }
 
 model Autonomy {
   id         Int      @id
   lastUpdate DateTime @default(now())
   name       String
+  // capital    Region
+  // capitalId  Int
   state      State?   @relation("StateAutonomies", fields: [stateId], references: [id])
   stateId    Int?
   governor   Player?  @relation("GovernorOfAuto")
   governorId Int?
-  storage    Storage  @relation("AutonomyStorage", fields: [storageId], references: [id])
-  storageId  Int      @unique
+  // storage    Storage  @relation(fields: [storageId], references: [id])
+  // storageId  Int
   regions    Region[] @relation("AutonomyRegions")
 }
 
 model Storage {
-  id            Int       @id @default(autoincrement())
-  ownerPlayer   Player?   @relation("PlayerStorage")
-  ownerState    State?    @relation("StateStorage")
-  ownerAutonomy Autonomy? @relation("AutonomyStorage")
-  stateMoney    Int       @default(0)
-  stateGold     Int       @default(0)
-  stateOil      Int       @default(0)
-  stateOre      Int       @default(0)
-  stateUranium  Int       @default(0)
-  stateDiamonds Int       @default(0)
-  money         Int       @default(0)
-  gold          Int       @default(0)
-  oil           Int       @default(0)
-  ore           Int       @default(0)
-  uranium       Int       @default(0)
-  diamonds      Int       @default(0)
-  liquidOxygen  Int       @default(0)
-  helium3       Int       @default(0)
-  rivalium      Int       @default(0)
-  antirad       Int       @default(0)
-  energyDrink   Int       @default(0)
-  spaceRockets  Int       @default(0)
-  lss           Int       @default(0)
-  tanks         Int       @default(0)
-  aircrafts     Int       @default(0)
-  missiles      Int       @default(0)
-  bombers       Int       @default(0)
-  battleships   Int       @default(0)
-  laserDrones   Int       @default(0)
-  moonTanks     Int       @default(0)
-  spaceStations Int       @default(0)
+  id            Int @id @default(autoincrement())
+  stateMoney    Int @default(0)
+  stateGold     Int @default(0)
+  stateOil      Int @default(0)
+  stateOre      Int @default(0)
+  stateUranium  Int @default(0)
+  stateDiamonds Int @default(0)
+  money         Int @default(0)
+  gold          Int @default(0)
+  oil           Int @default(0)
+  ore           Int @default(0)
+  uranium       Int @default(0)
+  diamonds      Int @default(0)
+  liquidOxygen  Int @default(0)
+  helium3       Int @default(0)
+  rivalium      Int @default(0)
+  antirad       Int @default(0)
+  energyDrink   Int @default(0)
+  spaceRockets  Int @default(0)
+  lss           Int @default(0)
+  tanks         Int @default(0)
+  aircrafts     Int @default(0)
+  missiles      Int @default(0)
+  bombers       Int @default(0)
+  battleships   Int @default(0)
+  laserDrones   Int @default(0)
+  moonTanks     Int @default(0)
+  spaceStations Int @default(0)
 }
 
 model Party {
@@ -139,12 +139,12 @@ model Party {
 }
 
 model Factory {
-  id       Int    @id
+  id       Int     @id
   name     String
-  player   Player @relation("PlayerFactories", fields: [playerId], references: [id])
-  playerId Int
-  region   Region @relation("RegionFactories", fields: [regionId], references: [id])
-  regionId Int
+  player   Player? @relation("PlayerFactories", fields: [playerId], references: [id])
+  playerId Int?
+  region   Region? @relation("RegionFactories", fields: [regionId], references: [id])
+  regionId Int?
   type     String
   level    Int
 }

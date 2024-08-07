@@ -43,7 +43,6 @@ CREATE TABLE "State" (
     "id" INTEGER NOT NULL,
     "lastUpdate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "name" TEXT NOT NULL,
-    "capitalId" INTEGER NOT NULL,
     "governmentForm" TEXT NOT NULL DEFAULT 'dictatorship',
     "leaderIsCommander" BOOLEAN NOT NULL DEFAULT false,
     "leaderTermStart" TIMESTAMP(3),
@@ -65,7 +64,7 @@ CREATE TABLE "Autonomy" (
 
 -- CreateTable
 CREATE TABLE "Storage" (
-    "ownerId" SERIAL NOT NULL,
+    "id" SERIAL NOT NULL,
     "stateMoney" INTEGER NOT NULL DEFAULT 0,
     "stateGold" INTEGER NOT NULL DEFAULT 0,
     "stateOil" INTEGER NOT NULL DEFAULT 0,
@@ -94,7 +93,7 @@ CREATE TABLE "Storage" (
     "moonTanks" INTEGER NOT NULL DEFAULT 0,
     "spaceStations" INTEGER NOT NULL DEFAULT 0,
 
-    CONSTRAINT "Storage_pkey" PRIMARY KEY ("ownerId")
+    CONSTRAINT "Storage_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -110,8 +109,10 @@ CREATE TABLE "Party" (
 CREATE TABLE "Factory" (
     "id" INTEGER NOT NULL,
     "name" TEXT NOT NULL,
-    "playerId" INTEGER NOT NULL,
-    "regionId" INTEGER NOT NULL,
+    "playerId" INTEGER,
+    "regionId" INTEGER,
+    "type" TEXT NOT NULL,
+    "level" INTEGER NOT NULL,
 
     CONSTRAINT "Factory_pkey" PRIMARY KEY ("id")
 );
@@ -122,18 +123,6 @@ CREATE TABLE "Bloc" (
     "name" TEXT NOT NULL,
 
     CONSTRAINT "Bloc_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "_PlayerToState" (
-    "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL
-);
-
--- CreateTable
-CREATE TABLE "_PlayerToRegion" (
-    "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL
 );
 
 -- CreateIndex
@@ -147,18 +136,6 @@ CREATE UNIQUE INDEX "Player_foreignMinisterOfStateId_key" ON "Player"("foreignMi
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Player_governorOfAutoId_key" ON "Player"("governorOfAutoId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "_PlayerToState_AB_unique" ON "_PlayerToState"("A", "B");
-
--- CreateIndex
-CREATE INDEX "_PlayerToState_B_index" ON "_PlayerToState"("B");
-
--- CreateIndex
-CREATE UNIQUE INDEX "_PlayerToRegion_AB_unique" ON "_PlayerToRegion"("A", "B");
-
--- CreateIndex
-CREATE INDEX "_PlayerToRegion_B_index" ON "_PlayerToRegion"("B");
 
 -- AddForeignKey
 ALTER TABLE "Region" ADD CONSTRAINT "Region_stateId_fkey" FOREIGN KEY ("stateId") REFERENCES "State"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -188,37 +165,16 @@ ALTER TABLE "Player" ADD CONSTRAINT "Player_governorOfAutoId_fkey" FOREIGN KEY (
 ALTER TABLE "Player" ADD CONSTRAINT "Player_partyId_fkey" FOREIGN KEY ("partyId") REFERENCES "Party"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Player" ADD CONSTRAINT "Player_id_fkey" FOREIGN KEY ("id") REFERENCES "Storage"("ownerId") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "State" ADD CONSTRAINT "State_id_fkey" FOREIGN KEY ("id") REFERENCES "Storage"("ownerId") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "State" ADD CONSTRAINT "State_blocId_fkey" FOREIGN KEY ("blocId") REFERENCES "Bloc"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Autonomy" ADD CONSTRAINT "Autonomy_stateId_fkey" FOREIGN KEY ("stateId") REFERENCES "State"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Autonomy" ADD CONSTRAINT "Autonomy_id_fkey" FOREIGN KEY ("id") REFERENCES "Storage"("ownerId") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "Party" ADD CONSTRAINT "Party_regionId_fkey" FOREIGN KEY ("regionId") REFERENCES "Region"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Factory" ADD CONSTRAINT "Factory_playerId_fkey" FOREIGN KEY ("playerId") REFERENCES "Player"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Factory" ADD CONSTRAINT "Factory_playerId_fkey" FOREIGN KEY ("playerId") REFERENCES "Player"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Factory" ADD CONSTRAINT "Factory_regionId_fkey" FOREIGN KEY ("regionId") REFERENCES "Region"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_PlayerToState" ADD CONSTRAINT "_PlayerToState_A_fkey" FOREIGN KEY ("A") REFERENCES "Player"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_PlayerToState" ADD CONSTRAINT "_PlayerToState_B_fkey" FOREIGN KEY ("B") REFERENCES "State"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_PlayerToRegion" ADD CONSTRAINT "_PlayerToRegion_A_fkey" FOREIGN KEY ("A") REFERENCES "Player"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_PlayerToRegion" ADD CONSTRAINT "_PlayerToRegion_B_fkey" FOREIGN KEY ("B") REFERENCES "Region"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Factory" ADD CONSTRAINT "Factory_regionId_fkey" FOREIGN KEY ("regionId") REFERENCES "Region"("id") ON DELETE SET NULL ON UPDATE CASCADE;
