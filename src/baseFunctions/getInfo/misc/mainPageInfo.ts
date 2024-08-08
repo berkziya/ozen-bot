@@ -15,6 +15,8 @@ export async function mainPageInfo(user: UserContext) {
     return null;
   }
 
+  console.log('mainPageInfo', content);
+
   const $ = cheerio.load(content);
 
   const toBeReturned: { [key: string]: any } = {};

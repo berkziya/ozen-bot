@@ -36,6 +36,7 @@ async function mainPageInfo(user) {
     if (!content || content.length < 100) {
         return null;
     }
+    console.log('mainPageInfo', content);
     const $ = cheerio.load(content);
     const toBeReturned = {};
     // Get data from scripts
