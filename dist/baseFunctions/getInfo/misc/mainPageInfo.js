@@ -25,6 +25,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.mainPageInfo = mainPageInfo;
 const cheerio = __importStar(require("cheerio"));
+const utils_1 = require("../../../misc/utils");
 async function mainPageInfo(user) {
     const x = await fetch('https://rivalregions.com/main/content', {
         headers: {
@@ -41,12 +42,12 @@ async function mainPageInfo(user) {
         const script = $(el).html();
         if (script) {
             // Get training war id
-            const trainingWarId = script.match(/slide_header('war\/details\/\(d+)/);
+            const trainingWarId = script.match(/slide_header\('war\/details\/(d+)/);
             if (trainingWarId) {
                 console.log(trainingWarId[1]);
             }
             // Current player id
-            const playerId = script.match(/slide_header('slide\/profile\/\(d+)/);
+            const playerId = script.match(/slide_header\('slide\/profile\/(d+)/);
             if (playerId) {
                 console.log(playerId[1]);
             }
@@ -62,10 +63,12 @@ async function mainPageInfo(user) {
             const money = script.match(/new_m\('([0-9.]+)'\);/);
             if (money) {
                 console.log(money[1]);
+                user.player.storage.money = (0, utils_1.dotless)(money[1]);
             }
             const gold = script.match(/new_g\('([0-9.]+)'\);/);
             if (gold) {
                 console.log(gold[1]);
+                user.player.storage.gold = (0, utils_1.dotless)(gold[1]);
             }
         }
     });
@@ -85,10 +88,10 @@ async function mainPageInfo(user) {
     region.setState(state);
     // Current auto war
     const autoWarSpan = $('div.war_index_war > div:nth-child(1) > span').last();
-    if (autoWarSpan.text() == 'auto') {
-        const autoWarId = autoWarSpan.attr('action').split('/').pop();
-        console.log(autoWarId);
-    }
+    // if (autoWarSpan.text() == 'auto') {
+    const autoWarId = autoWarSpan.attr('action').split('/').pop();
+    console.log(autoWarId);
+    // }
     console.log(state.toJSON());
     console.log(region.toJSON());
 }
