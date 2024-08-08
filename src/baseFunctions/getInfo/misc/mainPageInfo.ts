@@ -88,4 +88,6 @@ export async function mainPageInfo(user: UserContext) {
       toBeReturned['autoWarId'] = autoWarId;
     }
   } catch {}
+
+  return toBeReturned;
 }

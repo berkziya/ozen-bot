@@ -99,4 +99,5 @@ async function mainPageInfo(user) {
         }
     }
     catch { }
+    return toBeReturned;
 }
