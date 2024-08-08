@@ -36,7 +36,6 @@ async function mainPageInfo(user) {
     if (!content || content.length < 100) {
         return null;
     }
-    console.log('mainPageInfo', content);
     const $ = cheerio.load(content);
     const toBeReturned = {};
     // Get data from scripts
@@ -44,12 +43,12 @@ async function mainPageInfo(user) {
         const script = $(el).html();
         if (script) {
             // Get training war id
-            const trainingWarId = script.match(/slide_header\('war\/details\/(d+)/);
+            const trainingWarId = script.match(/slide_header\('war\/details\/(\d+)/);
             if (trainingWarId) {
                 toBeReturned['trainingWarId'] = trainingWarId[1];
             }
             // Current player id
-            const playerId = script.match(/slide_header\('slide\/profile\/(d+)/);
+            const playerId = script.match(/slide_header\('slide\/profile\/(\d+)/);
             if (playerId) {
                 toBeReturned['playerId'] = playerId[1];
             }
