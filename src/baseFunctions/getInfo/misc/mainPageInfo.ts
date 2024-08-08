@@ -17,6 +17,8 @@ export async function mainPageInfo(user: UserContext) {
 
   const $ = cheerio.load(content);
 
+  const toBeReturned: { [key: string]: any } = {};
+
   // Get data from scripts
   $('script').each((i, el) => {
     const script = $(el).html();
@@ -24,30 +26,30 @@ export async function mainPageInfo(user: UserContext) {
       // Get training war id
       const trainingWarId = script.match(/slide_header\('war\/details\/(d+)/);
       if (trainingWarId) {
-        console.log(trainingWarId[1]);
+        toBeReturned['trainingWarId'] = trainingWarId[1];
       }
       // Current player id
       const playerId = script.match(/slide_header\('slide\/profile\/(d+)/);
       if (playerId) {
-        console.log(playerId[1]);
+        toBeReturned['playerId'] = playerId[1];
       }
       // Next free hit
       const hitCountdown = script.match(/.war_index_war_countdown/);
       if (hitCountdown) {
         const hitCountdownSeconds = script.match(/until: (\d+)/);
         if (hitCountdownSeconds) {
-          console.log(hitCountdownSeconds[1]);
+          toBeReturned['hitCountdown'] = parseInt(hitCountdownSeconds[1]);
         }
       }
       // Current money and gold
       const money = script.match(/new_m\('([0-9.]+)'\);/);
       if (money) {
-        console.log(money[1]);
+        toBeReturned['money'] = dotless(money[1]);
         user.player.storage.money = dotless(money[1]);
       }
       const gold = script.match(/new_g\('([0-9.]+)'\);/);
       if (gold) {
-        console.log(gold[1]);
+        toBeReturned['gold'] = dotless(gold[1]);
         user.player.storage.gold = dotless(gold[1]);
       }
     }
@@ -58,9 +60,11 @@ export async function mainPageInfo(user: UserContext) {
     '#index_region > div:nth-child(2) > div[action^="map/state_details/"]'
   );
   const stateId = stateDiv.attr('action')!.split('/').pop()!;
-  const stateName = stateDiv.text().replace('State: ', '').trim();
+  let stateName = stateDiv.text().replace('State:', '').trim();
+  stateName = stateName.replace(/\s+/g, ' ').trim();
   const state = await user.models.getState(stateId);
   state.name = stateName;
+  toBeReturned['state'] = state;
 
   // Current region
   const regionDiv = $(
@@ -72,15 +76,16 @@ export async function mainPageInfo(user: UserContext) {
   region.name = regionName;
   user.player.setRegion(region);
   region.setState(state);
+  toBeReturned['region'] = region;
 
   // Current auto war
-  const autoWarSpan = $('div.war_index_war > div:nth-child(1) > span').last();
-  console.log(autoWarSpan.text());
-  if (autoWarSpan.text() == 'auto') {
-    const autoWarId = autoWarSpan.attr('action')!.split('/').pop()!;
-    console.log(autoWarId);
-  }
-
-  console.log(state.toJSON());
-  console.log(region.toJSON());
+  try {
+    const autoWarSpan = $(
+      'div.war_index_war > div:nth-child(1) > span:nth-child(4)'
+    );
+    if (autoWarSpan.text() == 'auto') {
+      const autoWarId = autoWarSpan.attr('action')!.split('/').pop()!;
+      toBeReturned['autoWarId'] = autoWarId;
+    }
+  } catch {}
 }
