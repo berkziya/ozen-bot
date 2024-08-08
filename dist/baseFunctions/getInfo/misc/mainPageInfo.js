@@ -88,10 +88,11 @@ async function mainPageInfo(user) {
     region.setState(state);
     // Current auto war
     const autoWarSpan = $('div.war_index_war > div:nth-child(1) > span').last();
-    // if (autoWarSpan.text() == 'auto') {
-    const autoWarId = autoWarSpan.attr('action').split('/').pop();
-    console.log(autoWarId);
-    // }
+    console.log(autoWarSpan.text());
+    if (autoWarSpan.text() == 'auto') {
+        const autoWarId = autoWarSpan.attr('action').split('/').pop();
+        console.log(autoWarId);
+    }
     console.log(state.toJSON());
     console.log(region.toJSON());
 }
