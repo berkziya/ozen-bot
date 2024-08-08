@@ -42,7 +42,6 @@ async function getStateInfo(user, stateId, force) {
     if (!content || content.length < 100) {
         return null;
     }
-    // state.image = img;
     const $ = cheerio.load(content);
     state.name = $('body > div.margin > h1 > a').text().trim();
     const budgetDiv = $('div.slide_profile_photo > div.imp');

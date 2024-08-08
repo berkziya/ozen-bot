@@ -1,7 +1,7 @@
 import { UserContext } from '../../Client';
 import * as cheerio from 'cheerio';
 import { dotless, toCamelCase } from '../../misc/utils';
-// import { getRegionInfo } from './';
+import { getRegionInfo } from './getRegionInfo';
 
 export async function getPlayerInfo(
   user: UserContext,
@@ -36,8 +36,6 @@ export async function getPlayerInfo(
   player.governorOfAuto = null;
   player.statePermits = new Set();
   player.regionPermits = new Set();
-
-  // player.image = img;
 
   const $ = cheerio.load(content);
 
@@ -128,11 +126,11 @@ export async function getPlayerInfo(
       const name = tr.find('div[action^="map/"]').text().trim();
       switch (key) {
         case 'governor': {
-          // const region = await getRegionInfo(user, parseInt(id));
-          // const autonomy = region?.autonomy!;
-          // autonomy.name = name;
-          // player.setGovernor(autonomy);
-          // autonomy.setCapital(region!);
+          const region = await getRegionInfo(user, parseInt(id));
+          const autonomy = region?.autonomy!;
+          autonomy.name = name;
+          player.setGovernor(autonomy);
+          autonomy.setCapital(region!);
           break;
         }
         case 'ministerOfEconomics':

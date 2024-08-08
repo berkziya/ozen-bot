@@ -26,7 +26,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPlayerInfo = getPlayerInfo;
 const cheerio = __importStar(require("cheerio"));
 const utils_1 = require("../../misc/utils");
-// import { getRegionInfo } from './';
+const getRegionInfo_1 = require("./getRegionInfo");
 async function getPlayerInfo(user, playerId, force) {
     const player = await user.models.getPlayer(playerId);
     if (!force &&
@@ -49,7 +49,6 @@ async function getPlayerInfo(user, playerId, force) {
     player.governorOfAuto = null;
     player.statePermits = new Set();
     player.regionPermits = new Set();
-    // player.image = img;
     const $ = cheerio.load(content);
     const nameMatch = $('body > div.margin > h1')
         .text()
@@ -128,11 +127,11 @@ async function getPlayerInfo(user, playerId, force) {
             const name = tr.find('div[action^="map/"]').text().trim();
             switch (key) {
                 case 'governor': {
-                    // const region = await getRegionInfo(user, parseInt(id));
-                    // const autonomy = region?.autonomy!;
-                    // autonomy.name = name;
-                    // player.setGovernor(autonomy);
-                    // autonomy.setCapital(region!);
+                    const region = await (0, getRegionInfo_1.getRegionInfo)(user, parseInt(id));
+                    const autonomy = region?.autonomy;
+                    autonomy.name = name;
+                    player.setGovernor(autonomy);
+                    autonomy.setCapital(region);
                     break;
                 }
                 case 'ministerOfEconomics':

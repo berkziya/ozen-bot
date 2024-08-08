@@ -45,7 +45,6 @@ async function getAutonomyInfo(user, autonomyId, force) {
     }
     autonomy.governor = null;
     autonomy.regions = new Set();
-    // autonomy.image = img;
     const $ = cheerio.load(content);
     const stateSpan = $('h1 > span[action]');
     const stateId = stateSpan.attr('action').split('/').pop();

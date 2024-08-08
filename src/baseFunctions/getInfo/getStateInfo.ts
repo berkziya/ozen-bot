@@ -32,8 +32,6 @@ export async function getStateInfo(
     return null;
   }
 
-  // state.image = img;
-
   const $ = cheerio.load(content);
 
   state.name = $('body > div.margin > h1 > a').text().trim();
