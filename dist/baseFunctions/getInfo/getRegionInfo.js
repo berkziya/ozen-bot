@@ -103,7 +103,7 @@ async function getRegionInfoInner(user, regionId, getAutonomy = false) {
             autonomy.setCapital(region);
             autonomy.setState(state);
             const governorDiv = div.find('div[action*="profile"]');
-            const governor = await user.models.getPlayer(governorDiv.attr('action')?.split('/').pop());
+            const governor = await user.models.getPlayer(governorDiv.attr('action').split('/').pop());
             const governorName = governorDiv.text().match(/([^]*)Wage:/);
             governor.setName(governorName ? governorName[1] : governor.name);
             governor.setGovernor(autonomy);
@@ -166,8 +166,8 @@ async function getRegionInfoInner(user, regionId, getAutonomy = false) {
                 break;
             }
             const borderRegions = div.find('div[action^="map/details/"]').toArray();
-            await Promise.all(borderRegions.map(async (el, i) => {
-                const regionId = $(el).attr('action')?.split('/').pop();
+            await Promise.all(borderRegions.map(async (el) => {
+                const regionId = $(el).attr('action').split('/').pop();
                 const borderRegion = await user.models.getRegion(regionId);
                 borderRegion.name = $(el).text().trim();
                 region.borderRegions.add(borderRegion);

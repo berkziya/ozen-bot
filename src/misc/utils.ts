@@ -1,17 +1,9 @@
-/**
- * Removes dots from a string and returns the resulting number.
- * @param str - The string to remove dots from.
- * @returns The resulting number after removing dots.
- */
 export function dotless(str: string): number {
-  return parseInt(str.match(/\d+/g)?.join('')!) || 0;
+  const match = str.match(/\d+/g);
+  const digits = match ? match.join('') : '0';
+  return parseInt(digits, 10);
 }
 
-/**
- * Converts a string to camel case.
- * @param str - The string to convert.
- * @returns The camel case version of the string.
- */
 export function toCamelCase(str: string): string {
   return str
     .replace(/\u00a0/g, ' ')
@@ -20,13 +12,6 @@ export function toCamelCase(str: string): string {
     .replace(/ +(.)/g, (m, chr) => chr.toUpperCase());
 }
 
-/**
- * Converts a number to slang representation.
- * @param number - The number to convert.
- * @param alternative - Whether to use alternative slang [K, M, G, T, P]
- * @param figures - The number of decimal figures to include.
- * @returns The slang representation of the number.
- */
 export function numToSlang(
   number: number,
   alternative: boolean = false,
@@ -45,11 +30,6 @@ export function numToSlang(
   return `${number.toFixed(3)}${units[units.length - 1]}`;
 }
 
-/**
- * Converts a slang representation to a number.
- * @param slang - The slang representation to convert.
- * @returns The resulting number.
- */
 export function slangToNum(slang: string | number): number {
   if (typeof slang === 'number') {
     return slang;

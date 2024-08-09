@@ -53,6 +53,7 @@ async function getPlayerInfo(user, playerId, force) {
     const nameMatch = $('body > div.margin > h1')
         .text()
         .match(/Profile: (.*)/);
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     nameMatch && player.setName(nameMatch[1].trim());
     const levelMatch = $('div[action="listed/gain"]')
         .text()
@@ -103,14 +104,14 @@ async function getPlayerInfo(user, playerId, force) {
         }
         else if (key === 'workPermit') {
             const states = tr.find('[action*="state"]').toArray();
-            await Promise.all(states.map(async (el, i) => {
-                const state = await user.models.getState($(el).attr('action')?.split('/').pop());
+            await Promise.all(states.map(async (el) => {
+                const state = await user.models.getState($(el).attr('action').split('/').pop());
                 state.name = $(el).text().trim();
                 player.addStatePermit(state);
             }));
             const regions = tr.find('[action^="map/details"]').toArray();
-            await Promise.all(regions.map(async (el, i) => {
-                const region = await user.models.getRegion($(el).attr('action')?.split('/').pop());
+            await Promise.all(regions.map(async (el) => {
+                const region = await user.models.getRegion($(el).attr('action').split('/').pop());
                 region.name = $(el).text().trim();
                 player.addRegionPermit(region);
             }));
@@ -128,7 +129,7 @@ async function getPlayerInfo(user, playerId, force) {
             switch (key) {
                 case 'governor': {
                     const region = await (0, getRegionInfo_1.getRegionInfo)(user, parseInt(id));
-                    const autonomy = region?.autonomy;
+                    const autonomy = region.autonomy;
                     autonomy.name = name;
                     player.setGovernor(autonomy);
                     autonomy.setCapital(region);

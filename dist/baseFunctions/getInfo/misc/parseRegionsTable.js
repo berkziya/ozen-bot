@@ -1,5 +1,5 @@
 "use strict";
-// import { UserContext } from '../../../Client';
+// import { UserContext } from '../../../UserContext';
 // import { State } from '../../../entity/State';
 // import { toCamelCase } from '../../../misc/utils';
 // export async function parseRegionsTable(

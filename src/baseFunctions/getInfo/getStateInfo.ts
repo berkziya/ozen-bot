@@ -1,4 +1,4 @@
-import { UserContext } from '../../Client';
+import { UserContext } from '../../UserContext';
 import * as cheerio from 'cheerio';
 import { toCamelCase, dotless } from '../../misc/utils';
 
@@ -42,7 +42,7 @@ export async function getStateInfo(
   async function playerFromDiv(div: cheerio.Cheerio<cheerio.Element>) {
     const playerDiv = div.find('div[action*="profile"]');
     const player = await user.models.getPlayer(
-      playerDiv.attr('action')?.split('/').pop()!
+      playerDiv.attr('action')!.split('/').pop()!
     );
     const playerName = playerDiv.text().match(/([^]*)Wage:/);
     player.setName(playerName ? playerName[1] : player.name);

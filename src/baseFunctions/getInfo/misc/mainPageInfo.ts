@@ -1,4 +1,4 @@
-import { UserContext } from '../../../Client';
+import { UserContext } from '../../../UserContext';
 import * as cheerio from 'cheerio';
 import { dotless } from '../../../misc/utils';
 
@@ -87,7 +87,9 @@ export async function mainPageInfo(user: UserContext) {
       const autoWarId = autoWarSpan.attr('action')!.split('/').pop()!;
       toBeReturned['autoWarId'] = autoWarId;
     }
-  } catch {}
+  } catch {
+    // Do nothing
+  }
 
   return toBeReturned;
 }

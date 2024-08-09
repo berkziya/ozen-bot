@@ -1,4 +1,4 @@
-import { UserContext } from '../../Client';
+import { UserContext } from '../../UserContext';
 import * as cheerio from 'cheerio';
 import { dotless, toCamelCase } from '../../misc/utils';
 import { Autonomy } from '../../entity/Autonomy';
@@ -110,7 +110,7 @@ export async function getRegionInfoInner(
       autonomy.setState(state);
       const governorDiv = div.find('div[action*="profile"]');
       const governor = await user.models.getPlayer(
-        governorDiv.attr('action')?.split('/').pop()!
+        governorDiv.attr('action')!.split('/').pop()!
       );
       const governorName = governorDiv.text().match(/([^]*)Wage:/);
       governor.setName(governorName ? governorName[1] : governor.name);
@@ -168,8 +168,8 @@ export async function getRegionInfoInner(
       }
       const borderRegions = div.find('div[action^="map/details/"]').toArray();
       await Promise.all(
-        borderRegions.map(async (el, i) => {
-          const regionId = $(el).attr('action')?.split('/').pop()!;
+        borderRegions.map(async (el) => {
+          const regionId = $(el).attr('action')!.split('/').pop()!;
           const borderRegion = await user.models.getRegion(regionId);
           borderRegion.name = $(el).text().trim();
           region.borderRegions.add(borderRegion);

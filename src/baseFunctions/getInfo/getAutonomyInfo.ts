@@ -1,4 +1,4 @@
-import { UserContext } from '../../Client';
+import { UserContext } from '../../UserContext';
 import * as cheerio from 'cheerio';
 import { toCamelCase } from '../../misc/utils';
 import { getRegionInfoInner } from './getRegionInfo';
@@ -64,7 +64,7 @@ export async function getAutonomyInfo(
     if (key === 'governor') {
       const governorDiv = div.find('div.slide_profile_data > div');
       const governor = await user.models.getPlayer(
-        governorDiv.attr('action')?.split('/').pop()!
+        governorDiv.attr('action')!.split('/').pop()!
       );
       const governorName = governorDiv.text().match(/([^]*)Wage:/);
       governor.setName(governorName ? governorName[1] : governor.name);
@@ -75,7 +75,7 @@ export async function getAutonomyInfo(
       await Promise.all(
         regions.map(async (el, i) => {
           const region = await user.models.getRegion(
-            $(el).attr('action')?.split('/').pop()!
+            $(el).attr('action')!.split('/').pop()!
           );
           region.name = $(el).text().trim();
           autonomy.addRegion(region);

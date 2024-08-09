@@ -1,4 +1,4 @@
-import { UserContext } from '../../../Client';
+import { UserContext } from '../../../UserContext';
 import * as cheerio from 'cheerio';
 import { Law, Parliament } from '../../../entity/shared/Parliament';
 

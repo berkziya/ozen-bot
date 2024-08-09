@@ -1,4 +1,4 @@
-import { UserContext } from '../../Client';
+import { UserContext } from '../../UserContext';
 import * as cheerio from 'cheerio';
 import { dotless, toCamelCase } from '../../misc/utils';
 import { getRegionInfo } from './getRegionInfo';
@@ -42,6 +42,7 @@ export async function getPlayerInfo(
   const nameMatch = $('body > div.margin > h1')
     .text()
     .match(/Profile: (.*)/);
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   nameMatch && player.setName(nameMatch[1].trim());
 
   const levelMatch = $('div[action="listed/gain"]')
@@ -94,9 +95,9 @@ export async function getPlayerInfo(
     } else if (key === 'workPermit') {
       const states = tr.find('[action*="state"]').toArray();
       await Promise.all(
-        states.map(async (el, i) => {
+        states.map(async (el) => {
           const state = await user.models.getState(
-            $(el).attr('action')?.split('/').pop()!
+            $(el).attr('action')!.split('/').pop()!
           );
           state.name = $(el).text().trim();
           player.addStatePermit(state);
@@ -104,9 +105,9 @@ export async function getPlayerInfo(
       );
       const regions = tr.find('[action^="map/details"]').toArray();
       await Promise.all(
-        regions.map(async (el, i) => {
+        regions.map(async (el) => {
           const region = await user.models.getRegion(
-            $(el).attr('action')?.split('/').pop()!
+            $(el).attr('action')!.split('/').pop()!
           );
           region.name = $(el).text().trim();
           player.addRegionPermit(region);
@@ -127,7 +128,7 @@ export async function getPlayerInfo(
       switch (key) {
         case 'governor': {
           const region = await getRegionInfo(user, parseInt(id));
-          const autonomy = region?.autonomy!;
+          const autonomy = region!.autonomy!;
           autonomy.name = name;
           player.setGovernor(autonomy);
           autonomy.setCapital(region!);

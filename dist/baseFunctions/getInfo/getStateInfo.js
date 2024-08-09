@@ -48,7 +48,7 @@ async function getStateInfo(user, stateId, force) {
     state.storage.setBudgetFromDiv(budgetDiv);
     async function playerFromDiv(div) {
         const playerDiv = div.find('div[action*="profile"]');
-        const player = await user.models.getPlayer(playerDiv.attr('action')?.split('/').pop());
+        const player = await user.models.getPlayer(playerDiv.attr('action').split('/').pop());
         const playerName = playerDiv.text().match(/([^]*)Wage:/);
         player.setName(playerName ? playerName[1] : player.name);
         return player;

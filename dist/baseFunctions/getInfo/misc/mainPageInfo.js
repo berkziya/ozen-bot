@@ -98,6 +98,8 @@ async function mainPageInfo(user) {
             toBeReturned['autoWarId'] = autoWarId;
         }
     }
-    catch { }
+    catch {
+        // Do nothing
+    }
     return toBeReturned;
 }

@@ -68,7 +68,7 @@ async function getAutonomyInfo(user, autonomyId, force) {
         const key = (0, utils_1.toCamelCase)(div.find('h2').first().text());
         if (key === 'governor') {
             const governorDiv = div.find('div.slide_profile_data > div');
-            const governor = await user.models.getPlayer(governorDiv.attr('action')?.split('/').pop());
+            const governor = await user.models.getPlayer(governorDiv.attr('action').split('/').pop());
             const governorName = governorDiv.text().match(/([^]*)Wage:/);
             governor.setName(governorName ? governorName[1] : governor.name);
             autonomy.setGovernor(governor);
@@ -76,7 +76,7 @@ async function getAutonomyInfo(user, autonomyId, force) {
         if (key === 'autonomyRegions') {
             const regions = div.find('div[action^="map/details/"]').toArray();
             await Promise.all(regions.map(async (el, i) => {
-                const region = await user.models.getRegion($(el).attr('action')?.split('/').pop());
+                const region = await user.models.getRegion($(el).attr('action').split('/').pop());
                 region.name = $(el).text().trim();
                 autonomy.addRegion(region);
                 if (i === 0) {
