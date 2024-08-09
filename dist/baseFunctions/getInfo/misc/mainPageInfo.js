@@ -28,39 +28,26 @@ const cheerio = __importStar(require("cheerio"));
 const utils_1 = require("../../../misc/utils");
 async function mainPageInfo(user) {
     const x = await fetch('https://rivalregions.com/main/content', {
-        headers: {
-            cookie: user.cookies,
-        },
+        headers: { cookie: user.cookies },
     });
     const content = await x.text();
-    if (!content || content.length < 100) {
+    if (!content || content.length < 100)
         return null;
-    }
     const $ = cheerio.load(content);
     const toBeReturned = {};
     // Get data from scripts
-    $('script').each((i, el) => {
+    $('script').each((_i, el) => {
         const script = $(el).html();
         if (script) {
-            // Get training war id
             const trainingWarId = script.match(/slide_header\('war\/details\/(\d+)/);
-            if (trainingWarId) {
+            if (trainingWarId)
                 toBeReturned['trainingWarId'] = trainingWarId[1];
-            }
-            // Current player id
             const playerId = script.match(/slide_header\('slide\/profile\/(\d+)/);
-            if (playerId) {
+            if (playerId)
                 toBeReturned['playerId'] = playerId[1];
-            }
-            // Next free hit
-            const hitCountdown = script.match(/.war_index_war_countdown/);
-            if (hitCountdown) {
-                const hitCountdownSeconds = script.match(/until: (\d+)/);
-                if (hitCountdownSeconds) {
-                    toBeReturned['hitCountdown'] = parseInt(hitCountdownSeconds[1]);
-                }
-            }
-            // Current money and gold
+            const hitCountdownSeconds = script.match(/until: (\d+)/);
+            if (hitCountdownSeconds)
+                toBeReturned['hitCountdown'] = parseInt(hitCountdownSeconds[1]);
             const money = script.match(/new_m\('([0-9.]+)'\);/);
             if (money) {
                 toBeReturned['money'] = (0, utils_1.dotless)(money[1]);
@@ -76,8 +63,11 @@ async function mainPageInfo(user) {
     // Current state
     const stateDiv = $('#index_region > div:nth-child(2) > div[action^="map/state_details/"]');
     const stateId = stateDiv.attr('action').split('/').pop();
-    let stateName = stateDiv.text().replace('State:', '').trim();
-    stateName = stateName.replace(/\s+/g, ' ').trim();
+    const stateName = stateDiv
+        .text()
+        .replace('State:', '')
+        .trim()
+        .replace(/\s+/g, ' ');
     const state = await user.models.getState(stateId);
     state.name = stateName;
     toBeReturned['state'] = state;
@@ -102,60 +92,36 @@ async function mainPageInfo(user) {
     const index_regionDiv = $('#index_region');
     // Am I moving?
     try {
-        if (index_regionDiv.text().includes('Moving in')) {
-            const movingDiv = index_regionDiv.find('div.small.white > div');
-            toBeReturned['moving'] = true;
-            const movingToId = movingDiv
-                .find('span')
-                .attr('action')
-                .split('/')
-                .pop();
-            toBeReturned['movingToId'] = movingToId;
-            const remainingTimeMatch = movingDiv
-                .text()
-                .match(/until( |today|tomorrow)* (\d+:\d+)/);
-            if (remainingTimeMatch) {
-                const remainingTimeStr = remainingTimeMatch[2];
-                let remainingTime = new Date();
-                if (remainingTimeMatch[1]?.includes('today')) {
-                    const [hours, minutes] = remainingTimeStr.split(':').map(Number);
-                    remainingTime.setUTCHours(hours, minutes, 0, 0);
-                }
-                else if (remainingTimeMatch[1]?.includes('tomorrow')) {
-                    remainingTime.setUTCDate(remainingTime.getUTCDate() + 1);
-                    const [hours, minutes] = remainingTimeStr.split(':').map(Number);
-                    remainingTime.setUTCHours(hours, minutes, 0, 0);
-                }
-                else {
-                    const [hours, minutes] = remainingTimeStr.split(':').map(Number);
-                    remainingTime.setUTCHours(hours, minutes, 0, 0);
-                }
-                toBeReturned['movingTime'] = Math.floor(remainingTime.getTime());
+        const movingDiv = index_regionDiv.find('div.small.white > div');
+        const movingText = movingDiv.text();
+        const movingMatch = movingText.match(/(Moving in|Travelling back).*until( |today|tomorrow)* (\d+:\d+)/);
+        if (movingMatch) {
+            const [_, movingType, day, time] = movingMatch;
+            const [hours, minutes] = time.split(':').map(Number);
+            let remainingTime = new Date();
+            if (day?.includes('oday')) {
+                remainingTime.setUTCHours(hours, minutes, 0, 0);
             }
-        }
-        else if (index_regionDiv.text().includes('Travelling back')) {
-            const movingDiv = index_regionDiv.find('div.small.white > div');
-            toBeReturned['movingBack'] = true;
-            const remainingTimeMatch = movingDiv
-                .text()
-                .match(/( |Today|Tomorrow)* (\d+:\d+)/);
-            if (remainingTimeMatch) {
-                const remainingTimeStr = remainingTimeMatch[2];
-                let remainingTime = new Date();
-                if (remainingTimeMatch[1]?.includes('Today')) {
-                    const [hours, minutes] = remainingTimeStr.split(':').map(Number);
-                    remainingTime.setUTCHours(hours, minutes, 0, 0);
-                }
-                else if (remainingTimeMatch[1]?.includes('Tomorrow')) {
-                    remainingTime.setUTCDate(remainingTime.getUTCDate() + 1);
-                    const [hours, minutes] = remainingTimeStr.split(':').map(Number);
-                    remainingTime.setUTCHours(hours, minutes, 0, 0);
-                }
-                else {
-                    const [hours, minutes] = remainingTimeStr.split(':').map(Number);
-                    remainingTime.setUTCHours(hours, minutes, 0, 0);
-                }
-                toBeReturned['movingBackTime'] = Math.floor(remainingTime.getTime());
+            else if (day?.includes('omorrow')) {
+                remainingTime.setUTCDate(remainingTime.getUTCDate() + 1);
+                remainingTime.setUTCHours(hours, minutes, 0, 0);
+            }
+            else {
+                remainingTime.setUTCHours(hours, minutes, 0, 0);
+            }
+            const timestamp = Math.floor(remainingTime.getTime());
+            if (movingType.includes('Moving in')) {
+                toBeReturned['moving'] = true;
+                toBeReturned['movingToId'] = movingDiv
+                    .find('span')
+                    .attr('action')
+                    .split('/')
+                    .pop();
+                toBeReturned['movingTime'] = timestamp;
+            }
+            else if (movingType.includes('Travelling back')) {
+                toBeReturned['movingBack'] = true;
+                toBeReturned['movingBackTime'] = timestamp;
             }
         }
         else {
