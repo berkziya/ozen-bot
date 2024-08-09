@@ -102,20 +102,46 @@ export async function mainPageInfo(user: UserContext) {
         .split('/')
         .pop()!;
       toBeReturned['movingToId'] = movingToId;
-      const remainingTime = movingDiv
+      const remainingTimeMatch = movingDiv
         .text()
         .match(/until( |today|tomorrow)* (\d+:\d+)/);
-      if (remainingTime) {
-        toBeReturned['movingTime'] = remainingTime[2];
+      if (remainingTimeMatch) {
+        const remainingTimeStr = remainingTimeMatch[2];
+        let remainingTime = new Date();
+        if (remainingTimeMatch[1]?.includes('today')) {
+          const [hours, minutes] = remainingTimeStr.split(':').map(Number);
+          remainingTime.setUTCHours(hours, minutes, 0, 0);
+        } else if (remainingTimeMatch[1]?.includes('tomorrow')) {
+          remainingTime.setUTCDate(remainingTime.getUTCDate() + 1);
+          const [hours, minutes] = remainingTimeStr.split(':').map(Number);
+          remainingTime.setUTCHours(hours, minutes, 0, 0);
+        } else {
+          const [hours, minutes] = remainingTimeStr.split(':').map(Number);
+          remainingTime.setUTCHours(hours, minutes, 0, 0);
+        }
+        toBeReturned['movingTime'] = Math.floor(remainingTime.getTime());
       }
     } else if (index_regionDiv.text().includes('Travelling back')) {
       const movingDiv = index_regionDiv.find('div.small.white > div');
       toBeReturned['movingBack'] = true;
-      const remainingTime = movingDiv
+      const remainingTimeMatch = movingDiv
         .text()
         .match(/( |Today|Tomorrow)* (\d+:\d+)/);
-      if (remainingTime) {
-        toBeReturned['movingBackTime'] = remainingTime[2];
+      if (remainingTimeMatch) {
+        const remainingTimeStr = remainingTimeMatch[2];
+        let remainingTime = new Date();
+        if (remainingTimeMatch[1]?.includes('Today')) {
+          const [hours, minutes] = remainingTimeStr.split(':').map(Number);
+          remainingTime.setUTCHours(hours, minutes, 0, 0);
+        } else if (remainingTimeMatch[1]?.includes('Tomorrow')) {
+          remainingTime.setUTCDate(remainingTime.getUTCDate() + 1);
+          const [hours, minutes] = remainingTimeStr.split(':').map(Number);
+          remainingTime.setUTCHours(hours, minutes, 0, 0);
+        } else {
+          const [hours, minutes] = remainingTimeStr.split(':').map(Number);
+          remainingTime.setUTCHours(hours, minutes, 0, 0);
+        }
+        toBeReturned['movingBackTime'] = Math.floor(remainingTime.getTime());
       }
     } else {
       toBeReturned['moving'] = false;
