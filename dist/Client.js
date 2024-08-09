@@ -15,7 +15,7 @@ class Client {
     browser;
     models = new ModelHandler_1.default();
     users = new Set();
-    async init({ headless = true, }) {
+    async init({ headless = true, } = {}) {
         try {
             this.browser = await this.browserType_.launch({
                 headless,

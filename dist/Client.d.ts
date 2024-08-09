@@ -9,7 +9,7 @@ export declare class Client {
     browser: Browser;
     models: ModelHandler;
     users: Set<UserContext>;
-    init({ headless, }: {
+    init({ headless, }?: {
         headless?: boolean;
     }): Promise<Browser | null>;
     createUserContext({ isMobile, }?: {

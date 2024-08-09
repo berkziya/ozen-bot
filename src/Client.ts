@@ -17,9 +17,7 @@ export class Client {
 
   async init({
     headless = true,
-  }: {
-    headless?: boolean;
-  }): Promise<Browser | null> {
+  }: { headless?: boolean } = {}): Promise<Browser | null> {
     try {
       this.browser = await this.browserType_.launch({
         headless,
