@@ -8,12 +8,13 @@ const playwright_1 = require("playwright");
 const ModelHandler_1 = __importDefault(require("./ModelHandler"));
 const UserContext_1 = require("./UserContext");
 class Client {
-    constructor({ browserType = 'firefox', } = {}) {
+    constructor({ browserType = 'firefox', models = ModelHandler_1.default.getInstance(), } = {}) {
         this.browserType_ = browserType == 'chromium' ? playwright_1.chromium : playwright_1.firefox;
+        this.models = models;
     }
     browserType_;
     browser;
-    models = new ModelHandler_1.default();
+    models;
     users = new Set();
     async init({ headless = true, } = {}) {
         try {

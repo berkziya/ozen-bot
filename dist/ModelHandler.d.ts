@@ -4,7 +4,11 @@ import { Player } from './entity/Player';
 import { Region } from './entity/Region';
 import { State } from './entity/State';
 export default class ModelHandler {
+    private static instance;
     private models;
+    private constructor();
+    static getInstance(): ModelHandler;
+    private getModel;
     getAutonomy(autonomyId: number | string): Promise<Autonomy>;
     getFactory(factoryId: number | string): Promise<Factory>;
     getPlayer(playerId: number | string): Promise<Player>;

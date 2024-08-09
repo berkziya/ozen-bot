@@ -5,14 +5,16 @@ import { UserContext } from './UserContext';
 export class Client {
   constructor({
     browserType = 'firefox',
-  }: { browserType?: 'chromium' | 'firefox' } = {}) {
+    models = ModelHandler.getInstance(),
+  }: { browserType?: 'chromium' | 'firefox'; models?: ModelHandler } = {}) {
     this.browserType_ = browserType == 'chromium' ? chromium : firefox;
+    this.models = models;
   }
 
   private browserType_;
   public browser!: Browser;
 
-  public models: ModelHandler = new ModelHandler();
+  public models: ModelHandler;
   public users: Set<UserContext> = new Set();
 
   async init({

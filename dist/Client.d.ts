@@ -2,8 +2,9 @@ import { Browser } from 'playwright';
 import ModelHandler from './ModelHandler';
 import { UserContext } from './UserContext';
 export declare class Client {
-    constructor({ browserType, }?: {
+    constructor({ browserType, models, }?: {
         browserType?: 'chromium' | 'firefox';
+        models?: ModelHandler;
     });
     private browserType_;
     browser: Browser;

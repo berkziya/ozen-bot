@@ -7,6 +7,7 @@ const Region_1 = require("./entity/Region");
 const State_1 = require("./entity/State");
 const utils_1 = require("./misc/utils");
 class ModelHandler {
+    static instance;
     models = {
         autonomies: new Map(),
         // blocs: new Map<number, Bloc>(),
@@ -16,71 +17,41 @@ class ModelHandler {
         states: new Map(),
         // wars: new Map<number, War>(),
     };
+    constructor() { }
+    static getInstance() {
+        if (!ModelHandler.instance) {
+            ModelHandler.instance = new ModelHandler();
+        }
+        return ModelHandler.instance;
+    }
+    async getModel(modelMap, id, ModelClass) {
+        if (typeof id === 'string') {
+            id = (0, utils_1.dotless)(id);
+        }
+        let model = modelMap.get(id);
+        if (!model) {
+            model = new ModelClass(id);
+            modelMap.set(id, model);
+        }
+        return model;
+    }
     async getAutonomy(autonomyId) {
-        if (typeof autonomyId === 'string') {
-            autonomyId = (0, utils_1.dotless)(autonomyId);
-        }
-        let autonomy = this.models.autonomies.get(autonomyId);
-        if (!autonomy) {
-            autonomy = new Autonomy_1.Autonomy(autonomyId);
-            this.models.autonomies.set(autonomyId, autonomy);
-        }
-        return autonomy;
+        return this.getModel(this.models.autonomies, autonomyId, Autonomy_1.Autonomy);
     }
     // async getBloc(blocId: number | string) {
-    //   if (typeof blocId === 'string') {
-    //     blocId = dotless(blocId);
-    //   }
-    //   let bloc = this.models.blocs.get(blocId);
-    //   if (!bloc) {
-    //     bloc = new Bloc(blocId);
-    //     this.models.blocs.set(blocId, bloc);
-    //   }
-    //   return bloc;
+    //   return this.getModel(this.models.blocs, blocId, Bloc);
     // }
     async getFactory(factoryId) {
-        if (typeof factoryId === 'string') {
-            factoryId = (0, utils_1.dotless)(factoryId);
-        }
-        let factory = this.models.factories.get(factoryId);
-        if (!factory) {
-            factory = new Factory_1.Factory(factoryId);
-            this.models.factories.set(factoryId, factory);
-        }
-        return factory;
+        return this.getModel(this.models.factories, factoryId, Factory_1.Factory);
     }
     async getPlayer(playerId) {
-        if (typeof playerId === 'string') {
-            playerId = (0, utils_1.dotless)(playerId);
-        }
-        let player = this.models.players.get(playerId);
-        if (!player) {
-            player = new Player_1.Player(playerId);
-            this.models.players.set(playerId, player);
-        }
-        return player;
+        return this.getModel(this.models.players, playerId, Player_1.Player);
     }
     async getRegion(regionId) {
-        if (typeof regionId === 'string') {
-            regionId = (0, utils_1.dotless)(regionId);
-        }
-        let region = this.models.regions.get(regionId);
-        if (!region) {
-            region = new Region_1.Region(regionId);
-            this.models.regions.set(regionId, region);
-        }
-        return region;
+        return this.getModel(this.models.regions, regionId, Region_1.Region);
     }
     async getState(stateId) {
-        if (typeof stateId === 'string') {
-            stateId = (0, utils_1.dotless)(stateId);
-        }
-        let state = this.models.states.get(stateId);
-        if (!state) {
-            state = new State_1.State(stateId);
-            this.models.states.set(stateId, state);
-        }
-        return state;
+        return this.getModel(this.models.states, stateId, State_1.State);
     }
 }
 exports.default = ModelHandler;
