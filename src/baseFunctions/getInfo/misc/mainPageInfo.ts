@@ -87,8 +87,45 @@ export async function mainPageInfo(user: UserContext) {
       const autoWarId = autoWarSpan.attr('action')!.split('/').pop()!;
       toBeReturned['autoWarId'] = autoWarId;
     }
-  } catch {
-    // Do nothing
+  } catch {}
+
+  const index_regionDiv = $('#index_region');
+
+  // Am I moving?
+  try {
+    if (index_regionDiv.text().includes('Moving in')) {
+      const movingDiv = index_regionDiv.find('div.small.white > div');
+      toBeReturned['moving'] = true;
+      const movingToId = movingDiv
+        .find('span')
+        .attr('action')!
+        .split('/')
+        .pop()!;
+      toBeReturned['movingToId'] = movingToId;
+      const remainingTime = movingDiv
+        .text()
+        .match(/until( |today|tomorrow)* (\d+:\d+)/);
+      if (remainingTime) {
+        toBeReturned['movingTime'] = remainingTime[2];
+      }
+    } else if (index_regionDiv.text().includes('Travelling back')) {
+      const movingDiv = index_regionDiv.find('div.small.white > div');
+      toBeReturned['movingBack'] = true;
+      const remainingTime = movingDiv
+        .text()
+        .match(/( |Today|Tomorrow)* (\d+:\d+)/);
+      if (remainingTime) {
+        toBeReturned['movingBackTime'] = remainingTime[2];
+      }
+    } else {
+      toBeReturned['moving'] = false;
+      toBeReturned['movingBack'] = false;
+    }
+  } catch {}
+
+  // Not residency
+  if (index_regionDiv.text().includes('Request residency')) {
+    toBeReturned['notResidency'] = true;
   }
 
   return toBeReturned;
