@@ -58,10 +58,7 @@ export async function getWarInfo(
 
   war.type = type as typeof war.type;
 
-  const timeStr = $('body > div.margin > h1 > div.small')
-    .text()
-    .split('ends ')
-    .pop()!;
+  const timeStr = $('body > div.margin > h1 > div.small').text();
   war.endingTime = getTimestamp(timeStr);
 
   if (!['revolution', 'coup', 'training'].includes(type)) {

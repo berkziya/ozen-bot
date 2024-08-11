@@ -73,10 +73,7 @@ async function getWarInfo(user, id, force = false) {
         }
     }
     war.type = type;
-    const timeStr = $('body > div.margin > h1 > div.small')
-        .text()
-        .split('ends ')
-        .pop();
+    const timeStr = $('body > div.margin > h1 > div.small').text();
     war.endingTime = (0, timestamps_1.getTimestamp)(timeStr);
     if (!['revolution', 'coup', 'training'].includes(type)) {
         const attackerId = $('#war_w_ata_s > div.imp > span:nth-child(3)')
