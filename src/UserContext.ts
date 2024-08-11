@@ -81,9 +81,8 @@ export class UserContext {
         },
       });
 
-      console.log(x.status);
-      invariant(x.status !== 200, 'No response from the server');
-      invariant((await x.text()).length < 150, 'Player is not logged in');
+      invariant(x.status === 200, 'No response from the server');
+      invariant((await x.text()).length > 150, 'Player is not logged in');
       return true;
     } catch (e) {
       console.error(e);

@@ -69,9 +69,8 @@ class UserContext {
                     cookie: this.cookies,
                 },
             });
-            console.log(x.status);
-            (0, tiny_invariant_1.default)(x.status !== 200, 'No response from the server');
-            (0, tiny_invariant_1.default)((await x.text()).length < 150, 'Player is not logged in');
+            (0, tiny_invariant_1.default)(x.status === 200, 'No response from the server');
+            (0, tiny_invariant_1.default)((await x.text()).length > 150, 'Player is not logged in');
             return true;
         }
         catch (e) {
