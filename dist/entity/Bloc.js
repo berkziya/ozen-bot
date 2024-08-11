@@ -17,5 +17,15 @@ class Bloc {
         this.states.add(state);
         state.bloc = this;
     }
+    toJSON() {
+        return {
+            lastUpdate: this.lastUpdate,
+            id: this.id,
+            name: this.name,
+            states: Array.from(this.states).map((state) => state.id),
+            militaryAgreement: this.militaryAgreement,
+            openBorders: this.openBorders,
+        };
+    }
 }
 exports.Bloc = Bloc;

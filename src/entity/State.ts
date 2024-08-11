@@ -141,6 +141,8 @@ export class State {
       econMinister: this.econMinister?.id,
       foreignMinister: this.foreignMinister?.id,
       leaderTermStart: this.leaderTermStart,
+      storage: this.storage.toJSON(),
+      bloc: this.bloc?.id,
     };
   }
 }

@@ -3,6 +3,7 @@ import { Factory } from './entity/Factory';
 import { Player } from './entity/Player';
 import { Region } from './entity/Region';
 import { State } from './entity/State';
+import { War } from './entity/War';
 
 import { dotless } from './misc/utils';
 
@@ -16,7 +17,7 @@ export default class ModelHandler {
     players: new Map<number, Player>(),
     regions: new Map<number, Region>(),
     states: new Map<number, State>(),
-    // wars: new Map<number, War>(),
+    wars: new Map<number, War>(),
   };
 
   private constructor() {}
@@ -69,7 +70,7 @@ export default class ModelHandler {
     return this.getModel(this.models.states, stateId, State);
   }
 
-  // async getWar(warId: number | string) {
-  //   return this.getModel(this.models.wars, warId, War);
-  // }
+  async getWar(warId: number | string) {
+    return this.getModel(this.models.wars, warId, War);
+  }
 }

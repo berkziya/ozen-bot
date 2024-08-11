@@ -12,7 +12,7 @@ export async function getStateInfo(
   if (
     !force &&
     state.lastUpdate &&
-    Date.now() - state.lastUpdate.getTime() < 60 * 10
+    Date.now() - state.lastUpdate.getTime() < 10 * 60 * 1000
   ) {
     return state;
   }

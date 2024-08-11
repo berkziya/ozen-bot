@@ -5,6 +5,7 @@ const Factory_1 = require("./entity/Factory");
 const Player_1 = require("./entity/Player");
 const Region_1 = require("./entity/Region");
 const State_1 = require("./entity/State");
+const War_1 = require("./entity/War");
 const utils_1 = require("./misc/utils");
 class ModelHandler {
     static instance;
@@ -15,7 +16,7 @@ class ModelHandler {
         players: new Map(),
         regions: new Map(),
         states: new Map(),
-        // wars: new Map<number, War>(),
+        wars: new Map(),
     };
     constructor() { }
     static getInstance() {
@@ -52,6 +53,9 @@ class ModelHandler {
     }
     async getState(stateId) {
         return this.getModel(this.models.states, stateId, State_1.State);
+    }
+    async getWar(warId) {
+        return this.getModel(this.models.wars, warId, War_1.War);
     }
 }
 exports.default = ModelHandler;

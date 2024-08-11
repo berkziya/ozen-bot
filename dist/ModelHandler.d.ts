@@ -3,6 +3,7 @@ import { Factory } from './entity/Factory';
 import { Player } from './entity/Player';
 import { Region } from './entity/Region';
 import { State } from './entity/State';
+import { War } from './entity/War';
 export default class ModelHandler {
     private static instance;
     private models;
@@ -14,4 +15,5 @@ export default class ModelHandler {
     getPlayer(playerId: number | string): Promise<Player>;
     getRegion(regionId: number | string): Promise<Region>;
     getState(stateId: number | string): Promise<State>;
+    getWar(warId: number | string): Promise<War>;
 }

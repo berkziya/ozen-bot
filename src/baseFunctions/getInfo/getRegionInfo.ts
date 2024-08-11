@@ -14,7 +14,7 @@ export async function getRegionInfo(
   if (
     !force &&
     region.lastUpdate &&
-    Date.now() - region.lastUpdate.getTime() < 60 * 15
+    Date.now() - region.lastUpdate.getTime() < 15 * 60 * 1000
   ) {
     return region;
   }

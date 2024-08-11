@@ -26,6 +26,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.mainPageInfo = mainPageInfo;
 const cheerio = __importStar(require("cheerio"));
 const utils_1 = require("../../../misc/utils");
+const timestamps_1 = require("../../../misc/timestamps");
 async function mainPageInfo(user) {
     const x = await fetch('https://rivalregions.com/main/content', {
         headers: { cookie: user.cookies },
@@ -94,22 +95,10 @@ async function mainPageInfo(user) {
     try {
         const movingDiv = index_regionDiv.find('div.small.white > div');
         const movingText = movingDiv.text();
-        const movingMatch = movingText.match(/(Moving in|Travelling back).*until( |today|tomorrow)* (\d+:\d+)/);
+        const movingMatch = movingText.match(/(Moving in|Travelling back).*until (\w+ \d+:\d+)/);
         if (movingMatch) {
-            const [_, movingType, day, time] = movingMatch;
-            const [hours, minutes] = time.split(':').map(Number);
-            let remainingTime = new Date();
-            if (day?.includes('oday')) {
-                remainingTime.setUTCHours(hours, minutes, 0, 0);
-            }
-            else if (day?.includes('omorrow')) {
-                remainingTime.setUTCDate(remainingTime.getUTCDate() + 1);
-                remainingTime.setUTCHours(hours, minutes, 0, 0);
-            }
-            else {
-                remainingTime.setUTCHours(hours, minutes, 0, 0);
-            }
-            const timestamp = Math.floor(remainingTime.getTime());
+            const [_, movingType, date] = movingMatch;
+            const timestamp = (0, timestamps_1.getTimestamp)(date);
             if (movingType.includes('Moving in')) {
                 toBeReturned['moving'] = true;
                 toBeReturned['movingToId'] = movingDiv

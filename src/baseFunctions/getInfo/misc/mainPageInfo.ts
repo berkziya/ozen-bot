@@ -1,6 +1,7 @@
 import { UserContext } from '../../../UserContext';
 import * as cheerio from 'cheerio';
 import { dotless } from '../../../misc/utils';
+import { getTimestamp } from '../../../misc/timestamps';
 
 export async function mainPageInfo(user: UserContext) {
   const x = await fetch('https://rivalregions.com/main/content', {
@@ -85,21 +86,11 @@ export async function mainPageInfo(user: UserContext) {
     const movingDiv = index_regionDiv.find('div.small.white > div');
     const movingText = movingDiv.text();
     const movingMatch = movingText.match(
-      /(Moving in|Travelling back).*until( |today|tomorrow)* (\d+:\d+)/
+      /(Moving in|Travelling back).*until (\w+ \d+:\d+)/
     );
     if (movingMatch) {
-      const [_, movingType, day, time] = movingMatch;
-      const [hours, minutes] = time.split(':').map(Number);
-      let remainingTime = new Date();
-      if (day?.includes('oday')) {
-        remainingTime.setUTCHours(hours, minutes, 0, 0);
-      } else if (day?.includes('omorrow')) {
-        remainingTime.setUTCDate(remainingTime.getUTCDate() + 1);
-        remainingTime.setUTCHours(hours, minutes, 0, 0);
-      } else {
-        remainingTime.setUTCHours(hours, minutes, 0, 0);
-      }
-      const timestamp = Math.floor(remainingTime.getTime());
+      const [_, movingType, date] = movingMatch;
+      const timestamp = getTimestamp(date);
       if (movingType.includes('Moving in')) {
         toBeReturned['moving'] = true;
         toBeReturned['movingToId'] = movingDiv

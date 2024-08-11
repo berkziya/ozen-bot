@@ -31,7 +31,7 @@ async function getAutonomyInfo(user, autonomyId, force) {
     const autonomy = await user.models.getAutonomy(autonomyId);
     if (!force &&
         autonomy.lastUpdate &&
-        Date.now() - autonomy.lastUpdate.getTime() < 1000 * 60 * 60 * 24) {
+        Date.now() - autonomy.lastUpdate.getTime() < 60 * 60 * 1000) {
         return autonomy;
     }
     const x = await fetch(`https://rivalregions.com/map/autonomy_details/${autonomyId}`, {

@@ -30,7 +30,7 @@ async function getStateInfo(user, stateId, force) {
     const state = await user.models.getState(stateId);
     if (!force &&
         state.lastUpdate &&
-        Date.now() - state.lastUpdate.getTime() < 60 * 10) {
+        Date.now() - state.lastUpdate.getTime() < 10 * 60 * 1000) {
         return state;
     }
     const x = await fetch(`https://rivalregions.com/map/state_details/${stateId}`, {

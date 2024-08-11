@@ -48,5 +48,36 @@ export declare class State {
         econMinister: number | undefined;
         foreignMinister: number | undefined;
         leaderTermStart: Date | null;
+        storage: {
+            subStorages: Storage[];
+            stateMoney: number;
+            stateGold: number;
+            stateOil: number;
+            stateOre: number;
+            stateUranium: number;
+            stateDiamonds: number;
+            money: number;
+            gold: number;
+            oil: number;
+            ore: number;
+            uranium: number;
+            diamonds: number;
+            liquidOxygen: number;
+            helium3: number;
+            rivalium: number;
+            antirad: number;
+            energyDrink: number;
+            spaceRockets: number;
+            lss: number;
+            tanks: number;
+            aircrafts: number;
+            missiles: number;
+            bombers: number;
+            battleships: number;
+            laserDrones: number;
+            moonTanks: number;
+            spaceStations: number;
+        };
+        bloc: number | undefined;
     };
 }

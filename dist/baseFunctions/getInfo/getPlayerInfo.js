@@ -34,7 +34,7 @@ async function getPlayerInfo(user, playerId, force) {
     const player = await user.models.getPlayer(playerId);
     if (!force &&
         player.lastUpdate &&
-        Date.now() - player.lastUpdate.getTime() < 60 * 3) {
+        Date.now() - player.lastUpdate.getTime() < 3 * 60 * 1000) {
         return player;
     }
     const x = await fetch(`https://rivalregions.com/slide/profile/${playerId}`, {

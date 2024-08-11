@@ -17,7 +17,7 @@ export async function getPlayerInfo(
   if (
     !force &&
     player.lastUpdate &&
-    Date.now() - player.lastUpdate.getTime() < 60 * 3
+    Date.now() - player.lastUpdate.getTime() < 3 * 60 * 1000
   ) {
     return player;
   }
