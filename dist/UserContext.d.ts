@@ -14,6 +14,7 @@ export declare class UserContext {
     lock: AsyncLock;
     cookies: string;
     init(): Promise<void>;
+    isContextValid(): Promise<boolean>;
     amILoggedIn(): Promise<boolean>;
     login(mail: string, password: string, useCookies?: boolean): Promise<number | null>;
     ajax(url: string, data?: string): Promise<void>;
@@ -21,5 +22,4 @@ export declare class UserContext {
         content: string;
     }>;
     internetIsOn(): Promise<unknown>;
-    imAlive(): Promise<number | null>;
 }

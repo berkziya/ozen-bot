@@ -7,6 +7,7 @@ exports.UserContext = void 0;
 const async_lock_1 = __importDefault(require("async-lock"));
 const node_fs_1 = require("node:fs");
 const node_path_1 = __importDefault(require("node:path"));
+const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
 const iPhoneUserAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/129.0 Mobile/15E148 Safari/605.1.15';
 const mobileViewport = {
     width: 430,
@@ -43,9 +44,29 @@ class UserContext {
             this.page = await this.context.newPage();
         });
     }
+    async isContextValid() {
+        try {
+            await this.internetIsOn();
+            (0, tiny_invariant_1.default)(this.browser, "Can't find browser");
+            (0, tiny_invariant_1.default)(this.context, 'Context is not initialized');
+            (0, tiny_invariant_1.default)(this.page, 'Page is not initialized');
+            (0, tiny_invariant_1.default)(this.amILoggedIn, 'Player is not logged in');
+            return true;
+        }
+        catch (e) {
+            console.error('Session validation failed:', e);
+            return false;
+        }
+    }
     async amILoggedIn() {
         try {
-            await this.page.waitForSelector('#chat_send');
+            const x = await fetch('https://rivalregions.com/map/details/100002', {
+                headers: {
+                    cookie: this.cookies,
+                },
+            });
+            (0, tiny_invariant_1.default)(x.status !== 200, 'No response from the server');
+            (0, tiny_invariant_1.default)((await x.text()).length < 150, 'Player is not logged in');
             const cookiesFromContext = await this.context.cookies();
             this.cookies = cookiesFromContext
                 .map((x) => `${x.name}=${x.value}`)
@@ -60,6 +81,7 @@ class UserContext {
     async login(mail, password, useCookies = true) {
         return this.lock.acquire(['context', 'page'], async () => {
             try {
+                await this.internetIsOn();
                 await this.page.goto('/');
                 let fails = 0;
                 while (!this.internetIsOn() && fails < 5) {
@@ -93,7 +115,7 @@ class UserContext {
                     if (useCookies) {
                         return this.login(mail, password, false);
                     }
-                    return null;
+                    throw new Error('Failed to login.');
                 }
                 this.id = await this.page.evaluate(() => id);
                 this.player = await this.models.getPlayer(this.id);
@@ -109,6 +131,7 @@ class UserContext {
     }
     async ajax(url, data = '') {
         return await this.lock.acquire(['context', 'page'], async () => {
+            await this.internetIsOn();
             const jsAjax = `
       $.ajax({
         url: '${url}',
@@ -120,6 +143,7 @@ class UserContext {
     }
     async get(url) {
         return await this.lock.acquire(['context', 'page'], async () => {
+            await this.internetIsOn();
             await this.page.goto(url);
             return { content: await this.page.content() };
         });
@@ -134,20 +158,6 @@ class UserContext {
                     window.addEventListener('online', () => resolve(true));
                 }
             });
-        });
-    }
-    async imAlive() {
-        return await this.lock.acquire(['page', 'context'], async () => {
-            try {
-                if (!this.internetIsOn()) {
-                    throw new Error('No internet connection');
-                }
-                return await this.page.evaluate(() => id);
-            }
-            catch (e) {
-                console.error(e);
-                return null;
-            }
         });
     }
 }

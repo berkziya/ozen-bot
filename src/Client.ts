@@ -1,6 +1,7 @@
 import { chromium, firefox, Browser } from 'playwright';
 import ModelHandler from './ModelHandler';
 import { UserContext } from './UserContext';
+import invariant from 'tiny-invariant';
 
 export class Client {
   constructor({
@@ -32,6 +33,16 @@ export class Client {
     } catch (e) {
       console.error(e);
       return null;
+    }
+  }
+
+  async isContextValid(): Promise<boolean> {
+    try {
+      invariant(this.browser, 'Can not find the browser');
+      return true;
+    } catch (e) {
+      console.error('Context validation failed:', e);
+      return false;
     }
   }
 

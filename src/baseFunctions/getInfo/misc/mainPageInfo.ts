@@ -9,7 +9,7 @@ export async function mainPageInfo(user: UserContext) {
   });
 
   const content = await x.text();
-  if (!content || content.length < 100) return null;
+  if (!content || content.length < 150) return null;
 
   const $ = cheerio.load(content);
   const toBeReturned: { [key: string]: any } = {};
@@ -77,7 +77,9 @@ export async function mainPageInfo(user: UserContext) {
       const autoWarId = autoWarSpan.attr('action')!.split('/').pop()!;
       toBeReturned['autoWarId'] = autoWarId;
     }
-  } catch {}
+  } catch {
+    toBeReturned['autWarId'] = null;
+  }
 
   const index_regionDiv = $('#index_region');
 
@@ -85,25 +87,23 @@ export async function mainPageInfo(user: UserContext) {
   try {
     const movingDiv = index_regionDiv.find('div.small.white > div');
     const movingText = movingDiv.text();
-    if (movingText) {
-      const timestamp = getTimestamp(movingText);
-      if (movingText.includes('Moving in')) {
-        toBeReturned['moving'] = true;
-        toBeReturned['movingToId'] = movingDiv
-          .find('span')
-          .attr('action')!
-          .split('/')
-          .pop()!;
-        toBeReturned['movingTime'] = timestamp;
-      } else if (movingText.includes('Travelling back')) {
-        toBeReturned['movingBack'] = true;
-        toBeReturned['movingBackTime'] = timestamp;
-      }
-    } else {
-      toBeReturned['moving'] = false;
-      toBeReturned['movingBack'] = false;
+    const timestamp = getTimestamp(movingText);
+    if (movingText.includes('Moving in')) {
+      toBeReturned['moving'] = true;
+      toBeReturned['movingToId'] = movingDiv
+        .find('span')
+        .attr('action')!
+        .split('/')
+        .pop()!;
+      toBeReturned['movingTime'] = timestamp;
+    } else if (movingText.includes('Travelling back')) {
+      toBeReturned['movingBack'] = true;
+      toBeReturned['movingBackTime'] = timestamp;
     }
-  } catch {}
+  } catch {
+    toBeReturned['moving'] = false;
+    toBeReturned['movingBack'] = false;
+  }
 
   // Not residency
   if (index_regionDiv.text().includes('Request residency')) {

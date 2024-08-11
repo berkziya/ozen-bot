@@ -10,6 +10,7 @@ import path from 'node:path';
 
 import { Player } from './entity/Player';
 import ModelHandler from './ModelHandler';
+import invariant from 'tiny-invariant';
 
 const iPhoneUserAgent =
   'Mozilla/5.0 (iPhone; CPU iPhone OS 14_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/129.0 Mobile/15E148 Safari/605.1.15';
@@ -51,9 +52,34 @@ export class UserContext {
     });
   }
 
+  async isContextValid(): Promise<boolean> {
+    try {
+      await this.internetIsOn();
+
+      invariant(this.browser, "Can't find browser");
+      invariant(this.context, 'Context is not initialized');
+      invariant(this.page, 'Page is not initialized');
+
+      invariant(this.amILoggedIn, 'Player is not logged in');
+
+      return true;
+    } catch (e) {
+      console.error('Session validation failed:', e);
+      return false;
+    }
+  }
+
   async amILoggedIn() {
     try {
-      await this.page.waitForSelector('#chat_send');
+      const x = await fetch('https://rivalregions.com/map/details/100002', {
+        headers: {
+          cookie: this.cookies,
+        },
+      });
+
+      invariant(x.status !== 200, 'No response from the server');
+      invariant((await x.text()).length < 150, 'Player is not logged in');
+
       const cookiesFromContext = await this.context.cookies();
       this.cookies = cookiesFromContext
         .map((x) => `${x.name}=${x.value}`)
@@ -72,6 +98,7 @@ export class UserContext {
   ): Promise<number | null> {
     return this.lock.acquire(['context', 'page'], async () => {
       try {
+        await this.internetIsOn();
         await this.page.goto('/');
 
         let fails = 0;
@@ -113,7 +140,7 @@ export class UserContext {
           if (useCookies) {
             return this.login(mail, password, false);
           }
-          return null;
+          throw new Error('Failed to login.');
         }
 
         this.id = await this.page.evaluate(() => id);
@@ -133,6 +160,7 @@ export class UserContext {
 
   async ajax(url: string, data: string = '') {
     return await this.lock.acquire(['context', 'page'], async () => {
+      await this.internetIsOn();
       const jsAjax = `
       $.ajax({
         url: '${url}',
@@ -145,6 +173,7 @@ export class UserContext {
 
   async get(url: string) {
     return await this.lock.acquire(['context', 'page'], async () => {
+      await this.internetIsOn();
       await this.page.goto(url);
       return { content: await this.page.content() };
     });
@@ -159,20 +188,6 @@ export class UserContext {
           window.addEventListener('online', () => resolve(true));
         }
       });
-    });
-  }
-
-  async imAlive() {
-    return await this.lock.acquire(['page', 'context'], async () => {
-      try {
-        if (!this.internetIsOn()) {
-          throw new Error('No internet connection');
-        }
-        return await this.page.evaluate(() => id);
-      } catch (e) {
-        console.error(e);
-        return null;
-      }
     });
   }
 }

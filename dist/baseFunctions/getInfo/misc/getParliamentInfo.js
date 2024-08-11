@@ -36,7 +36,7 @@ async function getParliamentInfo(user, capitalId, isAutonomy = false) {
         },
     });
     const content = await x.text();
-    if (!content) {
+    if (!content || content.length < 150) {
         return null;
     }
     const parliament = new Parliament_1.Parliament();

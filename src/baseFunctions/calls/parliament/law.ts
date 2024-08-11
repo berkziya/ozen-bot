@@ -64,6 +64,7 @@ export async function transferBudget(
     `/parliament/donew/send_${resource_Ids[resource]}/${amount}/${capitalId}`,
     `tmp_gov: '${amount}'`
   );
+  invariant(law, 'Failed to evaluate law offer ajax');
 
   const parliament = await getParliamentInfo(
     user,

@@ -13,6 +13,7 @@ export declare class Client {
     init({ headless, }?: {
         headless?: boolean;
     }): Promise<Browser | null>;
+    isContextValid(): Promise<boolean>;
     createUserContext({ isMobile, }?: {
         isMobile?: boolean;
     }): Promise<UserContext>;

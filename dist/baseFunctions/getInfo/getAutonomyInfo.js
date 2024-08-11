@@ -40,7 +40,7 @@ async function getAutonomyInfo(user, autonomyId, force) {
         },
     });
     const content = await x.text();
-    if (!content || content.length < 100) {
+    if (!content || content.length < 150) {
         return (0, getRegionInfo_1.getRegionInfoInner)(user, autonomyId, true);
     }
     autonomy.governor = null;

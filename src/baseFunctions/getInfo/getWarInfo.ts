@@ -26,7 +26,7 @@ export async function getWarInfo(
 
   const content = await x.text();
 
-  if (!content || content.length < 100) {
+  if (!content || content.length < 150) {
     return null;
   }
 

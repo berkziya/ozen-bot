@@ -19,7 +19,7 @@ export async function getParliamentInfo(
 
   const content = await x.text();
 
-  if (!content) {
+  if (!content || content.length < 150) {
     return null;
   }
 

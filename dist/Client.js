@@ -7,6 +7,7 @@ exports.Client = void 0;
 const playwright_1 = require("playwright");
 const ModelHandler_1 = __importDefault(require("./ModelHandler"));
 const UserContext_1 = require("./UserContext");
+const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
 class Client {
     constructor({ browserType = 'firefox', models = ModelHandler_1.default.getInstance(), } = {}) {
         this.browserType_ = browserType == 'chromium' ? playwright_1.chromium : playwright_1.firefox;
@@ -30,6 +31,16 @@ class Client {
         catch (e) {
             console.error(e);
             return null;
+        }
+    }
+    async isContextValid() {
+        try {
+            (0, tiny_invariant_1.default)(this.browser, 'Can not find the browser');
+            return true;
+        }
+        catch (e) {
+            console.error('Context validation failed:', e);
+            return false;
         }
     }
     async createUserContext({ isMobile = false, } = {}) {

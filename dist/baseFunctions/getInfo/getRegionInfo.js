@@ -43,7 +43,7 @@ async function getRegionInfoInner(user, regionId, getAutonomy = false) {
         },
     });
     const content = await x.text();
-    if (!content || content.length < 100) {
+    if (!content || content.length < 150) {
         return null;
     }
     const region = await user.models.getRegion(regionId);

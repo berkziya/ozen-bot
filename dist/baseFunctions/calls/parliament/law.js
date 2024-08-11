@@ -53,6 +53,7 @@ async function transferBudget(user, to, resource, amount) {
     (0, tiny_invariant_1.default)(capitalId, 'Failed to get id');
     console.log(`Transfering ${amount} ${resource} to ${to}`);
     const law = await user.ajax(`/parliament/donew/send_${resource_Ids[resource]}/${amount}/${capitalId}`, `tmp_gov: '${amount}'`);
+    (0, tiny_invariant_1.default)(law, 'Failed to evaluate law offer ajax');
     const parliament = await (0, getParliamentInfo_1.getParliamentInfo)(user, user.player.region.state.capital.id);
     (0, tiny_invariant_1.default)(parliament, 'Failed to get parliament info');
     let isAccepted = false;

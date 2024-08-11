@@ -32,7 +32,7 @@ async function mainPageInfo(user) {
         headers: { cookie: user.cookies },
     });
     const content = await x.text();
-    if (!content || content.length < 100)
+    if (!content || content.length < 150)
         return null;
     const $ = cheerio.load(content);
     const toBeReturned = {};
@@ -89,34 +89,33 @@ async function mainPageInfo(user) {
             toBeReturned['autoWarId'] = autoWarId;
         }
     }
-    catch { }
+    catch {
+        toBeReturned['autWarId'] = null;
+    }
     const index_regionDiv = $('#index_region');
     // Am I moving?
     try {
         const movingDiv = index_regionDiv.find('div.small.white > div');
         const movingText = movingDiv.text();
-        if (movingText) {
-            const timestamp = (0, timestamps_1.getTimestamp)(movingText);
-            if (movingText.includes('Moving in')) {
-                toBeReturned['moving'] = true;
-                toBeReturned['movingToId'] = movingDiv
-                    .find('span')
-                    .attr('action')
-                    .split('/')
-                    .pop();
-                toBeReturned['movingTime'] = timestamp;
-            }
-            else if (movingText.includes('Travelling back')) {
-                toBeReturned['movingBack'] = true;
-                toBeReturned['movingBackTime'] = timestamp;
-            }
+        const timestamp = (0, timestamps_1.getTimestamp)(movingText);
+        if (movingText.includes('Moving in')) {
+            toBeReturned['moving'] = true;
+            toBeReturned['movingToId'] = movingDiv
+                .find('span')
+                .attr('action')
+                .split('/')
+                .pop();
+            toBeReturned['movingTime'] = timestamp;
         }
-        else {
-            toBeReturned['moving'] = false;
-            toBeReturned['movingBack'] = false;
+        else if (movingText.includes('Travelling back')) {
+            toBeReturned['movingBack'] = true;
+            toBeReturned['movingBackTime'] = timestamp;
         }
     }
-    catch { }
+    catch {
+        toBeReturned['moving'] = false;
+        toBeReturned['movingBack'] = false;
+    }
     // Not residency
     if (index_regionDiv.text().includes('Request residency')) {
         toBeReturned['notResidency'] = true;
