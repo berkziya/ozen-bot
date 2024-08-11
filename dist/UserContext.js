@@ -70,7 +70,9 @@ class UserContext {
                 },
             });
             (0, tiny_invariant_1.default)(x.status === 200, 'No response from the server');
-            (0, tiny_invariant_1.default)((await x.text()).length > 150, 'Player is not logged in');
+            const content = await x.text();
+            console.log(content);
+            (0, tiny_invariant_1.default)(content.length > 150, 'Player is not logged in');
             return true;
         }
         catch (e) {
