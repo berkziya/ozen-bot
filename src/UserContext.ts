@@ -71,19 +71,19 @@ export class UserContext {
 
   async amILoggedIn() {
     try {
+      const cookiesFromContext = await this.context.cookies();
+      this.cookies = cookiesFromContext
+        .map((x) => `${x.name}=${x.value}`)
+        .join('; ');
       const x = await fetch('https://rivalregions.com/map/details/100002', {
         headers: {
           cookie: this.cookies,
         },
       });
 
+      console.log(x.status);
       invariant(x.status !== 200, 'No response from the server');
       invariant((await x.text()).length < 150, 'Player is not logged in');
-
-      const cookiesFromContext = await this.context.cookies();
-      this.cookies = cookiesFromContext
-        .map((x) => `${x.name}=${x.value}`)
-        .join('; ');
       return true;
     } catch (e) {
       console.error(e);
