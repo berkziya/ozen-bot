@@ -95,11 +95,9 @@ async function mainPageInfo(user) {
     try {
         const movingDiv = index_regionDiv.find('div.small.white > div');
         const movingText = movingDiv.text();
-        const movingMatch = movingText.match(/(Moving in|Travelling back).*until (\w+ \d+:\d+)/);
-        if (movingMatch) {
-            const [_, movingType, date] = movingMatch;
-            const timestamp = (0, timestamps_1.getTimestamp)(date);
-            if (movingType.includes('Moving in')) {
+        if (movingText) {
+            const timestamp = (0, timestamps_1.getTimestamp)(movingText);
+            if (movingText.includes('Moving in')) {
                 toBeReturned['moving'] = true;
                 toBeReturned['movingToId'] = movingDiv
                     .find('span')
@@ -108,7 +106,7 @@ async function mainPageInfo(user) {
                     .pop();
                 toBeReturned['movingTime'] = timestamp;
             }
-            else if (movingType.includes('Travelling back')) {
+            else if (movingText.includes('Travelling back')) {
                 toBeReturned['movingBack'] = true;
                 toBeReturned['movingBackTime'] = timestamp;
             }

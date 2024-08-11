@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getTimestamp = getTimestamp;
 function getTimestamp(text) {
-    const match = text.match(/((\w+ \d+:\d+)|(\d+ \w+ \d+ \d+:\d+))/);
+    const match = text
+        .replace(/\s+/g, ' ')
+        .match(/((\w+ \d+:\d+)|(\d+ \w+ \d+ \d+:\d+))/);
     if (match) {
         let dateTimeStr = match[1].toLowerCase();
         const now = new Date();
