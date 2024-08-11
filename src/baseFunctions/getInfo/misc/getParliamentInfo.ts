@@ -40,5 +40,5 @@ export async function getParliamentInfo(
     parliament.laws.push(law);
   });
 
-  return Parliament;
+  return parliament;
 }

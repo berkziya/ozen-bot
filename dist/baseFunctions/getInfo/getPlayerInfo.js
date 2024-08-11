@@ -28,6 +28,9 @@ const cheerio = __importStar(require("cheerio"));
 const utils_1 = require("../../misc/utils");
 const getRegionInfo_1 = require("./getRegionInfo");
 async function getPlayerInfo(user, playerId, force) {
+    if (!playerId) {
+        playerId = user.player.id;
+    }
     const player = await user.models.getPlayer(playerId);
     if (!force &&
         player.lastUpdate &&

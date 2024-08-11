@@ -54,5 +54,5 @@ async function getParliamentInfo(user, capitalId, isAutonomy = false) {
         law.text = text;
         parliament.laws.push(law);
     });
-    return Parliament_1.Parliament;
+    return parliament;
 }

@@ -5,9 +5,13 @@ import { getRegionInfo } from './getRegionInfo';
 
 export async function getPlayerInfo(
   user: UserContext,
-  playerId: number,
+  playerId?: number,
   force?: boolean
 ) {
+  if (!playerId) {
+    playerId = user.player.id;
+  }
+
   const player = await user.models.getPlayer(playerId);
 
   if (
