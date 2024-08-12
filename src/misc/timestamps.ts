@@ -4,6 +4,7 @@ export function getTimestamp(text: string): Date | null {
     .match(/((\w+ \d+:\d+)|(\d+ \w+ \d+ \d+:\d+))/);
   if (match) {
     let dateTimeStr = match[1].toLowerCase();
+    console.log(dateTimeStr);
     const now = new Date();
     if (dateTimeStr.includes('today')) {
       dateTimeStr = dateTimeStr.replace(
@@ -12,6 +13,7 @@ export function getTimestamp(text: string): Date | null {
           month: 'long',
         })} ${now.getUTCFullYear()}`
       );
+      console.log(dateTimeStr);
     } else if (dateTimeStr.includes('tomorrow')) {
       const tomorrow = new Date(now);
       tomorrow.setUTCDate(now.getUTCDate() + 1);

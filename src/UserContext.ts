@@ -85,6 +85,7 @@ export class UserContext {
 
       const content = await x.text();
       invariant(content.length > 150, 'Player is not logged in');
+
       return true;
     } catch (e) {
       console.error(e);
