@@ -86,7 +86,7 @@ export async function mainPageInfo(user: UserContext) {
   // Am I moving?
   try {
     const movingDiv = index_regionDiv.find('div.small.white > div');
-    const movingText = movingDiv.text();
+    const movingText = movingDiv.text().replace('back', ' ');
     const timestamp = getTimestamp(movingText);
     if (movingText.includes('Moving in')) {
       toBeReturned['moving'] = true;
