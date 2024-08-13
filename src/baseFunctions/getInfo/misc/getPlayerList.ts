@@ -33,7 +33,7 @@ export async function getWarDamageList(
 ) {
   return getPlayerList(
     user,
-    `https://rivalregions.com/#war/damage/${id}/${aggressor ? 0 : 1}/`
+    `https://rivalregions.com/war/damage/${id}/${aggressor ? 0 : 1}/`
   );
 }
 
@@ -46,11 +46,9 @@ async function getPlayerList(user: UserContext, link: string) {
       },
     }).then((res) => res.text());
 
-    console.log(x);
     const $ = cheerio.load(x);
 
     const playerTrs = $('tr[user]');
-    console.log(playerTrs.length);
 
     if (playerTrs.length === 0) break;
 

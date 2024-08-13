@@ -42,7 +42,7 @@ async function getStateResidents(user, id) {
     return getPlayerList(user, `https://rivalregions.com/listed/residency_state/${id}/0/`);
 }
 async function getWarDamageList(user, id, aggressor) {
-    return getPlayerList(user, `https://rivalregions.com/#war/damage/${id}/${aggressor ? 0 : 1}/`);
+    return getPlayerList(user, `https://rivalregions.com/war/damage/${id}/${aggressor ? 0 : 1}/`);
 }
 async function getPlayerList(user, link) {
     let players = [];
@@ -52,10 +52,8 @@ async function getPlayerList(user, link) {
                 cookie: user.cookies,
             },
         }).then((res) => res.text());
-        console.log(x);
         const $ = cheerio.load(x);
         const playerTrs = $('tr[user]');
-        console.log(playerTrs.length);
         if (playerTrs.length === 0)
             break;
         for (let i = 0; i < playerTrs.length; i++) {
