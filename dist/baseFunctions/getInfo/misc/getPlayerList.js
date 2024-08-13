@@ -63,7 +63,7 @@ async function getPlayerList(user, link) {
                 name: playerTr.find('.list_name').first().text().trim(),
                 // accountCreation: new Date(playerTr.find('.list_name').last().attr('rat')!),
                 level: parseInt(playerTr.find('.list_level').first().attr('rat')),
-                damage: parseInt(playerTr.find('.level').last().attr('rat')),
+                damage: parseInt(playerTr.find('.list_level').last().attr('rat')),
             };
             players.push(player);
         }
