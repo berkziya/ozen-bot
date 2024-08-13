@@ -59,6 +59,13 @@ async function mainPageInfo(user) {
                 toBeReturned['gold'] = (0, utils_1.dotless)(gold[1]);
                 user.player.storage.gold = (0, utils_1.dotless)(gold[1]);
             }
+            const upgradingPerk = script.match(/'\.perk_square_f\[perk="(\d)/);
+            if (upgradingPerk) {
+                toBeReturned['upgradingPerk'] = upgradingPerk[1];
+                const remainingPerkTime = script.match(/#perk_counter_2'\)\.countdown\({until: (\d+)/);
+                if (remainingPerkTime)
+                    toBeReturned['remainingPerkTime'] = parseInt(remainingPerkTime[1]);
+            }
         }
     });
     // Current state
@@ -120,5 +127,25 @@ async function mainPageInfo(user) {
     if (index_regionDiv.text().includes('Request residency')) {
         toBeReturned['notResidency'] = true;
     }
+    // Level
+    const levelDiv = index_regionDiv.find('span[id="index_exp_level"]');
+    const level = parseInt(levelDiv.text());
+    toBeReturned['level'] = level;
+    // Experience
+    const experienceDiv = index_regionDiv.find('span[id="index_exp_points"]');
+    const experience = (0, utils_1.dotless)(experienceDiv.text());
+    toBeReturned['experience'] = experience;
+    // STR
+    const strDiv = index_regionDiv.find('div[addtitle^="Affects y"]');
+    const str = parseInt(strDiv.text());
+    toBeReturned['str'] = str;
+    // EDU
+    const eduDiv = index_regionDiv.find('div[addtitle^="Affects w"]');
+    const edu = parseInt(eduDiv.text());
+    toBeReturned['end'] = edu;
+    // END
+    const endDiv = index_regionDiv.find('div[addtitle^="D"]');
+    const end = parseInt(endDiv.text());
+    toBeReturned['edu'] = end;
     return toBeReturned;
 }
