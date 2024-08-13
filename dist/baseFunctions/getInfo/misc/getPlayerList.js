@@ -52,8 +52,10 @@ async function getPlayerList(user, link) {
                 cookie: user.cookies,
             },
         }).then((res) => res.text());
+        console.log(x);
         const $ = cheerio.load(x);
         const playerTrs = $('tr[user]');
+        console.log(playerTrs.length);
         if (playerTrs.length === 0)
             break;
         for (let i = 0; i < playerTrs.length; i++) {
