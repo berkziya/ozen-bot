@@ -48,6 +48,8 @@ export async function mainPageInfo(user: UserContext) {
         );
         if (remainingPerkTime)
           toBeReturned['remainingPerkTime'] = parseInt(remainingPerkTime[1]);
+      } else {
+        toBeReturned['upgradingPerk'] = null;
       }
     }
   });
@@ -121,27 +123,27 @@ export async function mainPageInfo(user: UserContext) {
   }
 
   // Level
-  const levelDiv = index_regionDiv.find('span[id="index_exp_level"]');
+  const levelDiv = $('span[id="index_exp_level"]');
   const level = parseInt(levelDiv.text());
   toBeReturned['level'] = level;
 
   // Experience
-  const experienceDiv = index_regionDiv.find('span[id="index_exp_points"]');
+  const experienceDiv = $('span[id="index_exp_points"]');
   const experience = dotless(experienceDiv.text());
   toBeReturned['experience'] = experience;
 
   // STR
-  const strDiv = index_regionDiv.find('div[addtitle^="Affects y"]');
+  const strDiv = $('div[addtitle^="Affects y"]');
   const str = parseInt(strDiv.text());
   toBeReturned['str'] = str;
 
   // EDU
-  const eduDiv = index_regionDiv.find('div[addtitle^="Affects w"]');
+  const eduDiv = $('div[addtitle^="Affects w"]');
   const edu = parseInt(eduDiv.text());
   toBeReturned['end'] = edu;
 
   // END
-  const endDiv = index_regionDiv.find('div[addtitle^="D"]');
+  const endDiv = $('div[addtitle^="D"]');
   const end = parseInt(endDiv.text());
   toBeReturned['edu'] = end;
 
