@@ -64,5 +64,6 @@ async function getPlayerList(user: UserContext, link: string) {
       players.push(player);
     }
   }
+  console.log(players);
   return players;
 }

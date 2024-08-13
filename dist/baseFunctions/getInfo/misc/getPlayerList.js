@@ -68,5 +68,6 @@ async function getPlayerList(user, link) {
             players.push(player);
         }
     }
+    console.log(players);
     return players;
 }
