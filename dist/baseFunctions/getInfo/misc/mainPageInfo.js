@@ -44,6 +44,7 @@ async function desktopPageInfo(user) {
         return null;
     const $ = cheerio.load(content);
     const toBeReturned = {};
+    toBeReturned['player'] = user.player;
     // Get data from scripts
     $('script').each((_i, el) => {
         const script = $(el).html();
@@ -136,10 +137,10 @@ async function desktopPageInfo(user) {
     }
     // Not residency
     if (index_regionDiv.text().includes('Request residency')) {
-        toBeReturned['isResidency'] = true;
+        toBeReturned['isResidency'] = false;
     }
     else if (index_regionDiv.text().includes('Your residency')) {
-        toBeReturned['isResidency'] = false;
+        toBeReturned['isResidency'] = true;
     }
     else {
         toBeReturned['isResidency'] = null;
