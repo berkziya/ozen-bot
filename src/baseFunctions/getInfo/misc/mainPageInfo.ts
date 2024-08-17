@@ -198,6 +198,11 @@ async function mobilePageInfo(user: UserContext) {
   // Current state
   const stateDiv = $('#mob_box_region_2');
   const stateId = stateDiv.attr('action')!.split('/').pop()!;
+  console.log(
+    $(
+      '#content > div.mob_box.mob_box_region_s > div.small.tc.tc_tran.mob_topbox'
+    ).text()
+  );
   const [regionName, stateName] = $(
     '#content > div.mob_box.mob_box_region_s > div.small.tc.tc_tran.mob_topbox'
   )
@@ -209,7 +214,7 @@ async function mobilePageInfo(user: UserContext) {
   toBeReturned['state'] = state;
 
   // Current region
-  const regionDiv = $('#mob_box_region_1');
+  const regionDiv = $('div.mob_box_region_s > div[action^="map/details/"]');
   const regionId = regionDiv.attr('action')!.split('/').pop()!;
   const region = await user.models.getRegion(regionId);
   region.name = regionName;
