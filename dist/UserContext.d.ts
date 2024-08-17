@@ -2,6 +2,7 @@ import { Browser, BrowserContext, Page } from 'playwright';
 import AsyncLock from 'async-lock';
 import { Player } from './entity/Player';
 import ModelHandler from './ModelHandler';
+export declare const iPhoneUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 14_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/129.0 Mobile/15E148 Safari/605.1.15";
 export declare class UserContext {
     private browser;
     isMobile: boolean;

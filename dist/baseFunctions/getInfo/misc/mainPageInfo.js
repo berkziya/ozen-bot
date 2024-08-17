@@ -27,6 +27,7 @@ exports.mainPageInfo = mainPageInfo;
 const cheerio = __importStar(require("cheerio"));
 const utils_1 = require("../../../misc/utils");
 const timestamps_1 = require("../../../misc/timestamps");
+const UserContext_1 = require("../../../UserContext");
 async function mainPageInfo(user) {
     if (user.isMobile) {
         return await mobilePageInfo(user);
@@ -161,7 +162,7 @@ async function desktopPageInfo(user) {
 }
 async function mobilePageInfo(user) {
     const content = await fetch(user.link + '/main/content', {
-        headers: { cookie: user.cookies },
+        headers: { cookie: user.cookies, 'User-Agent': UserContext_1.iPhoneUserAgent },
     }).then((x) => x.text());
     if (!content || content.length < 150)
         return null;
@@ -199,7 +200,7 @@ async function mobilePageInfo(user) {
     state.name = stateName;
     toBeReturned['state'] = state;
     // Current region
-    const regionDiv = $('div[id="mob_box_region_1"]');
+    const regionDiv = $('div.mob_box_region_s > div[id="mob_box_region_1"]');
     const regionId = regionDiv.attr('action').split('/').pop();
     const region = await user.models.getRegion(regionId);
     region.name = regionName;

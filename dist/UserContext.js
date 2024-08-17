@@ -3,12 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserContext = void 0;
+exports.UserContext = exports.iPhoneUserAgent = void 0;
 const async_lock_1 = __importDefault(require("async-lock"));
 const node_fs_1 = require("node:fs");
 const node_path_1 = __importDefault(require("node:path"));
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
-const iPhoneUserAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/129.0 Mobile/15E148 Safari/605.1.15';
+exports.iPhoneUserAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/129.0 Mobile/15E148 Safari/605.1.15';
 const mobileViewport = {
     width: 430,
     height: 932,
@@ -39,7 +39,7 @@ class UserContext {
                 timezoneId: 'UTC',
                 locale: 'en-US',
                 viewport: this.isMobile ? mobileViewport : undefined,
-                userAgent: this.isMobile ? iPhoneUserAgent : undefined,
+                userAgent: this.isMobile ? exports.iPhoneUserAgent : undefined,
                 hasTouch: this.isMobile,
             };
             this.context = await this.browser.newContext(contextOptions);

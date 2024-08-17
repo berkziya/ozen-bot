@@ -2,6 +2,7 @@ import { UserContext } from '../../../UserContext';
 import * as cheerio from 'cheerio';
 import { dotless } from '../../../misc/utils';
 import { getTimestamp } from '../../../misc/timestamps';
+import { iPhoneUserAgent } from '../../../UserContext';
 
 export async function mainPageInfo(user: UserContext) {
   if (user.isMobile) {
@@ -161,7 +162,7 @@ async function desktopPageInfo(user: UserContext) {
 
 async function mobilePageInfo(user: UserContext) {
   const content = await fetch(user.link + '/main/content', {
-    headers: { cookie: user.cookies },
+    headers: { cookie: user.cookies, 'User-Agent': iPhoneUserAgent },
   }).then((x) => x.text());
 
   if (!content || content.length < 150) return null;
@@ -209,7 +210,7 @@ async function mobilePageInfo(user: UserContext) {
   toBeReturned['state'] = state;
 
   // Current region
-  const regionDiv = $('div[id="mob_box_region_1"]');
+  const regionDiv = $('div.mob_box_region_s > div[id="mob_box_region_1"]');
   const regionId = regionDiv.attr('action')!.split('/').pop()!;
   const region = await user.models.getRegion(regionId);
   region.name = regionName;
