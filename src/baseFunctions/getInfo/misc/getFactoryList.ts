@@ -20,13 +20,13 @@ export async function getFactoryList(
   resource: keyof typeof resourceToId = 'gold'
 ) {
   const resourceId = resourceToId[resource];
+
   const link = isState
-    ? user.link + `/factory/state/${locationId}/0/${resourceId}/`
-    : user.link + `/factory/search/${locationId}/0/${resourceId}/`;
+    ? `/factory/state/${locationId}/0/${resourceId}/`
+    : `/factory/search/${locationId}/0/${resourceId}/`;
+
   const content = await fetch(user.link + link, {
-    headers: {
-      cookie: user.cookies,
-    },
+    headers: { cookie: user.cookies },
   }).then((res) => res.text());
 
   if (!content || content.length < 150) return null;
