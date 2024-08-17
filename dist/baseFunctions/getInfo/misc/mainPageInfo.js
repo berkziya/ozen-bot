@@ -85,8 +85,8 @@ async function desktopPageInfo(user) {
     const stateName = stateDiv
         .text()
         .replace('State:', '')
-        .trim()
-        .replace(/\s+/g, ' ');
+        .replace(/\s+/g, ' ')
+        .trim();
     const state = await user.models.getState(stateId);
     state.name = stateName;
     toBeReturned['state'] = state;
@@ -96,9 +96,9 @@ async function desktopPageInfo(user) {
     const regionName = regionDiv.text().trim();
     const region = await user.models.getRegion(regionId);
     region.name = regionName;
-    user.player.setRegion(region);
     region.setState(state);
     toBeReturned['region'] = region;
+    user.player.setRegion(region);
     // Current auto war
     try {
         const autoWarSpan = $('div.war_index_war > div:nth-child(1) > span:nth-child(4)');
@@ -136,28 +136,39 @@ async function desktopPageInfo(user) {
     }
     // Not residency
     if (index_regionDiv.text().includes('Request residency')) {
-        toBeReturned['notResidency'] = true;
+        toBeReturned['isResidency'] = true;
+    }
+    else if (index_regionDiv.text().includes('Your residency')) {
+        toBeReturned['isResidency'] = false;
+    }
+    else {
+        toBeReturned['isResidency'] = null;
     }
     // Level
     const levelDiv = $('span[id="index_exp_level"]');
     const level = parseInt(levelDiv.text());
     toBeReturned['level'] = level;
+    user.player.level = level;
     // Experience
     const experienceDiv = $('span[id="index_exp_points"]');
     const experience = (0, utils_1.dotless)(experienceDiv.text());
     toBeReturned['experience'] = experience;
+    user.player.exp = experience;
     // STR
     const strDiv = $('div[addtitle^="Affects y"]');
     const str = parseInt(strDiv.text());
     toBeReturned['str'] = str;
+    user.player.perks.str = str;
     // EDU
     const eduDiv = $('div[addtitle^="Affects w"]');
     const edu = parseInt(eduDiv.text());
     toBeReturned['end'] = edu;
+    user.player.perks.edu = edu;
     // END
     const endDiv = $('div[addtitle^="D"]');
     const end = parseInt(endDiv.text());
     toBeReturned['edu'] = end;
+    user.player.perks.end = end;
     return toBeReturned;
 }
 async function mobilePageInfo(user) {
@@ -202,6 +213,8 @@ async function mobilePageInfo(user) {
     const region = await user.models.getRegion(regionId);
     region.name = regionName;
     user.player.setRegion(region);
+    region.setState(state);
+    toBeReturned['region'] = region;
     // Current auto war
     try {
         const autoWarSpan = $('#content > div:nth-child(7) > div.button_red.index_auto.pointer.mslide');
