@@ -75,7 +75,7 @@ class UserContext {
             return true;
         }
         catch (e) {
-            console.error(e);
+            console.error('Failed to check if player is logged in:', e);
             return false;
         }
     }
@@ -116,7 +116,9 @@ class UserContext {
                     if (useCookies) {
                         return this.login(mail, password, false);
                     }
-                    throw new Error('Failed to login.');
+                    else {
+                        throw new Error('Failed to login');
+                    }
                 }
                 this.id = await this.page.evaluate(() => id);
                 this.player = await this.models.getPlayer(this.id);
@@ -124,8 +126,8 @@ class UserContext {
                 await node_fs_1.promises.writeFile(cookiesPath, JSON.stringify(cookies));
                 return this.id;
             }
-            catch (error) {
-                console.error(error);
+            catch (e) {
+                console.error('Failed to login:', e);
                 return null;
             }
         });

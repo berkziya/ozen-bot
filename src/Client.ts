@@ -36,7 +36,7 @@ export class Client {
     }
   }
 
-  async isContextValid(): Promise<boolean> {
+  async isClientValid(): Promise<boolean> {
     try {
       invariant(this.browser, 'Can not find the browser');
       return true;
@@ -48,10 +48,16 @@ export class Client {
 
   async createUserContext({
     isMobile = false,
-  }: { isMobile?: boolean } = {}): Promise<UserContext> {
-    const userContext = new UserContext(this.browser, isMobile, this.models);
-    await userContext.init();
-    this.users.add(userContext);
-    return userContext;
+  }: { isMobile?: boolean } = {}): Promise<UserContext | null> {
+    try {
+      const userContext = new UserContext(this.browser, isMobile, this.models);
+      await userContext.init();
+      invariant(await userContext.isContextValid(), 'Context is not valid');
+      this.users.add(userContext);
+      return userContext;
+    } catch (e) {
+      console.error('Failed to create user context:', e);
+      return null;
+    }
   }
 }

@@ -75,6 +75,7 @@ export class UserContext {
       this.cookies = cookiesFromContext
         .map((x) => `${x.name}=${x.value}`)
         .join('; ');
+
       const x = await fetch('https://rivalregions.com/map/details/100002', {
         headers: {
           cookie: this.cookies,
@@ -88,7 +89,7 @@ export class UserContext {
 
       return true;
     } catch (e) {
-      console.error(e);
+      console.error('Failed to check if player is logged in:', e);
       return false;
     }
   }
@@ -141,8 +142,9 @@ export class UserContext {
         if (!(await this.amILoggedIn())) {
           if (useCookies) {
             return this.login(mail, password, false);
+          } else {
+            throw new Error('Failed to login');
           }
-          throw new Error('Failed to login.');
         }
 
         this.id = await this.page.evaluate(() => id);
@@ -153,8 +155,8 @@ export class UserContext {
         await fs.writeFile(cookiesPath, JSON.stringify(cookies));
 
         return this.id;
-      } catch (error) {
-        console.error(error);
+      } catch (e) {
+        console.error('Failed to login:', e);
         return null;
       }
     });

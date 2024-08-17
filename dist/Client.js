@@ -33,7 +33,7 @@ class Client {
             return null;
         }
     }
-    async isContextValid() {
+    async isClientValid() {
         try {
             (0, tiny_invariant_1.default)(this.browser, 'Can not find the browser');
             return true;
@@ -44,10 +44,17 @@ class Client {
         }
     }
     async createUserContext({ isMobile = false, } = {}) {
-        const userContext = new UserContext_1.UserContext(this.browser, isMobile, this.models);
-        await userContext.init();
-        this.users.add(userContext);
-        return userContext;
+        try {
+            const userContext = new UserContext_1.UserContext(this.browser, isMobile, this.models);
+            await userContext.init();
+            (0, tiny_invariant_1.default)(await userContext.isContextValid(), 'Context is not valid');
+            this.users.add(userContext);
+            return userContext;
+        }
+        catch (e) {
+            console.error('Failed to create user context:', e);
+            return null;
+        }
     }
 }
 exports.Client = Client;
