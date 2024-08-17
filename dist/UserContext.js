@@ -29,15 +29,17 @@ class UserContext {
     player;
     lock = new async_lock_1.default();
     cookies = '';
+    get link() {
+        return `https://${this.isMobile ? 'm.' : ''}rivalregions.com`;
+    }
     async init() {
         await this.lock.acquire(['context', 'page'], async () => {
             const contextOptions = {
-                baseURL: `https://${this.isMobile ? 'm.' : ''}rivalregions.com`,
+                baseURL: this.link,
                 timezoneId: 'UTC',
                 locale: 'en-US',
                 viewport: this.isMobile ? mobileViewport : undefined,
                 userAgent: this.isMobile ? iPhoneUserAgent : undefined,
-                // isMobile: this.isMobile,
                 hasTouch: this.isMobile,
             };
             this.context = await this.browser.newContext(contextOptions);
@@ -64,7 +66,7 @@ class UserContext {
             this.cookies = cookiesFromContext
                 .map((x) => `${x.name}=${x.value}`)
                 .join('; ');
-            const x = await fetch('https://rivalregions.com/map/details/100002', {
+            const x = await fetch(this.link + '/map/details/100002', {
                 headers: {
                     cookie: this.cookies,
                 },

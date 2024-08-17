@@ -33,15 +33,13 @@ async function getStateInfo(user, stateId, force) {
         Date.now() - state.lastUpdate.getTime() < 10 * 60 * 1000) {
         return state;
     }
-    const x = await fetch(`https://rivalregions.com/map/state_details/${stateId}`, {
+    const content = await fetch(user.link + '/map/state_details/' + stateId, {
         headers: {
             cookie: user.cookies,
         },
-    });
-    const content = await x.text();
-    if (!content || content.length < 150) {
+    }).then((res) => res.text());
+    if (!content || content.length < 150)
         return null;
-    }
     const $ = cheerio.load(content);
     state.name = $('body > div.margin > h1 > a').text().trim();
     const budgetDiv = $('div.slide_profile_photo > div.imp');

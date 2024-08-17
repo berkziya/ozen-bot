@@ -17,17 +17,13 @@ export async function getFactoryInfo(
     return factory;
   }
 
-  const x = await fetch(`https://rivalregions.com/factory/index/${factoryId}`, {
+  const content = await fetch(user.link + '/factory/index/' + factoryId, {
     headers: {
       cookie: user.cookies,
     },
-  });
+  }).then((res) => res.text());
 
-  const content = await x.text();
-
-  if (!content || content.length < 150) {
-    return null;
-  }
+  if (!content || content.length < 150) return null;
 
   const $ = cheerio.load(content);
 

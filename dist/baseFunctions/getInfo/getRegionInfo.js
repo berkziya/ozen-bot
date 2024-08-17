@@ -37,15 +37,13 @@ async function getRegionInfo(user, regionId, force) {
     return getRegionInfoInner(user, regionId);
 }
 async function getRegionInfoInner(user, regionId, getAutonomy = false) {
-    const x = await fetch(`https://rivalregions.com/map/details/${regionId}`, {
+    const content = await fetch(user.link + '/map/details/' + regionId, {
         headers: {
             cookie: user.cookies,
         },
-    });
-    const content = await x.text();
-    if (!content || content.length < 150) {
+    }).then((res) => res.text());
+    if (!content || content.length < 150)
         return null;
-    }
     const region = await user.models.getRegion(regionId);
     region.state = null;
     region.autonomy = null;

@@ -27,22 +27,20 @@ exports.getWarInfo = getWarInfo;
 const cheerio = __importStar(require("cheerio"));
 const utils_1 = require("../../misc/utils");
 const timestamps_1 = require("../../misc/timestamps");
-async function getWarInfo(user, id, force = false) {
-    const war = await user.models.getWar(id);
+async function getWarInfo(user, warId, force = false) {
+    const war = await user.models.getWar(warId);
     if (!force &&
         war.lastUpdate &&
         Date.now() - war.lastUpdate.getTime() < 1 * 60 * 1000) {
         return war;
     }
-    const x = await fetch(`https://rivalregions.com/war/details/${id}`, {
+    const content = await fetch(user.link + '/war/details/' + warId, {
         headers: {
             cookie: user.cookies,
         },
-    });
-    const content = await x.text();
-    if (!content || content.length < 150) {
+    }).then((res) => res.text());
+    if (!content || content.length < 150)
         return null;
-    }
     const $ = cheerio.load(content);
     const typeElement = $('body > div.margin > h1 > div:nth-child(2)');
     let type = typeElement.text();

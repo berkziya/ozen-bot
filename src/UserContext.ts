@@ -35,10 +35,14 @@ export class UserContext {
   public lock = new AsyncLock();
   public cookies = '';
 
+  get link() {
+    return `https://${this.isMobile ? 'm.' : ''}rivalregions.com`;
+  }
+
   async init() {
     await this.lock.acquire(['context', 'page'], async () => {
       const contextOptions: BrowserContextOptions = {
-        baseURL: `https://${this.isMobile ? 'm.' : ''}rivalregions.com`,
+        baseURL: this.link,
         timezoneId: 'UTC',
         locale: 'en-US',
         viewport: this.isMobile ? mobileViewport : undefined,
@@ -75,7 +79,7 @@ export class UserContext {
         .map((x) => `${x.name}=${x.value}`)
         .join('; ');
 
-      const x = await fetch('https://rivalregions.com/map/details/100002', {
+      const x = await fetch(this.link + '/map/details/100002', {
         headers: {
           cookie: this.cookies,
         },

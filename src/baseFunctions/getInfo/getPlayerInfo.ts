@@ -22,17 +22,13 @@ export async function getPlayerInfo(
     return player;
   }
 
-  const x = await fetch(`https://rivalregions.com/slide/profile/${playerId}`, {
+  const content = await fetch(user.link + '/slide/profile/' + playerId, {
     headers: {
       cookie: user.cookies,
     },
-  });
+  }).then((res) => res.text());
 
-  const content = await x.text();
-
-  if (!content || content.length < 150) {
-    return null;
-  }
+  if (!content || content.length < 150) return null;
 
   player.leaderOfState = null;
   player.econMinisterOfState = null;

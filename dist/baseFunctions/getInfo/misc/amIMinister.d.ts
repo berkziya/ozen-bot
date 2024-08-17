@@ -5,4 +5,4 @@ export declare function amIMinister(user: UserContext, playerId?: number): Promi
     econ: boolean;
     foreign: boolean;
     governor: boolean;
-}>;
+} | null>;

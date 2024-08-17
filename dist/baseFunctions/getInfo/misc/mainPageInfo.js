@@ -28,12 +28,12 @@ const cheerio = __importStar(require("cheerio"));
 const utils_1 = require("../../../misc/utils");
 const timestamps_1 = require("../../../misc/timestamps");
 async function mainPageInfo(user) {
-    const x = await fetch('https://rivalregions.com/main/content', {
+    const content = await fetch(user.link + '/main/content', {
         headers: { cookie: user.cookies },
-    });
-    const content = await x.text();
+    }).then((x) => x.text());
     if (!content || content.length < 150)
         return null;
+    console.log(content);
     const $ = cheerio.load(content);
     const toBeReturned = {};
     // Get data from scripts

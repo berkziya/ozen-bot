@@ -34,12 +34,11 @@ async function getAutonomyInfo(user, autonomyId, force) {
         Date.now() - autonomy.lastUpdate.getTime() < 60 * 60 * 1000) {
         return autonomy;
     }
-    const x = await fetch(`https://rivalregions.com/map/autonomy_details/${autonomyId}`, {
+    const content = await fetch(user.link + '/map/autonomy_details/' + autonomyId, {
         headers: {
             cookie: user.cookies,
         },
-    });
-    const content = await x.text();
+    }).then((res) => res.text());
     if (!content || content.length < 150) {
         return (0, getRegionInfo_1.getRegionInfoInner)(user, autonomyId, true);
     }

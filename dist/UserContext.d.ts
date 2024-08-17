@@ -13,6 +13,7 @@ export declare class UserContext {
     player: Player;
     lock: AsyncLock;
     cookies: string;
+    get link(): string;
     init(): Promise<void>;
     isContextValid(): Promise<boolean>;
     amILoggedIn(): Promise<boolean>;

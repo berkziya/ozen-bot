@@ -8,20 +8,16 @@ export async function getParliamentInfo(
   isAutonomy: boolean = false
 ) {
   const url = isAutonomy
-    ? 'parliament/auto/' + capitalId
-    : 'parliament/index/' + capitalId;
+    ? '/parliament/auto/' + capitalId
+    : '/parliament/index/' + capitalId;
 
-  const x = await fetch(`https://rivalregions.com/${url}`, {
+  const content = await fetch(user.link + url, {
     headers: {
       cookie: user.cookies,
     },
-  });
+  }).then((res) => res.text());
 
-  const content = await x.text();
-
-  if (!content || content.length < 150) {
-    return null;
-  }
+  if (!content || content.length < 150) return null;
 
   const parliament = new Parliament();
   parliament.isAutonomy = isAutonomy;

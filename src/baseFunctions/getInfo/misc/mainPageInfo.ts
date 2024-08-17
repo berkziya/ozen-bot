@@ -4,12 +4,13 @@ import { dotless } from '../../../misc/utils';
 import { getTimestamp } from '../../../misc/timestamps';
 
 export async function mainPageInfo(user: UserContext) {
-  const x = await fetch('https://rivalregions.com/main/content', {
+  const content = await fetch(user.link + '/main/content', {
     headers: { cookie: user.cookies },
-  });
+  }).then((x) => x.text());
 
-  const content = await x.text();
   if (!content || content.length < 150) return null;
+
+  console.log(content);
 
   const $ = cheerio.load(content);
   const toBeReturned: { [key: string]: any } = {};

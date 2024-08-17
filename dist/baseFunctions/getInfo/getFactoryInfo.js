@@ -33,15 +33,13 @@ async function getFactoryInfo(user, factoryId, force) {
         Date.now() - factory.lastUpdate.getTime() < 20 * 60 * 1000) {
         return factory;
     }
-    const x = await fetch(`https://rivalregions.com/factory/index/${factoryId}`, {
+    const content = await fetch(user.link + '/factory/index/' + factoryId, {
         headers: {
             cookie: user.cookies,
         },
-    });
-    const content = await x.text();
-    if (!content || content.length < 150) {
+    }).then((res) => res.text());
+    if (!content || content.length < 150)
         return null;
-    }
     const $ = cheerio.load(content);
     try {
         factory.name = $('body > div.margin > h1')

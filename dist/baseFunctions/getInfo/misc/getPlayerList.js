@@ -30,29 +30,29 @@ exports.getStateResidents = getStateResidents;
 exports.getWarDamageList = getWarDamageList;
 const cheerio = __importStar(require("cheerio"));
 async function getCitizenList(user, id) {
-    return getPlayerList(user, `https://rivalregions.com/listed/region/${id}/0/`);
+    return getPlayerList(user, user.link + `/listed/region/${id}/0/`);
 }
 async function getResidentList(user, id) {
-    return getPlayerList(user, `https://rivalregions.com/listed/residency/${id}/0/`);
+    return getPlayerList(user, user.link + `/listed/residency/${id}/0/`);
 }
 async function getStateCitizens(user, id) {
-    return getPlayerList(user, `https://rivalregions.com/listed/state_population/${id}/`);
+    return getPlayerList(user, user.link + `/listed/state_population/${id}/`);
 }
 async function getStateResidents(user, id) {
-    return getPlayerList(user, `https://rivalregions.com/listed/residency_state/${id}/0/`);
+    return getPlayerList(user, user.link + `/listed/residency_state/${id}/0/`);
 }
 async function getWarDamageList(user, id, aggressor) {
-    return getPlayerList(user, `https://rivalregions.com/war/damage/${id}/${aggressor ? 0 : 1}/`);
+    return getPlayerList(user, user.link + `/war/damage/${id}/${aggressor ? 0 : 1}/`);
 }
 async function getPlayerList(user, link) {
     let players = [];
     while (true) {
-        const x = await fetch(link + players.length, {
+        const content = await fetch(link + players.length, {
             headers: {
                 cookie: user.cookies,
             },
         }).then((res) => res.text());
-        const $ = cheerio.load(x);
+        const $ = cheerio.load(content);
         const playerTrs = $('tr[user]');
         if (playerTrs.length === 0)
             break;

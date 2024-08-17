@@ -28,17 +28,15 @@ const cheerio = __importStar(require("cheerio"));
 const Parliament_1 = require("../../../entity/shared/Parliament");
 async function getParliamentInfo(user, capitalId, isAutonomy = false) {
     const url = isAutonomy
-        ? 'parliament/auto/' + capitalId
-        : 'parliament/index/' + capitalId;
-    const x = await fetch(`https://rivalregions.com/${url}`, {
+        ? '/parliament/auto/' + capitalId
+        : '/parliament/index/' + capitalId;
+    const content = await fetch(user.link + url, {
         headers: {
             cookie: user.cookies,
         },
-    });
-    const content = await x.text();
-    if (!content || content.length < 150) {
+    }).then((res) => res.text());
+    if (!content || content.length < 150)
         return null;
-    }
     const parliament = new Parliament_1.Parliament();
     parliament.isAutonomy = isAutonomy;
     parliament.capitalRegion = await user.models.getRegion(capitalId);

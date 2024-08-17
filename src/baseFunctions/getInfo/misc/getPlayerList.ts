@@ -2,28 +2,19 @@ import { UserContext } from '../../../UserContext';
 import * as cheerio from 'cheerio';
 
 export async function getCitizenList(user: UserContext, id: number) {
-  return getPlayerList(user, `https://rivalregions.com/listed/region/${id}/0/`);
+  return getPlayerList(user, user.link + `/listed/region/${id}/0/`);
 }
 
 export async function getResidentList(user: UserContext, id: number) {
-  return getPlayerList(
-    user,
-    `https://rivalregions.com/listed/residency/${id}/0/`
-  );
+  return getPlayerList(user, user.link + `/listed/residency/${id}/0/`);
 }
 
 export async function getStateCitizens(user: UserContext, id: number) {
-  return getPlayerList(
-    user,
-    `https://rivalregions.com/listed/state_population/${id}/`
-  );
+  return getPlayerList(user, user.link + `/listed/state_population/${id}/`);
 }
 
 export async function getStateResidents(user: UserContext, id: number) {
-  return getPlayerList(
-    user,
-    `https://rivalregions.com/listed/residency_state/${id}/0/`
-  );
+  return getPlayerList(user, user.link + `/listed/residency_state/${id}/0/`);
 }
 
 export async function getWarDamageList(
@@ -33,20 +24,20 @@ export async function getWarDamageList(
 ) {
   return getPlayerList(
     user,
-    `https://rivalregions.com/war/damage/${id}/${aggressor ? 0 : 1}/`
+    user.link + `/war/damage/${id}/${aggressor ? 0 : 1}/`
   );
 }
 
 async function getPlayerList(user: UserContext, link: string) {
   let players = [];
   while (true) {
-    const x = await fetch(link + players.length, {
+    const content = await fetch(link + players.length, {
       headers: {
         cookie: user.cookies,
       },
     }).then((res) => res.text());
 
-    const $ = cheerio.load(x);
+    const $ = cheerio.load(content);
 
     const playerTrs = $('tr[user]');
 

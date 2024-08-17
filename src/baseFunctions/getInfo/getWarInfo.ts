@@ -5,10 +5,10 @@ import { getTimestamp } from '../../misc/timestamps';
 
 export async function getWarInfo(
   user: UserContext,
-  id: number,
+  warId: number,
   force: boolean = false
 ) {
-  const war = await user.models.getWar(id);
+  const war = await user.models.getWar(warId);
 
   if (
     !force &&
@@ -18,17 +18,13 @@ export async function getWarInfo(
     return war;
   }
 
-  const x = await fetch(`https://rivalregions.com/war/details/${id}`, {
+  const content = await fetch(user.link + '/war/details/' + warId, {
     headers: {
       cookie: user.cookies,
     },
-  });
+  }).then((res) => res.text());
 
-  const content = await x.text();
-
-  if (!content || content.length < 150) {
-    return null;
-  }
+  if (!content || content.length < 150) return null;
 
   const $ = cheerio.load(content);
 
