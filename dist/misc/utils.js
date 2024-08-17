@@ -19,7 +19,7 @@ function toCamelCase(str) {
 function numToSlang(number, alternative = false, figures = 1) {
     let units = ['', 'k', 'kk', 'k' + 'kk', 'T', 'P'];
     if (alternative) {
-        units = ['', 'K', 'M', 'G', 'T', 'P'];
+        units = ['', 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
     }
     for (let i = 0; i < units.length; i++) {
         if (Math.abs(number) < 1000) {
@@ -33,6 +33,27 @@ function slangToNum(slang) {
     if (typeof slang === 'number') {
         return slang;
     }
-    slang = slang.toLowerCase().replace(/k/, '000').replace('t', '0'.repeat(12));
-    return parseInt(slang.replace(/\D/g, ''));
+    const match = slang.match(/(\d+(\.\d+)?)\s*([kKtTpP]+)?/);
+    if (match) {
+        const number = parseFloat(match[1]);
+        const unit = match[3];
+        if (!unit) {
+            return number;
+        }
+        switch (unit) {
+            case 'k':
+                return number * 1e3;
+            case 'kk':
+                return number * 1e6;
+            case 'k' + 'kk':
+                return number * 1e9;
+            case 't':
+                return number * 1e12;
+            case 'p':
+                return number * 1e15;
+            default:
+                return number;
+        }
+    }
+    return null;
 }
