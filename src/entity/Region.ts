@@ -196,6 +196,7 @@ export class Region {
       residents: Array.from(this.residents, (resident) => resident.id),
       parties: Array.from(this.parties, (party) => party.id),
       resources: this.resources,
+      factories: Array.from(this.factories, (factory) => factory.id),
     };
   }
 }

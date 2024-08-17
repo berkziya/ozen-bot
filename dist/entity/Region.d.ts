@@ -98,5 +98,6 @@ export declare class Region {
             uranium: number;
             diamonds: number;
         };
+        factories: number[];
     };
 }
