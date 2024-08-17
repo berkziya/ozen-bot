@@ -195,7 +195,7 @@ async function mobilePageInfo(user: UserContext) {
   if (mobilePlayerId) toBeReturned['playerId'] = mobilePlayerId;
 
   // Current state
-  const stateDiv = $('#mob_box_region_2');
+  const stateDiv = $('div[id="mob_box_region_2"]');
   console.log(stateDiv.text());
   const stateId = stateDiv.attr('action')!.split('/').pop()!;
   const [regionName, stateName] = $(
@@ -209,7 +209,7 @@ async function mobilePageInfo(user: UserContext) {
   toBeReturned['state'] = state;
 
   // Current region
-  const regionDiv = $('#mob_box_region_1');
+  const regionDiv = $('div[id="mob_box_region_1"]');
   const regionId = regionDiv.attr('action')!.split('/').pop()!;
   const region = await user.models.getRegion(regionId);
   region.name = regionName;
