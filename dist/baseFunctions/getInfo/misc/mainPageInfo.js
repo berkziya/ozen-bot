@@ -46,7 +46,7 @@ async function mainPageInfo(user) {
             const playerId = script.match(/slide_header\('slide\/profile\/(\d+)/);
             if (playerId)
                 toBeReturned['playerId'] = playerId[1];
-            const hitCountdownSeconds = script.match(/until: (\d+)/);
+            const hitCountdownSeconds = script.match(/\.war_index_war_countdown'\)\.countdown\({\s*until:\s*(\d+)/);
             if (hitCountdownSeconds)
                 toBeReturned['hitCountdown'] = parseInt(hitCountdownSeconds[1]);
             const money = script.match(/new_m\('([0-9.]+)'\);/);
@@ -59,10 +59,10 @@ async function mainPageInfo(user) {
                 toBeReturned['gold'] = (0, utils_1.dotless)(gold[1]);
                 user.player.storage.gold = (0, utils_1.dotless)(gold[1]);
             }
-            const upgradingPerk = script.match(/'\.perk_square_f\[perk="(\d)/);
+            const upgradingPerk = script.match(/\.perk_square_f\[perk="(\d)/);
             if (upgradingPerk) {
                 toBeReturned['upgradingPerk'] = upgradingPerk[1];
-                const remainingPerkTime = script.match(/#perk_counter_2'\)\.countdown\({until: (\d+)/);
+                const remainingPerkTime = script.match(/#perk_counter_2'\)\.countdown\({\w*until:\w*(\d+)/);
                 if (remainingPerkTime)
                     toBeReturned['remainingPerkTime'] = parseInt(remainingPerkTime[1]);
             }
