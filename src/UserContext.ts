@@ -38,12 +38,11 @@ export class UserContext {
   async init() {
     await this.lock.acquire(['context', 'page'], async () => {
       const contextOptions: BrowserContextOptions = {
-        baseURL: 'https://rivalregions.com',
+        baseURL: `https://${this.isMobile ? 'm.' : ''}rivalregions.com`,
         timezoneId: 'UTC',
         locale: 'en-US',
         viewport: this.isMobile ? mobileViewport : undefined,
         userAgent: this.isMobile ? iPhoneUserAgent : undefined,
-        isMobile: this.isMobile,
         hasTouch: this.isMobile,
       };
 
