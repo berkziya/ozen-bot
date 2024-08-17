@@ -196,6 +196,7 @@ async function mobilePageInfo(user: UserContext) {
 
   // Current state
   const stateDiv = $('#mob_box_region_2');
+  console.log(stateDiv.text());
   const stateId = stateDiv.attr('action')!.split('/').pop()!;
   const [regionName, stateName] = $(
     '#content > div.mob_box.mob_box_region_s > div.small.tc.tc_tran.mob_topbox'
