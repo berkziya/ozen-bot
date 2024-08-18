@@ -57,7 +57,7 @@ export async function getFactoryInfo(
     );
     factory.setRegion(region);
     factory.region.name = $('span[action*="map"]').text().trim();
-    factory.setWage($('h2[class$="imp"]').first().text());
+    factory.setWage($('h2.white.imp').first().text());
 
     const potentialWage = dotless(
       $('h2[class$="imp"]').last().text().split(' ')[0]
