@@ -145,30 +145,23 @@ class UserContext {
         return await this.lock.acquire(['context', 'page'], async () => {
             await this.internetIsOn();
             await this.page.goto(url);
-            return { content: await this.page.content() };
+            const content = await this.page.content();
+            await this.page.goto(this.link);
+            return { content };
         });
     }
-    async internetIsOn(timeout = 5000) {
-        // return await this.lock.acquire(['context', 'page'], async () => {
-        return await this.page.evaluate((timeout) => {
-            return new Promise((resolve, reject) => {
-                if (navigator.onLine) {
-                    resolve(true);
-                }
-                else {
-                    const onlineHandler = () => {
-                        window.removeEventListener('online', onlineHandler);
-                        resolve(true);
-                    };
-                    window.addEventListener('online', onlineHandler);
-                    setTimeout(() => {
-                        window.removeEventListener('online', onlineHandler);
-                        reject(new Error('Internet connection timed out'));
-                    }, timeout);
-                }
+    async internetIsOn() {
+        try {
+            return await this.lock.acquire(['context', 'page'], async () => {
+                const response = await this.page.evaluate(`fetch('${this.link}/map/details/100002').then(x => x.status)`);
+                (0, tiny_invariant_1.default)(response === 200, 'No response from the server');
+                return true;
             });
-        }, timeout);
-        // });
+        }
+        catch (e) {
+            console.error('Internet is off:', e);
+            return false;
+        }
     }
 }
 exports.UserContext = UserContext;
