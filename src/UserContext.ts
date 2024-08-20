@@ -187,13 +187,15 @@ export class UserContext {
   }
 
   async internetIsOn() {
-    return await this.page.evaluate(() => {
-      return new Promise((resolve) => {
-        if (navigator.onLine) {
-          resolve(true);
-        } else {
-          window.addEventListener('online', () => resolve(true));
-        }
+    return await this.lock.acquire(['context', 'page'], async () => {
+      return await this.page.evaluate(() => {
+        return new Promise((resolve) => {
+          if (navigator.onLine) {
+            resolve(true);
+          } else {
+            window.addEventListener('online', () => resolve(true));
+          }
+        });
       });
     });
   }
