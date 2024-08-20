@@ -22,7 +22,7 @@ async function desktopWarList(user: UserContext, stateId: number) {
   const wars: Set<War> = new Set();
 
   async function tdToRegion(td: cheerio.Cheerio<cheerio.Element>) {
-    const regionId = parseInt(td.attr('action')!.split('/')[-1]);
+    const regionId = parseInt(td.attr('action')!.split('/').pop()!);
     if (!regionId) {
       if (td.text()!.includes('Coup')) {
         return 'coup';
@@ -32,7 +32,7 @@ async function desktopWarList(user: UserContext, stateId: number) {
     const region = await user.models.getRegion(regionId);
 
     const stateDiv = td.find('div[action^="map/state"]');
-    const stateId = parseInt(stateDiv.attr('action')!.split('/')[-1]);
+    const stateId = parseInt(stateDiv.attr('action')!.split('/').pop()!);
     const state = await user.models.getState(stateId);
 
     const regionName = stateDiv.attr('title')!;
