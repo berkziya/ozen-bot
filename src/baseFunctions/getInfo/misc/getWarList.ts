@@ -32,7 +32,7 @@ async function desktopWarList(user: UserContext, stateId: number) {
     async function divToRegion(div: cheerio.Cheerio<cheerio.Element>) {
       const regionId = parseInt(div.attr('action')!.split('/')[-1]);
       if (regionId === 0) {
-        if (div.attr('action')!.includes('Coup')) {
+        if (div.text()!.includes('Coup')) {
           return 'coup';
         }
         return 'revolution';

@@ -47,7 +47,7 @@ async function desktopWarList(user, stateId) {
         async function divToRegion(div) {
             const regionId = parseInt(div.attr('action').split('/')[-1]);
             if (regionId === 0) {
-                if (div.attr('action').includes('Coup')) {
+                if (div.text().includes('Coup')) {
                     return 'coup';
                 }
                 return 'revolution';
