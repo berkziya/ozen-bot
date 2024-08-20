@@ -57,8 +57,6 @@ export class UserContext {
 
   async isContextValid(): Promise<boolean> {
     try {
-      await this.internetIsOn();
-
       invariant(this.browser, "Can't find browser");
       invariant(this.context, 'Context is not initialized');
       invariant(this.page, 'Page is not initialized');
@@ -107,19 +105,10 @@ export class UserContext {
         await this.internetIsOn();
         await this.page.goto('/');
 
-        let fails = 0;
-        while (!(await this.internetIsOn()) && fails < 5) {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          fails++;
-        }
-        if (fails >= 5) {
-          throw new Error('No internet connection');
-        }
-
         const sanitizedMail = mail.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-        const cookiesPath = path.resolve(
-          __dirname,
-          '../../..',
+        const cookiesDir = path.join(__dirname, 'cookies');
+        const cookiesPath = path.join(
+          cookiesDir,
           `${sanitizedMail}_${this.isMobile ? 'mobile_' : ''}cookies.json`
         );
 
@@ -155,6 +144,11 @@ export class UserContext {
         this.player = await this.models.getPlayer(this.id!);
 
         const cookies = await this.page.context().cookies();
+
+        // Ensure the directory exists
+        await fs.mkdir(cookiesDir, { recursive: true });
+
+        // Write cookies to the file
         await fs.writeFile(cookiesPath, JSON.stringify(cookies));
 
         return this.id;
@@ -186,17 +180,26 @@ export class UserContext {
     });
   }
 
-  async internetIsOn() {
+  async internetIsOn(timeout = 5000) {
     return await this.lock.acquire(['context', 'page'], async () => {
-      return await this.page.evaluate(() => {
-        return new Promise((resolve) => {
+      return await this.page.evaluate((timeout) => {
+        return new Promise((resolve, reject) => {
           if (navigator.onLine) {
             resolve(true);
           } else {
-            window.addEventListener('online', () => resolve(true));
+            const onlineHandler = () => {
+              window.removeEventListener('online', onlineHandler);
+              resolve(true);
+            };
+            window.addEventListener('online', onlineHandler);
+
+            setTimeout(() => {
+              window.removeEventListener('online', onlineHandler);
+              reject(new Error('Internet connection timed out'));
+            }, timeout);
           }
         });
-      });
+      }, timeout);
     });
   }
 }

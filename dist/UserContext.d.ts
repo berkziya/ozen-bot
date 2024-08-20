@@ -23,5 +23,5 @@ export declare class UserContext {
     get(url: string): Promise<{
         content: string;
     }>;
-    internetIsOn(): Promise<unknown>;
+    internetIsOn(timeout?: number): Promise<unknown>;
 }

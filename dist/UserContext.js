@@ -48,7 +48,6 @@ class UserContext {
     }
     async isContextValid() {
         try {
-            await this.internetIsOn();
             (0, tiny_invariant_1.default)(this.browser, "Can't find browser");
             (0, tiny_invariant_1.default)(this.context, 'Context is not initialized');
             (0, tiny_invariant_1.default)(this.page, 'Page is not initialized');
@@ -86,16 +85,9 @@ class UserContext {
             try {
                 await this.internetIsOn();
                 await this.page.goto('/');
-                let fails = 0;
-                while (!(await this.internetIsOn()) && fails < 5) {
-                    await new Promise((resolve) => setTimeout(resolve, 1000));
-                    fails++;
-                }
-                if (fails >= 5) {
-                    throw new Error('No internet connection');
-                }
                 const sanitizedMail = mail.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-                const cookiesPath = node_path_1.default.resolve(__dirname, '../../..', `${sanitizedMail}_${this.isMobile ? 'mobile_' : ''}cookies.json`);
+                const cookiesDir = node_path_1.default.join(__dirname, 'cookies');
+                const cookiesPath = node_path_1.default.join(cookiesDir, `${sanitizedMail}_${this.isMobile ? 'mobile_' : ''}cookies.json`);
                 if (useCookies) {
                     try {
                         await node_fs_1.promises.access(cookiesPath);
@@ -125,6 +117,9 @@ class UserContext {
                 this.id = await this.page.evaluate(() => id);
                 this.player = await this.models.getPlayer(this.id);
                 const cookies = await this.page.context().cookies();
+                // Ensure the directory exists
+                await node_fs_1.promises.mkdir(cookiesDir, { recursive: true });
+                // Write cookies to the file
                 await node_fs_1.promises.writeFile(cookiesPath, JSON.stringify(cookies));
                 return this.id;
             }
@@ -153,18 +148,26 @@ class UserContext {
             return { content: await this.page.content() };
         });
     }
-    async internetIsOn() {
+    async internetIsOn(timeout = 5000) {
         return await this.lock.acquire(['context', 'page'], async () => {
-            return await this.page.evaluate(() => {
-                return new Promise((resolve) => {
+            return await this.page.evaluate((timeout) => {
+                return new Promise((resolve, reject) => {
                     if (navigator.onLine) {
                         resolve(true);
                     }
                     else {
-                        window.addEventListener('online', () => resolve(true));
+                        const onlineHandler = () => {
+                            window.removeEventListener('online', onlineHandler);
+                            resolve(true);
+                        };
+                        window.addEventListener('online', onlineHandler);
+                        setTimeout(() => {
+                            window.removeEventListener('online', onlineHandler);
+                            reject(new Error('Internet connection timed out'));
+                        }, timeout);
                     }
                 });
-            });
+            }, timeout);
         });
     }
 }
