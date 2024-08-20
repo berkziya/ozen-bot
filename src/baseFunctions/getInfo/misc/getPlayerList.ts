@@ -29,7 +29,7 @@ export async function getWarDamageList(
 }
 
 async function getPlayerList(user: UserContext, link: string) {
-  let players = [];
+  const players = [];
   while (true) {
     const content = await fetch(link + players.length, {
       headers: {

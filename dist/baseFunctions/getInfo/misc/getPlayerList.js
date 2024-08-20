@@ -45,7 +45,7 @@ async function getWarDamageList(user, id, aggressor) {
     return getPlayerList(user, user.link + `/war/damage/${id}/${aggressor ? 0 : 1}/`);
 }
 async function getPlayerList(user, link) {
-    let players = [];
+    const players = [];
     while (true) {
         const content = await fetch(link + players.length, {
             headers: {

@@ -32,9 +32,7 @@ async function mainPageInfo(user) {
     if (user.isMobile) {
         return await mobilePageInfo(user);
     }
-    else {
-        return await desktopPageInfo(user);
-    }
+    return await desktopPageInfo(user);
 }
 async function desktopPageInfo(user) {
     const content = await fetch(user.link + '/main/content', {

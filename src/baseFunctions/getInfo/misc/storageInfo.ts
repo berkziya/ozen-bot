@@ -53,4 +53,6 @@ export async function storageInfo(user: UserContext) {
       user.player.level = parseInt(expNlvl[2]);
     }
   });
+
+  return user.player.storage;
 }

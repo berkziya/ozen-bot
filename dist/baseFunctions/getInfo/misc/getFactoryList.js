@@ -24,19 +24,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getFactoryList = getFactoryList;
+const Factory_1 = require("../../../entity/Factory");
 const Region_1 = require("../../../entity/Region");
 const cheerio = __importStar(require("cheerio"));
-const resourceToId = {
-    gold: 6,
-    oil: 2,
-    ore: 5,
-    uranium: 11,
-    diamonds: 15,
-    liquidOxygen: 21,
-    helium3: 24,
-};
 async function getFactoryList(user, locationId, isState = false, resource = 'gold') {
-    const resourceId = resourceToId[resource];
+    const resourceId = Factory_1.resourceToId[resource];
     const link = isState
         ? `/factory/state/${locationId}/0/${resourceId}/`
         : `/factory/search/${locationId}/0/${resourceId}/`;

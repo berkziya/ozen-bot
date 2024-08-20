@@ -11,7 +11,7 @@ export class War {
 
   endingTime!: Date | null;
 
-  aggressor!: Region;
+  aggressor!: Region | 'revolution' | 'coup';
   defender!: Region;
 
   aggressorDamage: number = 0;

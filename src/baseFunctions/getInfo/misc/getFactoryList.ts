@@ -1,17 +1,7 @@
-import { Factory } from '../../../entity/Factory';
+import { Factory, resourceToId } from '../../../entity/Factory';
 import { Region } from '../../../entity/Region';
 import { UserContext } from '../../../UserContext';
 import * as cheerio from 'cheerio';
-
-const resourceToId = {
-  gold: 6,
-  oil: 2,
-  ore: 5,
-  uranium: 11,
-  diamonds: 15,
-  liquidOxygen: 21,
-  helium3: 24,
-};
 
 export async function getFactoryList(
   user: UserContext,

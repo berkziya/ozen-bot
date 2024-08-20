@@ -72,4 +72,5 @@ async function storageInfo(user) {
             user.player.level = parseInt(expNlvl[2]);
         }
     });
+    return user.player.storage;
 }

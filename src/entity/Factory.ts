@@ -2,6 +2,16 @@ import { dotless } from '../misc/utils';
 import { Player } from './Player';
 import { Region } from './Region';
 
+export const resourceToId = {
+  gold: 6,
+  oil: 2,
+  ore: 5,
+  uranium: 11,
+  diamonds: 15,
+  liquidOxygen: 21,
+  helium3: 24,
+};
+
 export class Factory {
   lastUpdate: Date = new Date(0);
   id: number;
@@ -16,14 +26,7 @@ export class Factory {
   isFixed: boolean = false;
   potentialWage: number = 0;
 
-  type_!:
-    | 'gold'
-    | 'oil'
-    | 'ore'
-    | 'uranium'
-    | 'diamonds'
-    | 'liquidOxygen'
-    | 'helium3';
+  type_!: keyof typeof resourceToId;
 
   constructor(id_: number) {
     this.id = id_;

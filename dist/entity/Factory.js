@@ -1,7 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Factory = void 0;
+exports.Factory = exports.resourceToId = void 0;
 const utils_1 = require("../misc/utils");
+exports.resourceToId = {
+    gold: 6,
+    oil: 2,
+    ore: 5,
+    uranium: 11,
+    diamonds: 15,
+    liquidOxygen: 21,
+    helium3: 24,
+};
 class Factory {
     lastUpdate = new Date(0);
     id;

@@ -1,5 +1,14 @@
 import { Player } from './Player';
 import { Region } from './Region';
+export declare const resourceToId: {
+    gold: number;
+    oil: number;
+    ore: number;
+    uranium: number;
+    diamonds: number;
+    liquidOxygen: number;
+    helium3: number;
+};
 export declare class Factory {
     lastUpdate: Date;
     id: number;
@@ -10,7 +19,7 @@ export declare class Factory {
     wage_: number;
     isFixed: boolean;
     potentialWage: number;
-    type_: 'gold' | 'oil' | 'ore' | 'uranium' | 'diamonds' | 'liquidOxygen' | 'helium3';
+    type_: keyof typeof resourceToId;
     constructor(id_: number);
     setOwner(player: Player): void;
     setRegion(region: Region): void;

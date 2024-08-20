@@ -7,9 +7,8 @@ import { iPhoneUserAgent } from '../../../UserContext';
 export async function mainPageInfo(user: UserContext) {
   if (user.isMobile) {
     return await mobilePageInfo(user);
-  } else {
-    return await desktopPageInfo(user);
   }
+  return await desktopPageInfo(user);
 }
 
 async function desktopPageInfo(user: UserContext) {
