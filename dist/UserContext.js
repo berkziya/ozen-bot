@@ -151,12 +151,11 @@ class UserContext {
         });
     }
     async internetIsOn() {
+        // window.navigator.onLine
+        // returns true if the browser is online
         try {
-            return await this.lock.acquire(['context', 'page'], async () => {
-                const response = await this.page.evaluate(`fetch('${this.link}/map/details/100002').then(x => x.status)`);
-                (0, tiny_invariant_1.default)(response === 200, 'No response from the server');
-                return true;
-            });
+            (0, tiny_invariant_1.default)(await this.page.evaluate(() => window.navigator.onLine), 'No internet connection');
+            return true;
         }
         catch (e) {
             console.error('Internet is off:', e);
