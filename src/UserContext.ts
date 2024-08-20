@@ -108,7 +108,7 @@ export class UserContext {
         await this.page.goto('/');
 
         let fails = 0;
-        while (!this.internetIsOn() && fails < 5) {
+        while (!(await this.internetIsOn()) && fails < 5) {
           await new Promise((resolve) => setTimeout(resolve, 1000));
           fails++;
         }
