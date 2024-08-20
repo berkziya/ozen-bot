@@ -39,32 +39,32 @@ async function desktopWarList(user, stateId) {
         return null;
     const $ = cheerio.load(content);
     const wars = new Set();
+    async function tdToRegion(td) {
+        const regionId = parseInt(td.attr('action').split('/')[-1]);
+        if (!regionId) {
+            if (td.text().includes('Coup')) {
+                return 'coup';
+            }
+            return 'revolution';
+        }
+        const region = await user.models.getRegion(regionId);
+        const stateDiv = td.find('div[action^="map/state"]');
+        const stateId = parseInt(stateDiv.attr('action').split('/')[-1]);
+        const state = await user.models.getState(stateId);
+        const regionName = stateDiv.attr('title');
+        const stateName = td.find('span').text().replace(regionName, '').trim();
+        region.name = regionName;
+        region.setState(state);
+        state.name = stateName;
+        return region;
+    }
     const warTrs = $('tbody > tr');
     for (let i = 0; i < warTrs.length; i++) {
         const warTr = warTrs.eq(i);
         const warId = parseInt(warTr.find('div[url]').attr('url'));
         const war = await user.models.getWar(warId);
-        async function divToRegion(div) {
-            const regionId = parseInt(div.attr('action').split('/')[-1]);
-            if (regionId === 0) {
-                if (div.text().includes('Coup')) {
-                    return 'coup';
-                }
-                return 'revolution';
-            }
-            const region = await user.models.getRegion(regionId);
-            const stateDiv = div.find('div[action^="map/state"]');
-            const stateId = parseInt(stateDiv.attr('action').split('/')[-1]);
-            const state = await user.models.getState(stateId);
-            const regionName = stateDiv.attr('title');
-            const stateName = div.find('span').text().replace(regionName, '').trim();
-            region.name = regionName;
-            region.setState(state);
-            state.name = stateName;
-            return region;
-        }
-        const attackerRegion = await divToRegion(warTr.find('td[action^="map/details"]').first());
-        const defenderRegion = await divToRegion(warTr.find('td[action^="map/details"]').last());
+        const attackerRegion = await tdToRegion(warTr.find('td[action^="map/details"]').first());
+        const defenderRegion = await tdToRegion(warTr.find('td[action^="map/details"]').last());
         war.aggressor = attackerRegion;
         war.defender = defenderRegion;
         if (war.aggressor === 'coup' || war.aggressor === 'revolution') {
@@ -74,6 +74,7 @@ async function desktopWarList(user, stateId) {
         war.endingTime = new Date(parseInt(warTr.find('td[rat]').last().attr('rat')));
         wars.add(war);
     }
+    return wars;
 }
 // async function mobileWarList(user: UserContext, stateId: number) {
 //   const content = await fetch(user.link + '/listed/statewars/' + stateId, {

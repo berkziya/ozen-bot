@@ -21,6 +21,29 @@ async function desktopWarList(user: UserContext, stateId: number) {
 
   const wars: Set<War> = new Set();
 
+  async function tdToRegion(td: cheerio.Cheerio<cheerio.Element>) {
+    const regionId = parseInt(td.attr('action')!.split('/')[-1]);
+    if (!regionId) {
+      if (td.text()!.includes('Coup')) {
+        return 'coup';
+      }
+      return 'revolution';
+    }
+    const region = await user.models.getRegion(regionId);
+
+    const stateDiv = td.find('div[action^="map/state"]');
+    const stateId = parseInt(stateDiv.attr('action')!.split('/')[-1]);
+    const state = await user.models.getState(stateId);
+
+    const regionName = stateDiv.attr('title')!;
+    const stateName = td.find('span').text().replace(regionName, '').trim();
+
+    region.name = regionName!;
+    region.setState(state);
+    state.name = stateName;
+    return region;
+  }
+
   const warTrs = $('tbody > tr');
 
   for (let i = 0; i < warTrs.length; i++) {
@@ -29,33 +52,10 @@ async function desktopWarList(user: UserContext, stateId: number) {
     const warId = parseInt(warTr.find('div[url]').attr('url')!);
     const war = await user.models.getWar(warId);
 
-    async function divToRegion(div: cheerio.Cheerio<cheerio.Element>) {
-      const regionId = parseInt(div.attr('action')!.split('/')[-1]);
-      if (regionId === 0) {
-        if (div.text()!.includes('Coup')) {
-          return 'coup';
-        }
-        return 'revolution';
-      }
-      const region = await user.models.getRegion(regionId);
-
-      const stateDiv = div.find('div[action^="map/state"]');
-      const stateId = parseInt(stateDiv.attr('action')!.split('/')[-1]);
-      const state = await user.models.getState(stateId);
-
-      const regionName = stateDiv.attr('title')!;
-      const stateName = div.find('span').text().replace(regionName, '').trim();
-
-      region.name = regionName!;
-      region.setState(state);
-      state.name = stateName;
-      return region;
-    }
-
-    const attackerRegion = await divToRegion(
+    const attackerRegion = await tdToRegion(
       warTr.find('td[action^="map/details"]').first()
     );
-    const defenderRegion = await divToRegion(
+    const defenderRegion = await tdToRegion(
       warTr.find('td[action^="map/details"]').last()
     );
     war.aggressor = attackerRegion;
@@ -73,6 +73,7 @@ async function desktopWarList(user: UserContext, stateId: number) {
 
     wars.add(war);
   }
+  return wars;
 }
 
 // async function mobileWarList(user: UserContext, stateId: number) {
