@@ -32,7 +32,7 @@ export class UserContext {
   public page!: Page;
   public id!: number;
   public player!: Player;
-  public lock = new AsyncLock();
+  public lock = new AsyncLock({ domainReentrant: true });
   public cookies = '';
 
   get link() {

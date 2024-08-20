@@ -27,7 +27,7 @@ class UserContext {
     page;
     id;
     player;
-    lock = new async_lock_1.default();
+    lock = new async_lock_1.default({ domainReentrant: true });
     cookies = '';
     get link() {
         return `https://${this.isMobile ? 'm.' : ''}rivalregions.com`;
