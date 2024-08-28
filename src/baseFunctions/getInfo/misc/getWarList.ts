@@ -73,7 +73,7 @@ async function desktopWarList(user: UserContext, stateId: number) {
 
     wars.add(war);
   }
-  return wars;
+  return [...wars];
 }
 
 // async function mobileWarList(user: UserContext, stateId: number) {

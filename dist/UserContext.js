@@ -86,7 +86,7 @@ class UserContext {
                 await this.internetIsOn();
                 await this.page.goto('/');
                 const sanitizedMail = mail.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-                const cookiesDir = node_path_1.default.join(__dirname, 'cookies');
+                const cookiesDir = node_path_1.default.join(process.cwd(), 'cookies');
                 const cookiesPath = node_path_1.default.join(cookiesDir, `${sanitizedMail}_${this.isMobile ? 'mobile_' : ''}cookies.json`);
                 if (useCookies) {
                     try {
@@ -106,6 +106,7 @@ class UserContext {
                     await this.page.fill('input[name="p"]', password);
                     await this.page.click('input[name="s"]');
                 }
+                await this.page.waitForSelector('#chat_send');
                 if (!(await this.amILoggedIn())) {
                     if (useCookies) {
                         return this.login(mail, password, false);
@@ -151,8 +152,6 @@ class UserContext {
         });
     }
     async internetIsOn() {
-        // window.navigator.onLine
-        // returns true if the browser is online
         try {
             (0, tiny_invariant_1.default)(await this.page.evaluate(() => window.navigator.onLine), 'No internet connection');
             return true;

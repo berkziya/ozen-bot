@@ -74,7 +74,7 @@ async function desktopWarList(user, stateId) {
         war.endingTime = new Date(parseInt(warTr.find('td[rat]').last().attr('rat')));
         wars.add(war);
     }
-    return wars;
+    return [...wars];
 }
 // async function mobileWarList(user: UserContext, stateId: number) {
 //   const content = await fetch(user.link + '/listed/statewars/' + stateId, {

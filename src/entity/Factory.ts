@@ -68,12 +68,7 @@ export class Factory {
     } else if (theType === 'liquifaction') {
       this.type_ = 'liquidOxygen';
     } else {
-      this.type_ = theType as
-        | 'gold'
-        | 'oil'
-        | 'ore'
-        | 'uranium'
-        | 'liquidOxygen';
+      this.type_ = theType as keyof typeof resourceToId;
     }
   }
 
@@ -82,8 +77,8 @@ export class Factory {
       id: this.id,
       name: this.name,
       level: this.level,
-      owner: this.owner.id,
-      region: this.region.id,
+      owner: this.owner?.id,
+      region: this.region?.id,
       wage: this.wage,
       isFixed: this.isFixed,
       potentialWage: this.potentialWage,

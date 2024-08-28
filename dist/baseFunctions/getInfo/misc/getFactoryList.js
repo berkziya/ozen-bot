@@ -52,10 +52,10 @@ async function getFactoryList(user, locationId, isState = false, resource = 'gol
         factory.type = resource;
         if (location instanceof Region_1.Region)
             factory.setRegion(location);
-        factory.setWage(factoryTds.eq(2).attr('rat'));
+        factory.setWage(factoryTds.eq(2).text());
         const ownerId = parseInt(factoryTds.eq(3).attr('rat'));
         factory.owner = await user.models.getPlayer(ownerId);
         factories.add(factory);
     }
-    return factories;
+    return [...factories];
 }

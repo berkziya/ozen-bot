@@ -106,7 +106,7 @@ export class UserContext {
         await this.page.goto('/');
 
         const sanitizedMail = mail.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-        const cookiesDir = path.join(__dirname, 'cookies');
+        const cookiesDir = path.join(process.cwd(), 'cookies');
         const cookiesPath = path.join(
           cookiesDir,
           `${sanitizedMail}_${this.isMobile ? 'mobile_' : ''}cookies.json`
@@ -130,6 +130,8 @@ export class UserContext {
           await this.page.fill('input[name="p"]', password);
           await this.page.click('input[name="s"]');
         }
+
+        await this.page.waitForSelector('#chat_send');
 
         if (!(await this.amILoggedIn())) {
           if (useCookies) {
@@ -183,8 +185,6 @@ export class UserContext {
   }
 
   async internetIsOn() {
-    // window.navigator.onLine
-    // returns true if the browser is online
     try {
       invariant(
         await this.page.evaluate(() => window.navigator.onLine),

@@ -60,7 +60,7 @@ export class Autonomy {
       capital: this.capital?.id,
       regions: Array.from(this.regions, (region) => region.id),
       governor: this.governor?.id,
-      storage: this.storage.toJSON(),
+      storage: this.storage,
     };
   }
 }

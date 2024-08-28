@@ -52,9 +52,7 @@ async function getAutonomyInfo(user, autonomyId, force) {
     autonomy.setState(state);
     autonomy.name = $('h1')
         .contents()
-        .filter(function () {
-        return this.type === 'text';
-    })
+        .filter((_i, e) => e.type === 'text')
         .first()
         .text()
         .replace(', ', '')

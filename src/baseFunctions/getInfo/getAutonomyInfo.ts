@@ -44,9 +44,7 @@ export async function getAutonomyInfo(
 
   autonomy.name = $('h1')
     .contents()
-    .filter(function () {
-      return this.type === 'text';
-    })
+    .filter((_i, e) => e.type === 'text')
     .first()
     .text()
     .replace(', ', '')
