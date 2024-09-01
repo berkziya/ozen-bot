@@ -51,16 +51,16 @@ export class Autonomy {
     this.regions.delete(region);
   }
 
-  toJSON() {
-    return {
-      lastUpdate: this.lastUpdate,
-      id: this.id,
-      name: this.name,
-      state: this.state?.id,
-      capital: this.capital?.id,
-      regions: Array.from(this.regions, (region) => region.id),
-      governor: this.governor?.id,
-      storage: this.storage,
-    };
-  }
+  // toJSON() {
+  //   return {
+  //     lastUpdate: this.lastUpdate,
+  //     id: this.id,
+  //     name: this.name,
+  //     state: this.state?.id,
+  //     capital: this.capital?.id,
+  //     regions: Array.from(this.regions, (region) => region.id),
+  //     governor: this.governor?.id,
+  //     storage: this.storage,
+  //   };
+  // }
 }

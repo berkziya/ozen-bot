@@ -8,12 +8,4 @@ export declare class Bloc {
     openBorders: boolean;
     constructor(id_: number);
     addState(state: State): void;
-    toJSON(): {
-        lastUpdate: Date;
-        id: number;
-        name: string;
-        states: number[];
-        militaryAgreement: boolean;
-        openBorders: boolean;
-    };
 }

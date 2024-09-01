@@ -17,14 +17,4 @@ export declare class Autonomy {
     setGovernor(player: Player): void;
     addRegion(region: Region): void;
     removeRegion(region: Region): void;
-    toJSON(): {
-        lastUpdate: Date;
-        id: number;
-        name: string;
-        state: number | undefined;
-        capital: number | undefined;
-        regions: number[];
-        governor: number | undefined;
-        storage: Storage;
-    };
 }

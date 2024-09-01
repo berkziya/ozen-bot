@@ -72,17 +72,17 @@ export class Factory {
     }
   }
 
-  toJSON() {
-    return {
-      id: this.id,
-      name: this.name,
-      level: this.level,
-      owner: this.owner?.id,
-      region: this.region?.id,
-      wage: this.wage,
-      isFixed: this.isFixed,
-      potentialWage: this.potentialWage,
-      type: this.type,
-    };
-  }
+  // toJSON() {
+  //   return {
+  //     id: this.id,
+  //     name: this.name,
+  //     level: this.level,
+  //     owner: this.owner?.id,
+  //     region: this.region?.id,
+  //     wage: this.wage,
+  //     isFixed: this.isFixed,
+  //     potentialWage: this.potentialWage,
+  //     type: this.type,
+  //   };
+  // }
 }

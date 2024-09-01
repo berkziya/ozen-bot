@@ -123,27 +123,5 @@ class Region {
         this.parties.add(party);
         party.region = this;
     }
-    toJSON() {
-        return {
-            lastUpdate: this.lastUpdate,
-            id: this.id,
-            name: this.name,
-            state: this.state?.id,
-            needResidencyToWork: this.needResidencyToWork,
-            taxRate: this.taxRate,
-            marketTaxes: this.marketTaxes,
-            factoryOutputTaxes: this.factoryOutputTaxes,
-            autonomy: this.autonomy?.id,
-            profitShare: this.profitShare,
-            borderRegions: Array.from(this.borderRegions, (region) => region.id),
-            buildings: this.buildings,
-            seaAccess: this.seaAccess,
-            citizens: Array.from(this.citizens, (citizen) => citizen.id),
-            residents: Array.from(this.residents, (resident) => resident.id),
-            parties: Array.from(this.parties, (party) => party.id),
-            resources: this.resources,
-            factories: Array.from(this.factories, (factory) => factory.id),
-        };
-    }
 }
 exports.Region = Region;

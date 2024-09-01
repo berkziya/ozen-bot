@@ -123,26 +123,26 @@ export class State {
     }
   }
 
-  toJSON() {
-    return {
-      lastUpdate: this.lastUpdate,
-      id: this.id,
-      name: this.name,
-      capital: this.capital?.id,
-      regions: Array.from(this.regions, (region) => region.id),
-      autonomies: Array.from(this.autonomies, (autonomy) => autonomy.id),
-      entryFee: this.entryFee,
-      bordersOpen: this.bordersOpen,
-      needResidencyToWork: this.needResidencyToWork,
-      residencyIssuedByLeader: this.residencyIssuedByLeader,
-      governmentForm: this.governmentForm,
-      leader: this.leader?.id,
-      leaderIsCommander: this.leaderIsCommander,
-      econMinister: this.econMinister?.id,
-      foreignMinister: this.foreignMinister?.id,
-      leaderTermStart: this.leaderTermStart,
-      storage: this.storage.toJSON(),
-      bloc: this.bloc?.id,
-    };
-  }
+  // toJSON() {
+  //   return {
+  //     lastUpdate: this.lastUpdate,
+  //     id: this.id,
+  //     name: this.name,
+  //     capital: this.capital?.id,
+  //     regions: Array.from(this.regions, (region) => region.id),
+  //     autonomies: Array.from(this.autonomies, (autonomy) => autonomy.id),
+  //     entryFee: this.entryFee,
+  //     bordersOpen: this.bordersOpen,
+  //     needResidencyToWork: this.needResidencyToWork,
+  //     residencyIssuedByLeader: this.residencyIssuedByLeader,
+  //     governmentForm: this.governmentForm,
+  //     leader: this.leader?.id,
+  //     leaderIsCommander: this.leaderIsCommander,
+  //     econMinister: this.econMinister?.id,
+  //     foreignMinister: this.foreignMinister?.id,
+  //     leaderTermStart: this.leaderTermStart,
+  //     storage: this.storage.toJSON(),
+  //     bloc: this.bloc?.id,
+  //   };
+  // }
 }
