@@ -1,14 +1,13 @@
-import { Autonomy } from './entity/Autonomy';
-import { Factory } from './entity/Factory';
-import { Player } from './entity/Player';
-import { Region } from './entity/Region';
-import { State } from './entity/State';
-import { War } from './entity/War';
+import { Autonomy } from '../entity/Autonomy';
+// import { Bloc } from '../entity/Bloc';
+import { Factory } from '../entity/Factory';
+import { Player } from '../entity/Player';
+import { Region } from '../entity/Region';
+import { State } from '../entity/State';
+import { War } from '../entity/War';
 
-import { dotless } from './misc/utils';
-
-export default class ModelHandler {
-  private static instance: ModelHandler;
+export default class ModelService {
+  private static instance: ModelService;
 
   private models = {
     autonomies: new Map<number, Autonomy>(),
@@ -22,11 +21,11 @@ export default class ModelHandler {
 
   private constructor() {}
 
-  public static getInstance(): ModelHandler {
-    if (!ModelHandler.instance) {
-      ModelHandler.instance = new ModelHandler();
+  public static getInstance(): ModelService {
+    if (!ModelService.instance) {
+      ModelService.instance = new ModelService();
     }
-    return ModelHandler.instance;
+    return ModelService.instance;
   }
 
   private async getModel<T>(
@@ -35,7 +34,7 @@ export default class ModelHandler {
     ModelClass: new (id: number) => T
   ): Promise<T> {
     if (typeof id === 'string') {
-      id = dotless(id);
+      id = parseInt(id);
     }
 
     let model = modelMap.get(id);

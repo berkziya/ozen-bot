@@ -24,17 +24,17 @@ export async function getParliamentInfo(
   parliament.capitalRegion = await user.models.getRegion(capitalId);
 
   const $ = cheerio.load(content);
-  $('div.parliament_law').map(async (i, el) => {
+
+  for (const el of $('div.parliament_law')) {
     const action = $(el).attr('action')!.split('/');
-    const lawId = parseInt(action[action.length - 1]);
-    const by = parseInt(action[action.length - 2]);
-    const text = $(el).find('div > span').text().trim();
+    const [lawId, byId] = action.reverse();
+    const text = $(el).find('div.parliament_sh1').text().trim();
     const law = new Law();
-    law.id = lawId;
-    law.by = await user.models.getPlayer(by);
+    law.id = parseInt(lawId);
+    law.by = await user.models.getPlayer(byId);
     law.text = text;
     parliament.laws.push(law);
-  });
+  }
 
   return parliament;
 }

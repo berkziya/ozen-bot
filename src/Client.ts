@@ -1,28 +1,19 @@
-import { chromium, firefox, Browser } from 'playwright';
-import ModelHandler from './ModelHandler';
+import { firefox, Browser } from 'playwright';
 import { UserContext } from './UserContext';
 import invariant from 'tiny-invariant';
+import ModelService from './services/ModelService';
 
 export class Client {
-  constructor({
-    browserType = 'firefox',
-    models = ModelHandler.getInstance(),
-  }: { browserType?: 'chromium' | 'firefox'; models?: ModelHandler } = {}) {
-    this.browserType_ = browserType == 'chromium' ? chromium : firefox;
-    this.models = models;
-  }
-
-  private browserType_;
   public browser!: Browser;
 
-  public models: ModelHandler;
+  public modelService: ModelService = ModelService.getInstance();
   public users: Set<UserContext> = new Set();
 
   async init({
     headless = true,
   }: { headless?: boolean } = {}): Promise<Browser | null> {
     try {
-      this.browser = await this.browserType_.launch({
+      this.browser = await firefox.launch({
         headless,
         slowMo: 1000,
       });
@@ -50,9 +41,8 @@ export class Client {
     isMobile = false,
   }: { isMobile?: boolean } = {}): Promise<UserContext | null> {
     try {
-      const userContext = new UserContext(this.browser, isMobile, this.models);
+      const userContext = new UserContext(this.browser, isMobile);
       await userContext.init();
-      invariant(await userContext.isContextValid(), 'Context is not valid');
       this.users.add(userContext);
       return userContext;
     } catch (e) {

@@ -1,2 +1,2 @@
 import { UserContext } from '../../../UserContext';
-export declare function produceEnergy(user: UserContext, amount?: number, target?: number, leaveAtLeastXGold?: number): Promise<void | null>;
+export declare function produceEnergy(user: UserContext, amount?: number, target?: number, leaveAtLeastXGold?: number): Promise<unknown>;

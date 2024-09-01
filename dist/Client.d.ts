@@ -1,14 +1,9 @@
 import { Browser } from 'playwright';
-import ModelHandler from './ModelHandler';
 import { UserContext } from './UserContext';
+import ModelService from './services/ModelService';
 export declare class Client {
-    constructor({ browserType, models, }?: {
-        browserType?: 'chromium' | 'firefox';
-        models?: ModelHandler;
-    });
-    private browserType_;
     browser: Browser;
-    models: ModelHandler;
+    modelService: ModelService;
     users: Set<UserContext>;
     init({ headless, }?: {
         headless?: boolean;

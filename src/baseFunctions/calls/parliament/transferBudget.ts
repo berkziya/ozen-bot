@@ -1,5 +1,4 @@
 import invariant from 'tiny-invariant';
-import { proLaw } from '.';
 import { Autonomy } from '../../../entity/Autonomy';
 import { Region } from '../../../entity/Region';
 import { State } from '../../../entity/State';
@@ -7,24 +6,24 @@ import { UserContext } from '../../../UserContext';
 import { getAutonomyInfo } from '../../getInfo/getAutonomyInfo';
 import { getStateInfo } from '../../getInfo/getStateInfo';
 import { amIMinister } from '../../getInfo/misc/amIMinister';
-import { getParliamentInfo } from '../../getInfo/misc/getParliamentInfo';
+import { proLawByText } from '.';
+
+const resourceIds = {
+  money: 1,
+  gold: 0,
+  oil: 3,
+  ore: 4,
+  uranium: 11,
+  diamonds: 15,
+};
 
 export async function transferBudget(
   user: UserContext,
   to: State | Region | Autonomy,
-  resource: string,
+  resource: keyof typeof resourceIds,
   amount: number
 ) {
   try {
-    const resource_Ids: { [key: string]: number } = {
-      money: 1,
-      gold: 0,
-      oil: 3,
-      ore: 4,
-      uranium: 11,
-      diamonds: 15,
-    };
-
     const ministerInfo = await amIMinister(user);
     invariant(ministerInfo, 'Failed to get minister info');
 
@@ -51,30 +50,14 @@ export async function transferBudget(
 
     console.log(`Transfering ${amount} ${resource} to ${to}`);
 
-    const law = await user.ajax(
-      `/parliament/donew/send_${resource_Ids[resource]}/${amount}/${capitalId}`,
+    await user.ajax(
+      `/parliament/donew/send_${resourceIds[resource]}/${amount}/${capitalId}`,
       `tmp_gov: '${amount}'`
     );
-    invariant(law, 'Failed to evaluate law offer ajax');
 
-    const parliament = await getParliamentInfo(
-      user,
-      user.player.region!.state!.capital!.id
-    );
+    const result = await proLawByText(user, 'Budget transfer');
 
-    invariant(parliament, 'Failed to get parliament info');
-
-    let isAccepted = false;
-    for (const law of parliament.laws) {
-      if (law.by.id === user.id) {
-        await proLaw(user, capitalId, law);
-        isAccepted = true;
-      }
-    }
-
-    invariant(isAccepted, 'Failed to accept law');
-
-    return true;
+    return result;
   } catch (e) {
     console.error(e);
     return null;

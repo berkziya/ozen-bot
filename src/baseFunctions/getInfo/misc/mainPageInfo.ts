@@ -2,7 +2,7 @@ import { UserContext } from '../../../UserContext';
 import * as cheerio from 'cheerio';
 import { dotless } from '../../../misc/utils';
 import { getTimestamp } from '../../../misc/timestamps';
-import { iPhoneUserAgent } from '../../../UserContext';
+import { iPhoneUserAgent } from '../../../services/ContextService';
 
 export async function mainPageInfo(user: UserContext) {
   if (user.isMobile) {

@@ -5,21 +5,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Client = void 0;
 const playwright_1 = require("playwright");
-const ModelHandler_1 = __importDefault(require("./ModelHandler"));
 const UserContext_1 = require("./UserContext");
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
+const ModelService_1 = __importDefault(require("./services/ModelService"));
 class Client {
-    constructor({ browserType = 'firefox', models = ModelHandler_1.default.getInstance(), } = {}) {
-        this.browserType_ = browserType == 'chromium' ? playwright_1.chromium : playwright_1.firefox;
-        this.models = models;
-    }
-    browserType_;
     browser;
-    models;
+    modelService = ModelService_1.default.getInstance();
     users = new Set();
     async init({ headless = true, } = {}) {
         try {
-            this.browser = await this.browserType_.launch({
+            this.browser = await playwright_1.firefox.launch({
                 headless,
                 slowMo: 1000,
             });
@@ -45,9 +40,8 @@ class Client {
     }
     async createUserContext({ isMobile = false, } = {}) {
         try {
-            const userContext = new UserContext_1.UserContext(this.browser, isMobile, this.models);
+            const userContext = new UserContext_1.UserContext(this.browser, isMobile);
             await userContext.init();
-            (0, tiny_invariant_1.default)(await userContext.isContextValid(), 'Context is not valid');
             this.users.add(userContext);
             return userContext;
         }
