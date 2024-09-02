@@ -6,7 +6,7 @@ import { Region } from '../entity/Region';
 import { State } from '../entity/State';
 import { War } from '../entity/War';
 
-export default class ModelService {
+export class ModelService {
   private static instance: ModelService;
 
   private models = {

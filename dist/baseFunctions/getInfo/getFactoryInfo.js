@@ -33,11 +33,7 @@ async function getFactoryInfo(user, factoryId, force) {
         Date.now() - factory.lastUpdate.getTime() < 20 * 60 * 1000) {
         return factory;
     }
-    const content = await fetch(user.link + '/factory/index/' + factoryId, {
-        headers: {
-            cookie: user.cookies,
-        },
-    }).then((res) => res.text());
+    const content = await user.get('/factory/index/' + factoryId);
     if (!content || content.length < 150)
         return null;
     const $ = cheerio.load(content);

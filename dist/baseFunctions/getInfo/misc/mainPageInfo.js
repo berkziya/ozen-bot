@@ -27,7 +27,6 @@ exports.mainPageInfo = mainPageInfo;
 const cheerio = __importStar(require("cheerio"));
 const utils_1 = require("../../../misc/utils");
 const timestamps_1 = require("../../../misc/timestamps");
-const ContextService_1 = require("../../../services/ContextService");
 async function mainPageInfo(user) {
     if (user.isMobile) {
         return await mobilePageInfo(user);
@@ -35,9 +34,7 @@ async function mainPageInfo(user) {
     return await desktopPageInfo(user);
 }
 async function desktopPageInfo(user) {
-    const content = await fetch(user.link + '/main/content', {
-        headers: { cookie: user.cookies },
-    }).then((x) => x.text());
+    const content = await user.get('/main/content');
     if (!content || content.length < 150)
         return null;
     const $ = cheerio.load(content);
@@ -171,9 +168,7 @@ async function desktopPageInfo(user) {
     return toBeReturned;
 }
 async function mobilePageInfo(user) {
-    const content = await fetch(user.link + '/main/content', {
-        headers: { cookie: user.cookies, 'User-Agent': ContextService_1.iPhoneUserAgent },
-    }).then((x) => x.text());
+    const content = await user.get('/main/content');
     if (!content || content.length < 150)
         return null;
     const $ = cheerio.load(content);

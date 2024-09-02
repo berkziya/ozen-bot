@@ -33,11 +33,7 @@ async function getStateInfo(user, stateId, force) {
         Date.now() - state.lastUpdate.getTime() < 10 * 60 * 1000) {
         return state;
     }
-    const content = await fetch(user.link + '/map/state_details/' + stateId, {
-        headers: {
-            cookie: user.cookies,
-        },
-    }).then((res) => res.text());
+    const content = await user.get('/map/state_details/' + stateId);
     if (!content || content.length < 150)
         return null;
     const $ = cheerio.load(content);

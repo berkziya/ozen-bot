@@ -37,11 +37,7 @@ async function getPlayerInfo(user, playerId, force) {
         Date.now() - player.lastUpdate.getTime() < 3 * 60 * 1000) {
         return player;
     }
-    const content = await fetch(user.link + '/slide/profile/' + playerId, {
-        headers: {
-            cookie: user.cookies,
-        },
-    }).then((res) => res.text());
+    const content = await user.get('/slide/profile/' + playerId);
     if (!content || content.length < 150)
         return null;
     player.leaderOfState = null;

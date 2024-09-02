@@ -45,7 +45,7 @@ async function transferBudget(user, to, resource, amount) {
         }
         (0, tiny_invariant_1.default)(capitalId, 'Failed to get id');
         console.log(`Transfering ${amount} ${resource} to ${to}`);
-        await user.ajax(`/parliament/donew/send_${resourceIds[resource]}/${amount}/${capitalId}`, `tmp_gov: '${amount}'`);
+        await user.ajax(`/parliament/donew/send_${resourceIds[resource]}/${amount}/${capitalId}`, { tmp_gov: amount });
         const result = await (0, _1.proLawByText)(user, 'Budget transfer');
         return result;
     }

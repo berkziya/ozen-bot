@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ModelService = void 0;
 const Autonomy_1 = require("../entity/Autonomy");
 // import { Bloc } from '../entity/Bloc';
 const Factory_1 = require("../entity/Factory");
@@ -58,4 +59,4 @@ class ModelService {
         return this.getModel(this.models.wars, warId, War_1.War);
     }
 }
-exports.default = ModelService;
+exports.ModelService = ModelService;

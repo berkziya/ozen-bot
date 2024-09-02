@@ -6,18 +6,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const node_fs_1 = require("node:fs");
 const node_path_1 = __importDefault(require("node:path"));
+const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
 class AuthService {
-    contextService;
+    browserService;
     isMobile;
-    cookies = '';
-    constructor(contextService, isMobile) {
-        this.contextService = contextService;
+    cookies;
+    c_html;
+    constructor(browserService, isMobile) {
+        this.browserService = browserService;
         this.isMobile = isMobile;
     }
+    get link() {
+        return `https://${this.isMobile ? 'm.' : ''}rivalregions.com`;
+    }
     async login(mail, password, useCookies = true) {
-        const { page } = this.contextService;
         try {
-            await page.goto('/');
+            const page = await this.browserService.getPage();
+            await page.goto(this.link);
             const sanitizedMail = mail.replace(/[^a-z0-9]/gi, '_').toLowerCase();
             const cookiesDir = node_path_1.default.join(process.cwd(), 'cookies');
             const cookiesPath = node_path_1.default.join(cookiesDir, `${sanitizedMail}_${this.isMobile ? 'm_' : ''}cookies.json`);
@@ -30,6 +35,7 @@ class AuthService {
                     await page.reload();
                 }
                 catch {
+                    console.log('Failed to load cookies');
                     // File doesn't exist, proceed without cookies
                     useCookies = false;
                 }
@@ -49,6 +55,9 @@ class AuthService {
                 }
             }
             const id = await page.evaluate(() => id);
+            (0, tiny_invariant_1.default)(id, 'Failed to get player id');
+            const c_html = await page.evaluate(() => c_html);
+            this.c_html = c_html;
             const cookies = await page.context().cookies();
             // Ensure the directory exists
             await node_fs_1.promises.mkdir(cookiesDir, { recursive: true });
@@ -60,15 +69,18 @@ class AuthService {
             console.error('Failed to login:', e);
             return null;
         }
+        finally {
+            await this.browserService.closePage();
+        }
     }
     async amILoggedIn() {
-        const { context } = this.contextService;
+        const { context } = this.browserService;
         try {
             const cookiesFromContext = await context.cookies();
             this.cookies = cookiesFromContext
                 .map((x) => `${x.name}=${x.value}`)
                 .join('; ');
-            const x = await fetch(this.contextService.link + '/map/details/100002', {
+            const x = await fetch(this.link + '/map/details/100002', {
                 headers: { cookie: this.cookies },
             });
             if (x.status !== 200)

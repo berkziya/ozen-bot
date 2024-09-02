@@ -14,9 +14,6 @@ importers:
       '@prisma/client':
         specifier: ^5.19.0
         version: 5.19.0(prisma@5.19.0)
-      async-lock:
-        specifier: ^1.4.1
-        version: 1.4.1
       cheerio:
         specifier: 1.0.0-rc.12
         version: 1.0.0-rc.12
@@ -33,9 +30,6 @@ importers:
       '@eslint/js':
         specifier: ^9.9.1
         version: 9.9.1
-      '@types/async-lock':
-        specifier: ^1.4.2
-        version: 1.4.2
       '@types/eslint__js':
         specifier: ^8.42.3
         version: 8.42.3
@@ -138,9 +132,6 @@ packages:
   '@prisma/get-platform@5.19.0':
     resolution: {integrity: sha512-s9DWkZKnuP4Y8uy6yZfvqQ/9X3/+2KYf3IZUVZz5OstJdGBJrBlbmIuMl81917wp5TuK/1k2TpHNCEdpYLPKmg==}
 
-  '@types/async-lock@1.4.2':
-    resolution: {integrity: sha512-HlZ6Dcr205BmNhwkdXqrg2vkFMN2PluI7Lgr8In3B3wE5PiQHhjRqtW/lGdVU9gw+sM0JcIDx2AN+cW8oSWIcw==}
-
   '@types/eslint@9.6.1':
     resolution: {integrity: sha512-FXx2pKgId/WyYo2jXw63kk7/+TY7u7AziEJxJAnSFzHlqTAS3Ync6SvgYAN/k4/PQpnnVuzoMuVnByKK2qp0ag==}
 
@@ -239,9 +230,6 @@ packages:
 
   argparse@2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
-
-  async-lock@1.4.1:
-    resolution: {integrity: sha512-Az2ZTpuytrtqENulXwO3GGv1Bztugx6TT37NIo7imr/Qo0gsYiGtSdBa2B6fsXhTpVZDNfu1Qn3pk531e3q+nQ==}
 
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
@@ -842,8 +830,6 @@ snapshots:
     dependencies:
       '@prisma/debug': 5.19.0
 
-  '@types/async-lock@1.4.2': {}
-
   '@types/eslint@9.6.1':
     dependencies:
       '@types/estree': 1.0.5
@@ -968,8 +954,6 @@ snapshots:
       color-convert: 2.0.1
 
   argparse@2.0.1: {}
-
-  async-lock@1.4.1: {}
 
   balanced-match@1.0.2: {}
 

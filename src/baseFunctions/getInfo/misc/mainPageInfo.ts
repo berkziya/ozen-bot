@@ -2,7 +2,6 @@ import { UserContext } from '../../../UserContext';
 import * as cheerio from 'cheerio';
 import { dotless } from '../../../misc/utils';
 import { getTimestamp } from '../../../misc/timestamps';
-import { iPhoneUserAgent } from '../../../services/ContextService';
 
 export async function mainPageInfo(user: UserContext) {
   if (user.isMobile) {
@@ -12,9 +11,7 @@ export async function mainPageInfo(user: UserContext) {
 }
 
 async function desktopPageInfo(user: UserContext) {
-  const content = await fetch(user.link + '/main/content', {
-    headers: { cookie: user.cookies },
-  }).then((x) => x.text());
+  const content = await user.get('/main/content');
 
   if (!content || content.length < 150) return null;
 
@@ -170,9 +167,7 @@ async function desktopPageInfo(user: UserContext) {
 }
 
 async function mobilePageInfo(user: UserContext) {
-  const content = await fetch(user.link + '/main/content', {
-    headers: { cookie: user.cookies, 'User-Agent': iPhoneUserAgent },
-  }).then((x) => x.text());
+  const content = await user.get('/main/content');
 
   if (!content || content.length < 150) return null;
 

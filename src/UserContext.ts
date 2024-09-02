@@ -1,86 +1,67 @@
 import { Browser } from 'playwright';
-import AsyncLock from 'async-lock';
 import { AuthService } from './services/AuthService';
-import invariant from 'tiny-invariant';
-import { contextService } from './services/ContextService';
-import ModelService from './services/ModelService';
+import { BrowserService } from './services/BrowserService';
+import { ModelService } from './services/ModelService';
 import { Player } from './entity/Player';
 
 export class UserContext {
   private authService: AuthService;
-  private browserService: contextService;
+  private browserService: BrowserService;
 
   public models: ModelService = ModelService.getInstance();
-  public lock = new AsyncLock({ domainReentrant: true });
-
   public player!: Player;
-  public id!: number;
 
   constructor(browser: Browser, public isMobile: boolean) {
-    this.browserService = new contextService(browser, isMobile);
+    this.browserService = new BrowserService(browser, isMobile);
     this.authService = new AuthService(this.browserService, isMobile);
   }
 
+  get id() {
+    return this.player.id;
+  }
+
   get link() {
-    return this.browserService.link;
+    return `https://${this.isMobile ? 'm.' : ''}rivalregions.com`;
   }
 
   get cookies() {
     return this.authService.cookies;
   }
 
-  async init() {
-    await this.browserService.init();
+  get c_html() {
+    return this.authService.c_html;
   }
 
   async login(mail: string, password: string, useCookies: boolean = true) {
-    return await this.lock.acquire(['context', 'page'], async () => {
-      const resultId = await this.authService.login(mail, password, useCookies);
-      if (resultId) {
-        this.player = await this.models.getPlayer(resultId);
-        this.id = resultId;
-      }
-      return resultId;
-    });
+    const result = await this.authService.login(mail, password, useCookies);
+    if (result) this.player = await this.models.getPlayer(result);
+    return result;
   }
 
-  async ajax(url: string, data: string = '') {
-    const { page } = this.browserService;
-    return await this.lock.acquire(['context', 'page'], async () => {
-      await this.internetIsOn();
-      const jsAjax = `
-      $.ajax({
-        url: '${url}',
-        data: { c: c_html, ${data} },
-        type: 'POST',
-      });`;
-      return await page.evaluate(jsAjax);
+  async ajax(url: string, data?: { [key: string]: string | number }) {
+    const formData = new FormData();
+    formData.append('c', this.c_html);
+
+    if (data) {
+      for (const [key, value] of Object.entries(data)) {
+        formData.append(key, value.toString());
+      }
+    }
+
+    return await fetch(this.link + url, {
+      method: 'POST',
+      headers: {
+        Cookie: this.cookies,
+      },
+      body: formData,
     });
   }
 
   async get(url: string) {
-    const { context } = this.browserService;
-    return await this.lock.acquire(['context', 'page'], async () => {
-      await this.internetIsOn();
-      const page = await context.newPage();
-      await page.goto(url, { waitUntil: 'load' });
-      const content = await page.content();
-      await page.close();
-      return { content };
-    });
-  }
-
-  async internetIsOn() {
-    const { page } = this.browserService;
-    try {
-      invariant(
-        await page.evaluate(() => window.navigator.onLine),
-        'No internet connection'
-      );
-      return true;
-    } catch (e) {
-      console.error('Internet is off:', e);
-      return false;
-    }
+    return await fetch(this.link + url + '?c=' + this.c_html, {
+      headers: {
+        Cookie: this.cookies,
+      },
+    }).then((res) => res.text());
   }
 }

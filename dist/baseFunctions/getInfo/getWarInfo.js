@@ -34,11 +34,7 @@ async function getWarInfo(user, warId, force = false) {
         Date.now() - war.lastUpdate.getTime() < 1 * 60 * 1000) {
         return war;
     }
-    const content = await fetch(user.link + '/war/details/' + warId, {
-        headers: {
-            cookie: user.cookies,
-        },
-    }).then((res) => res.text());
+    const content = await user.get('/war/details/' + warId);
     if (!content || content.length < 150)
         return null;
     const $ = cheerio.load(content);

@@ -1,9 +1,11 @@
-import { contextService } from './ContextService';
+import { BrowserService } from './BrowserService';
 export declare class AuthService {
-    private contextService;
+    private browserService;
     private isMobile;
     cookies: string;
-    constructor(contextService: contextService, isMobile: boolean);
+    c_html: string;
+    constructor(browserService: BrowserService, isMobile: boolean);
+    get link(): string;
     login(mail: string, password: string, useCookies?: boolean): Promise<number | null>;
     private amILoggedIn;
 }

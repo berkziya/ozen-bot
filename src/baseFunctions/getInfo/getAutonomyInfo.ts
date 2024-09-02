@@ -18,14 +18,7 @@ export async function getAutonomyInfo(
     return autonomy;
   }
 
-  const content = await fetch(
-    user.link + '/map/autonomy_details/' + autonomyId,
-    {
-      headers: {
-        cookie: user.cookies,
-      },
-    }
-  ).then((res) => res.text());
+  const content = await user.get('/map/autonomy_details/' + autonomyId);
 
   if (!content || content.length < 150) {
     return getRegionInfoInner(user, autonomyId, true);

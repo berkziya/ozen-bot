@@ -47,11 +47,7 @@ async function getWarDamageList(user, id, aggressor) {
 async function getPlayerList(user, link) {
     const players = [];
     while (true) {
-        const content = await fetch(link + players.length, {
-            headers: {
-                cookie: user.cookies,
-            },
-        }).then((res) => res.text());
+        const content = await user.get(link + players.length);
         const $ = cheerio.load(content);
         const playerTrs = $('tr[user]');
         if (playerTrs.length === 0)

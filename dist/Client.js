@@ -7,10 +7,10 @@ exports.Client = void 0;
 const playwright_1 = require("playwright");
 const UserContext_1 = require("./UserContext");
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
-const ModelService_1 = __importDefault(require("./services/ModelService"));
+const ModelService_1 = require("./services/ModelService");
 class Client {
     browser;
-    modelService = ModelService_1.default.getInstance();
+    modelService = ModelService_1.ModelService.getInstance();
     users = new Set();
     async init({ headless = true, } = {}) {
         try {
@@ -41,7 +41,6 @@ class Client {
     async createUserContext({ isMobile = false, } = {}) {
         try {
             const userContext = new UserContext_1.UserContext(this.browser, isMobile);
-            await userContext.init();
             this.users.add(userContext);
             return userContext;
         }

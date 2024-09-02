@@ -15,9 +15,7 @@ export async function getFactoryList(
     ? `/factory/state/${locationId}/0/${resourceId}/`
     : `/factory/search/${locationId}/0/${resourceId}/`;
 
-  const content = await fetch(user.link + link, {
-    headers: { cookie: user.cookies },
-  }).then((res) => res.text());
+  const content = await user.get(link);
 
   if (!content || content.length < 150) return null;
 

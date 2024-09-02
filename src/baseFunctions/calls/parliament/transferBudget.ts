@@ -52,7 +52,7 @@ export async function transferBudget(
 
     await user.ajax(
       `/parliament/donew/send_${resourceIds[resource]}/${amount}/${capitalId}`,
-      `tmp_gov: '${amount}'`
+      { tmp_gov: amount }
     );
 
     const result = await proLawByText(user, 'Budget transfer');

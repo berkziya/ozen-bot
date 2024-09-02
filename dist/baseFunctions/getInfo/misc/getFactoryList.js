@@ -32,9 +32,7 @@ async function getFactoryList(user, locationId, isState = false, resource = 'gol
     const link = isState
         ? `/factory/state/${locationId}/0/${resourceId}/`
         : `/factory/search/${locationId}/0/${resourceId}/`;
-    const content = await fetch(user.link + link, {
-        headers: { cookie: user.cookies },
-    }).then((res) => res.text());
+    const content = await user.get(link);
     if (!content || content.length < 150)
         return null;
     const $ = cheerio.load(content);

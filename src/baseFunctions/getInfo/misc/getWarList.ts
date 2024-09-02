@@ -11,9 +11,7 @@ export async function getWarList(user: UserContext, stateId: number) {
 }
 
 async function desktopWarList(user: UserContext, stateId: number) {
-  const content = await fetch(user.link + '/listed/statewars/' + stateId, {
-    headers: { cookie: user.cookies },
-  }).then((x) => x.text());
+  const content = await user.get('/listed/statewars/' + stateId);
 
   if (!content || content.length < 150) return null;
 
@@ -77,9 +75,7 @@ async function desktopWarList(user: UserContext, stateId: number) {
 }
 
 // async function mobileWarList(user: UserContext, stateId: number) {
-//   const content = await fetch(user.link + '/listed/statewars/' + stateId, {
-//     headers: { cookie: user.cookies },
-//   }).then((x) => x.text());
+//   const content = await user.get('/listed/statewars/' + stateId);
 
 //   if (!content || content.length < 150) return null;
 

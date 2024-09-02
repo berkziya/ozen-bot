@@ -7,19 +7,14 @@ const mobileViewport = {
   height: 932,
 };
 
-export class contextService {
+export class BrowserService {
   public context!: BrowserContext;
   public page!: Page;
 
   constructor(private browser: Browser, private isMobile: boolean) {}
 
-  get link() {
-    return `https://${this.isMobile ? 'm.' : ''}rivalregions.com`;
-  }
-
-  async init() {
+  async getPage() {
     this.context = await this.browser.newContext({
-      baseURL: this.link,
       timezoneId: 'UTC',
       locale: 'en-US',
       viewport: this.isMobile ? mobileViewport : undefined,
@@ -27,5 +22,10 @@ export class contextService {
       hasTouch: this.isMobile,
     });
     this.page = await this.context.newPage();
+    return this.page
+  }
+
+  async closePage() {
+    await this.context.close();
   }
 }

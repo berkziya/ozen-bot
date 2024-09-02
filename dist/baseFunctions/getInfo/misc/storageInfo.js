@@ -27,9 +27,7 @@ exports.storageInfo = storageInfo;
 const utils_1 = require("../../../misc/utils");
 const cheerio = __importStar(require("cheerio"));
 async function storageInfo(user) {
-    const content = await fetch(user.link + '/storage', {
-        headers: { cookie: user.cookies },
-    }).then((x) => x.text());
+    const content = await user.get('/storage');
     if (!content || content.length < 150)
         return null;
     const $ = cheerio.load(content);

@@ -1,7 +1,7 @@
 import { firefox, Browser } from 'playwright';
 import { UserContext } from './UserContext';
 import invariant from 'tiny-invariant';
-import ModelService from './services/ModelService';
+import { ModelService } from './services/ModelService';
 
 export class Client {
   public browser!: Browser;
@@ -42,7 +42,6 @@ export class Client {
   }: { isMobile?: boolean } = {}): Promise<UserContext | null> {
     try {
       const userContext = new UserContext(this.browser, isMobile);
-      await userContext.init();
       this.users.add(userContext);
       return userContext;
     } catch (e) {

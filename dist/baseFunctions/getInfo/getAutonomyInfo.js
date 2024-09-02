@@ -34,11 +34,7 @@ async function getAutonomyInfo(user, autonomyId, force) {
         Date.now() - autonomy.lastUpdate.getTime() < 60 * 60 * 1000) {
         return autonomy;
     }
-    const content = await fetch(user.link + '/map/autonomy_details/' + autonomyId, {
-        headers: {
-            cookie: user.cookies,
-        },
-    }).then((res) => res.text());
+    const content = await user.get('/map/autonomy_details/' + autonomyId);
     if (!content || content.length < 150) {
         return (0, getRegionInfo_1.getRegionInfoInner)(user, autonomyId, true);
     }

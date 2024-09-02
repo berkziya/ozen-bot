@@ -31,11 +31,7 @@ export async function getWarDamageList(
 async function getPlayerList(user: UserContext, link: string) {
   const players = [];
   while (true) {
-    const content = await fetch(link + players.length, {
-      headers: {
-        cookie: user.cookies,
-      },
-    }).then((res) => res.text());
+    const content = await user.get(link + players.length);
 
     const $ = cheerio.load(content);
 

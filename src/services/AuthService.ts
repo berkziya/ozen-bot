@@ -1,24 +1,29 @@
-import { contextService } from './ContextService';
+import { BrowserService } from './BrowserService';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
+import invariant from 'tiny-invariant';
 
 export class AuthService {
-  public cookies = '';
+  public cookies!: string;
+  public c_html!: string;
 
   constructor(
-    private contextService: contextService,
+    private browserService: BrowserService,
     private isMobile: boolean
   ) {}
+
+  get link() {
+    return `https://${this.isMobile ? 'm.' : ''}rivalregions.com`;
+  }
 
   async login(
     mail: string,
     password: string,
     useCookies: boolean = true
   ): Promise<number | null> {
-    const { page } = this.contextService;
-
     try {
-      await page.goto('/');
+      const page = await this.browserService.getPage();
+      await page.goto(this.link);
 
       const sanitizedMail = mail.replace(/[^a-z0-9]/gi, '_').toLowerCase();
       const cookiesDir = path.join(process.cwd(), 'cookies');
@@ -35,6 +40,7 @@ export class AuthService {
           await page.context().addCookies(cookies);
           await page.reload();
         } catch {
+          console.log('Failed to load cookies');
           // File doesn't exist, proceed without cookies
           useCookies = false;
         }
@@ -58,6 +64,11 @@ export class AuthService {
 
       const id: number = await page.evaluate(() => id);
 
+      invariant(id, 'Failed to get player id');
+
+      const c_html: string = await page.evaluate(() => c_html);
+      this.c_html = c_html;
+
       const cookies = await page.context().cookies();
 
       // Ensure the directory exists
@@ -70,18 +81,20 @@ export class AuthService {
     } catch (e) {
       console.error('Failed to login:', e);
       return null;
+    } finally {
+      await this.browserService.closePage();
     }
   }
 
   private async amILoggedIn() {
-    const { context } = this.contextService;
+    const { context } = this.browserService;
     try {
       const cookiesFromContext = await context.cookies();
       this.cookies = cookiesFromContext
-        .map((x) => `${x.name}=${x.value}`)
+        .map((x: any) => `${x.name}=${x.value}`)
         .join('; ');
 
-      const x = await fetch(this.contextService.link + '/map/details/100002', {
+      const x = await fetch(this.link + '/map/details/100002', {
         headers: { cookie: this.cookies },
       });
 

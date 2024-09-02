@@ -18,11 +18,7 @@ export async function getWarInfo(
     return war;
   }
 
-  const content = await fetch(user.link + '/war/details/' + warId, {
-    headers: {
-      cookie: user.cookies,
-    },
-  }).then((res) => res.text());
+  const content = await user.get('/war/details/' + warId);
 
   if (!content || content.length < 150) return null;
 

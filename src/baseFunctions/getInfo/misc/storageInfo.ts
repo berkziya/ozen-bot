@@ -3,9 +3,7 @@ import { UserContext } from '../../../UserContext';
 import * as cheerio from 'cheerio';
 
 export async function storageInfo(user: UserContext) {
-  const content = await fetch(user.link + '/storage', {
-    headers: { cookie: user.cookies },
-  }).then((x) => x.text());
+  const content = await user.get('/storage');
 
   if (!content || content.length < 150) return null;
 

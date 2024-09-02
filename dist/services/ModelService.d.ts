@@ -4,7 +4,7 @@ import { Player } from '../entity/Player';
 import { Region } from '../entity/Region';
 import { State } from '../entity/State';
 import { War } from '../entity/War';
-export default class ModelService {
+export declare class ModelService {
     private static instance;
     private models;
     private constructor();

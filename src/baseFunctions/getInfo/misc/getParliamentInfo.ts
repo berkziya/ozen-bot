@@ -11,11 +11,7 @@ export async function getParliamentInfo(
     ? '/parliament/auto/' + capitalId
     : '/parliament/index/' + capitalId;
 
-  const content = await fetch(user.link + url, {
-    headers: {
-      cookie: user.cookies,
-    },
-  }).then((res) => res.text());
+  const content = await user.get(url);
 
   if (!content || content.length < 150) return null;
 
