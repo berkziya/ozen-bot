@@ -12,7 +12,7 @@ export async function getFactoryInfo(
   if (
     !force &&
     factory.lastUpdate &&
-    Date.now() - factory.lastUpdate.getTime() < 20 * 60 * 1000
+    Date.now() - factory.lastUpdate.getTime() < 3 * 1000
   ) {
     return factory;
   }

@@ -31,7 +31,7 @@ async function getWarInfo(user, warId, force = false) {
     const war = await user.models.getWar(warId);
     if (!force &&
         war.lastUpdate &&
-        Date.now() - war.lastUpdate.getTime() < 1 * 60 * 1000) {
+        Date.now() - war.lastUpdate.getTime() < 1 * 1000) {
         return war;
     }
     const content = await user.get('/war/details/' + warId);

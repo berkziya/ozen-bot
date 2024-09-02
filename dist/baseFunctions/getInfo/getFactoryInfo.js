@@ -30,7 +30,7 @@ async function getFactoryInfo(user, factoryId, force) {
     const factory = await user.models.getFactory(factoryId);
     if (!force &&
         factory.lastUpdate &&
-        Date.now() - factory.lastUpdate.getTime() < 20 * 60 * 1000) {
+        Date.now() - factory.lastUpdate.getTime() < 3 * 1000) {
         return factory;
     }
     const content = await user.get('/factory/index/' + factoryId);

@@ -17,7 +17,6 @@ async function desktopPageInfo(user: UserContext) {
 
   const $ = cheerio.load(content);
   const toBeReturned: { [key: string]: any } = {};
-  toBeReturned['player'] = user.player;
 
   // Get data from scripts
   $('script').each((_i, el) => {
@@ -25,9 +24,6 @@ async function desktopPageInfo(user: UserContext) {
     if (script) {
       const trainingWarId = script.match(/slide_header\('war\/details\/(\d+)/);
       if (trainingWarId) toBeReturned['trainingWarId'] = trainingWarId[1];
-
-      const playerId = script.match(/slide_header\('slide\/profile\/(\d+)/);
-      if (playerId) toBeReturned['playerId'] = playerId[1];
 
       const hitCountdownSeconds = script.match(
         /\$\('\.war_index_war_countdown'\)\.countdown\({\s*until:\s*(\d+)/
@@ -97,7 +93,7 @@ async function desktopPageInfo(user: UserContext) {
       toBeReturned['autoWarId'] = autoWarId;
     }
   } catch {
-    toBeReturned['autWarId'] = null;
+    toBeReturned['autoWarId'] = null;
   }
 
   const index_regionDiv = $('#index_region');
@@ -129,6 +125,7 @@ async function desktopPageInfo(user: UserContext) {
     toBeReturned['isResidency'] = false;
   } else if (index_regionDiv.text().includes('Your residency')) {
     toBeReturned['isResidency'] = true;
+    user.player.residency = user.player.region;
   } else {
     toBeReturned['isResidency'] = null;
   }

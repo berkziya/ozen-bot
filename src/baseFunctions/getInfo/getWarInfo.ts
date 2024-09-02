@@ -13,7 +13,7 @@ export async function getWarInfo(
   if (
     !force &&
     war.lastUpdate &&
-    Date.now() - war.lastUpdate.getTime() < 1 * 60 * 1000
+    Date.now() - war.lastUpdate.getTime() < 1 * 1000
   ) {
     return war;
   }

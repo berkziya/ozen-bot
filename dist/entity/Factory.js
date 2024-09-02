@@ -52,6 +52,7 @@ class Factory {
         return this.type_;
     }
     set type(theType) {
+        theType = (0, utils_1.toCamelCase)(theType);
         if (theType === 'diamond') {
             this.type_ = 'diamonds';
         }

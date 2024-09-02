@@ -28,6 +28,7 @@ export declare class Player {
     statePermits: Set<State>;
     regionPermits: Set<Region>;
     constructor(id_: number);
+    alpha(energy?: number): number;
     setName(name: string): void;
     setRegion(region: Region): void;
     setResidency(region: Region): void;

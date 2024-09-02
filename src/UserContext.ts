@@ -58,6 +58,8 @@ export class UserContext {
       }
     }
 
+    console.log(formData);
+
     return await fetch(this.link + url, {
       method: 'POST',
       headers: {

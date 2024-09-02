@@ -13,7 +13,7 @@ export async function getAutonomyInfo(
   if (
     !force &&
     autonomy.lastUpdate &&
-    Date.now() - autonomy.lastUpdate.getTime() < 60 * 60 * 1000
+    Date.now() - autonomy.lastUpdate.getTime() < 3 * 1000
   ) {
     return autonomy;
   }

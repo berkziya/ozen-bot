@@ -1,4 +1,4 @@
-import { dotless } from '../misc/utils';
+import { dotless, toCamelCase } from '../misc/utils';
 import { Player } from './Player';
 import { Region } from './Region';
 
@@ -63,6 +63,7 @@ export class Factory {
   }
 
   set type(theType: string) {
+    theType = toCamelCase(theType);
     if (theType === 'diamond') {
       this.type_ = 'diamonds';
     } else if (theType === 'liquifaction') {

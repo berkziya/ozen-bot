@@ -6,7 +6,8 @@ import invariant from 'tiny-invariant';
 import { cookiesDir } from '../Client';
 
 export class AuthService {
-  public cookies!: string;
+  private mail!: string;
+  public cookieDict!: [];
   public c_html!: string;
 
   constructor(
@@ -18,18 +19,26 @@ export class AuthService {
     return `https://${this.isMobile ? 'm.' : ''}rivalregions.com`;
   }
 
-  async saveCookies(source: BrowserContext | string) {
-    let cookiesDict;
-    if (typeof source === 'string') {
-      try {
-        cookiesDict = JSON.parse(source);
-      } catch (e) {
-        throw new Error('Failed to parse cookies from string source');
-      }
-    } else cookiesDict = await source.cookies();
-    this.cookies = cookiesDict
+  get cookies() {
+    return this.cookieDict
       .map((x: { name: string; value: string }) => `${x.name}=${x.value}`)
       .join('; ');
+  }
+
+  get cookiesPath() {
+    const sanitizedMail = this.mail.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    return path.join(
+      cookiesDir,
+      `${sanitizedMail}-${this.isMobile ? 'm_' : ''}cookies.json`
+    );
+  }
+
+  async saveCookies(source: BrowserContext | string) {
+    if (!(typeof source === 'string'))
+      source = JSON.stringify(await source.cookies());
+    this.cookieDict = JSON.parse(source);
+    await fs.mkdir(cookiesDir, { recursive: true });
+    await fs.writeFile(this.cookiesPath, source);
   }
 
   async login(
@@ -38,29 +47,21 @@ export class AuthService {
     useCookies: boolean = true,
     cookies?: string
   ): Promise<number | null> {
+    this.mail = mail;
     try {
       const { page, context } = await this.browserService.getPage();
       await page.goto(this.link);
 
-      const sanitizedMail = mail.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-      const cookiesPath = path.join(
-        cookiesDir,
-        `${sanitizedMail}-${this.isMobile ? 'm_' : ''}cookies.json`
-      );
-
-      if (cookies) await this.saveCookies(cookies);
-
       if (useCookies) {
         try {
-          await fs.access(cookiesPath);
-          const cookiesData = await fs.readFile(cookiesPath, 'utf8');
+          await fs.access(this.cookiesPath);
+          const cookiesData = await fs.readFile(this.cookiesPath, 'utf8');
           const cookies = JSON.parse(cookiesData);
           await page.context().addCookies(cookies);
           await page.reload();
         } catch {
-          console.log('Failed to load cookies');
-          // File doesn't exist, proceed without cookies
-          useCookies = false;
+          if (cookies) await this.saveCookies(cookies);
+          else useCookies = false;
         }
       }
 
@@ -90,12 +91,6 @@ export class AuthService {
       const c_html: string = await page.evaluate(() => c_html);
       this.c_html = c_html;
 
-      const cookiesFromContext = await page.context().cookies();
-
-      // Ensure the directory exists
-      await fs.mkdir(cookiesDir, { recursive: true });
-      await fs.writeFile(cookiesPath, JSON.stringify(cookiesFromContext));
-
       return id;
     } catch (e) {
       console.error('Failed to login:', e);
@@ -116,7 +111,7 @@ export class AuthService {
       const content = await x.text();
       invariant(content.length > 150, 'Player is not logged in');
 
-      this.c_html = content.match(/c_html = '([0-9a-f]{32})';/)![1];
+      this.c_html = content.match(/c_html = '([a-f0-9]{32})';/)![1];
 
       return true;
     } catch (e) {

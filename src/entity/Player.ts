@@ -51,6 +51,11 @@ export class Player {
     this.storage.setOwner(this);
   }
 
+  alpha(energy = 300) {
+    const slot = Math.floor(energy / 6);
+    return 50 * (this.level + 20) * slot;
+  }
+
   setName(name: string) {
     const havePartyTag = name.match(/\[[^\]]{1,3}\]/g);
     if (havePartyTag) {

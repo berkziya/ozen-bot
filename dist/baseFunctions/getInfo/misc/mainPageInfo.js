@@ -39,7 +39,6 @@ async function desktopPageInfo(user) {
         return null;
     const $ = cheerio.load(content);
     const toBeReturned = {};
-    toBeReturned['player'] = user.player;
     // Get data from scripts
     $('script').each((_i, el) => {
         const script = $(el).html();
@@ -47,9 +46,6 @@ async function desktopPageInfo(user) {
             const trainingWarId = script.match(/slide_header\('war\/details\/(\d+)/);
             if (trainingWarId)
                 toBeReturned['trainingWarId'] = trainingWarId[1];
-            const playerId = script.match(/slide_header\('slide\/profile\/(\d+)/);
-            if (playerId)
-                toBeReturned['playerId'] = playerId[1];
             const hitCountdownSeconds = script.match(/\$\('\.war_index_war_countdown'\)\.countdown\({\s*until:\s*(\d+)/);
             if (hitCountdownSeconds)
                 toBeReturned['hitCountdown'] = parseInt(hitCountdownSeconds[1]);
@@ -104,7 +100,7 @@ async function desktopPageInfo(user) {
         }
     }
     catch {
-        toBeReturned['autWarId'] = null;
+        toBeReturned['autoWarId'] = null;
     }
     const index_regionDiv = $('#index_region');
     // Am I moving?
@@ -136,6 +132,7 @@ async function desktopPageInfo(user) {
     }
     else if (index_regionDiv.text().includes('Your residency')) {
         toBeReturned['isResidency'] = true;
+        user.player.residency = user.player.region;
     }
     else {
         toBeReturned['isResidency'] = null;
