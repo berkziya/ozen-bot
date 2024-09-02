@@ -1,7 +1,6 @@
 import invariant from 'tiny-invariant';
 import { UserContext } from '../../../UserContext';
 import { storageInfo } from '../../getInfo/misc/storageInfo';
-import { Storage } from '../../../entity/shared/Storage';
 
 export async function produceEnergy(
   user: UserContext,
@@ -11,7 +10,7 @@ export async function produceEnergy(
 ) {
   try {
     if (target) {
-      const storage: Storage | null = await storageInfo(user);
+      const storage = await storageInfo(user);
       invariant(storage, 'Failed to get storage info');
       const currentEnergy = user.player.storage.energyDrink;
       amount = target - currentEnergy;

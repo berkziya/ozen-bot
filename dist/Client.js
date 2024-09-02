@@ -21,9 +21,7 @@ class Client {
                 headless,
                 slowMo: 1000,
             });
-            if (!this.browser) {
-                throw new Error('Browser not initialized');
-            }
+            (0, tiny_invariant_1.default)(this.browser, 'Browser not initialized');
             return this.browser;
         }
         catch (e) {

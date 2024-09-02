@@ -21,9 +21,7 @@ export class Client {
         headless,
         slowMo: 1000,
       });
-      if (!this.browser) {
-        throw new Error('Browser not initialized');
-      }
+      invariant(this.browser, 'Browser not initialized');
       return this.browser;
     } catch (e) {
       console.error(e);

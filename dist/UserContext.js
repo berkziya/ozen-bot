@@ -41,7 +41,6 @@ class UserContext {
                 formData.append(key, value.toString());
             }
         }
-        console.log(formData);
         return await fetch(this.link + url, {
             method: 'POST',
             headers: {

@@ -9,30 +9,30 @@ export async function storageInfo(user: UserContext) {
 
   const $ = cheerio.load(content);
 
-  function extractStorageInfo(id: number) {
+  function collectInfo(id: number) {
     return dotless($(`span[urlbar="${id}"]`).text().trim());
   }
 
-  user.player.storage.oil = extractStorageInfo(3);
-  user.player.storage.ore = extractStorageInfo(4);
-  user.player.storage.uranium = extractStorageInfo(11);
-  user.player.storage.diamonds = extractStorageInfo(15);
-  user.player.storage.liquidOxygen = extractStorageInfo(21);
-  user.player.storage.helium3 = extractStorageInfo(24);
-  user.player.storage.rivalium = extractStorageInfo(26);
-  user.player.storage.antirad = extractStorageInfo(13);
-  user.player.storage.energyDrink = extractStorageInfo(17);
-  user.player.storage.spaceRockets = extractStorageInfo(20);
-  user.player.storage.lss = extractStorageInfo(25);
-  user.player.storage.tanks = extractStorageInfo(2);
-  user.player.storage.aircrafts = extractStorageInfo(1);
-  user.player.storage.missiles = extractStorageInfo(14);
-  user.player.storage.bombers = extractStorageInfo(16);
-  user.player.storage.battleships = extractStorageInfo(18);
-  user.player.storage.laserDrones = extractStorageInfo(27);
-  user.player.storage.moonTanks = extractStorageInfo(22);
-  user.player.storage.spaceStations = extractStorageInfo(23);
-  // user.player.storage.submarines = extractStorageInfo(19);
+  user.player.storage.oil = collectInfo(3);
+  user.player.storage.ore = collectInfo(4);
+  user.player.storage.uranium = collectInfo(11);
+  user.player.storage.diamonds = collectInfo(15);
+  user.player.storage.liquidOxygen = collectInfo(21);
+  user.player.storage.helium3 = collectInfo(24);
+  user.player.storage.rivalium = collectInfo(26);
+  user.player.storage.antirad = collectInfo(13);
+  user.player.storage.energyDrink = collectInfo(17);
+  user.player.storage.spaceRockets = collectInfo(20);
+  user.player.storage.lss = collectInfo(25);
+  user.player.storage.tanks = collectInfo(2);
+  user.player.storage.aircrafts = collectInfo(1);
+  user.player.storage.missiles = collectInfo(14);
+  user.player.storage.bombers = collectInfo(16);
+  user.player.storage.battleships = collectInfo(18);
+  user.player.storage.laserDrones = collectInfo(27);
+  user.player.storage.moonTanks = collectInfo(22);
+  user.player.storage.spaceStations = collectInfo(23);
+  // user.player.storage.submarines = collectInfo(19);
 
   $('script').each((_i, el) => {
     const script = $(el).html();
