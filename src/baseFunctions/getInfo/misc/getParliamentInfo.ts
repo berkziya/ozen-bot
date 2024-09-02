@@ -1,15 +1,16 @@
 import { UserContext } from '../../../UserContext';
 import * as cheerio from 'cheerio';
 import { Law, Parliament } from '../../../entity/shared/Parliament';
+import { Region } from '../../../entity/Region';
 
 export async function getParliamentInfo(
   user: UserContext,
-  capitalId: number,
+  capital: Region,
   isAutonomy: boolean = false
 ) {
   const url = isAutonomy
-    ? '/parliament/auto/' + capitalId
-    : '/parliament/index/' + capitalId;
+    ? '/parliament/auto/' + capital.id
+    : '/parliament/index/' + capital.id;
 
   const content = await user.get(url);
 
@@ -17,7 +18,7 @@ export async function getParliamentInfo(
 
   const parliament = new Parliament();
   parliament.isAutonomy = isAutonomy;
-  parliament.capitalRegion = await user.models.getRegion(capitalId);
+  parliament.capitalRegion = capital;
 
   const $ = cheerio.load(content);
 

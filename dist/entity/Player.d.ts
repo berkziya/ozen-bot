@@ -65,4 +65,5 @@ export declare class Player {
         statePermits: number[];
         regionPermits: number[];
     };
+    static [Symbol.hasInstance](instance: any): boolean;
 }

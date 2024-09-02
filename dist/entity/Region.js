@@ -145,5 +145,8 @@ class Region {
             factories: Array.from(this.factories, (factory) => factory.id),
         };
     }
+    static [Symbol.hasInstance](instance) {
+        return instance && typeof instance === 'object' && 'buildings' in instance;
+    }
 }
 exports.Region = Region;

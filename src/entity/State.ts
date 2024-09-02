@@ -145,4 +145,10 @@ export class State {
       bloc: this.bloc?.id,
     };
   }
+
+  static [Symbol.hasInstance](instance: any): boolean {
+    return (
+      instance && typeof instance === 'object' && 'governmentForm' in instance
+    );
+  }
 }

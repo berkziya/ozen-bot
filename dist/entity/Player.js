@@ -139,5 +139,8 @@ class Player {
             regionPermits: Array.from(this.regionPermits, (region) => region.id),
         };
     }
+    static [Symbol.hasInstance](instance) {
+        return (instance && typeof instance === 'object' && 'homelandBonus' in instance);
+    }
 }
 exports.Player = Player;

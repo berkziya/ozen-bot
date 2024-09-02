@@ -50,5 +50,8 @@ class Autonomy {
             storage: this.storage,
         };
     }
+    static [Symbol.hasInstance](instance) {
+        return instance && typeof instance === 'object' && 'governor' in instance;
+    }
 }
 exports.Autonomy = Autonomy;

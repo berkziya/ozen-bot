@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Factory = exports.resourceToId = void 0;
+exports.Factory = exports.factoryIds = void 0;
 const utils_1 = require("../misc/utils");
-exports.resourceToId = {
+exports.factoryIds = {
     gold: 6,
     oil: 2,
     ore: 5,
@@ -75,6 +75,9 @@ class Factory {
             potentialWage: this.potentialWage,
             type: this.type,
         };
+    }
+    static [Symbol.hasInstance](instance) {
+        return instance && typeof instance === 'object' && 'isFixed' in instance;
     }
 }
 exports.Factory = Factory;

@@ -119,5 +119,8 @@ class State {
             bloc: this.bloc?.id,
         };
     }
+    static [Symbol.hasInstance](instance) {
+        return (instance && typeof instance === 'object' && 'governmentForm' in instance);
+    }
 }
 exports.State = State;

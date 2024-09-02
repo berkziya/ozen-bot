@@ -14,7 +14,7 @@ async function autoWork(user, factory) {
     return await user.ajax('/work/autoset', {
         mentor: 0,
         factory: factory.id,
-        type: Factory_1.resourceToId[factory.type],
+        type: Factory_1.factoryIds[factory.type],
         lim: 0,
     });
 }

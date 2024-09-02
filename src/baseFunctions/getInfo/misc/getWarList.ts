@@ -4,13 +4,6 @@ import { UserContext } from '../../../UserContext';
 import * as cheerio from 'cheerio';
 
 export async function getWarList(user: UserContext, stateId: number) {
-  // if (user.isMobile) {
-  //   return await mobileWarList(user, stateId);
-  // }
-  return await desktopWarList(user, stateId);
-}
-
-async function desktopWarList(user: UserContext, stateId: number) {
   const content = await user.get('/listed/statewars/' + stateId);
 
   if (!content || content.length < 150) return null;
@@ -74,10 +67,3 @@ async function desktopWarList(user: UserContext, stateId: number) {
   return [...wars];
 }
 
-// async function mobileWarList(user: UserContext, stateId: number) {
-//   const content = await user.get('/listed/statewars/' + stateId);
-
-//   if (!content || content.length < 150) return null;
-
-//   const $ = cheerio.load(content);
-// }

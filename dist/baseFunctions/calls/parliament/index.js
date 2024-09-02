@@ -12,13 +12,13 @@ const getParliamentInfo_1 = require("../../getInfo/misc/getParliamentInfo");
 async function proLawByText(user, text) {
     try {
         await (0, getStateInfo_1.getStateInfo)(user, user.player.region.state.id, true);
-        const capitalId = user.player.region.state.capital.id;
-        const parliament = await (0, getParliamentInfo_1.getParliamentInfo)(user, capitalId);
+        const capital = user.player.region.state.capital;
+        const parliament = await (0, getParliamentInfo_1.getParliamentInfo)(user, capital);
         (0, tiny_invariant_1.default)(parliament, 'Failed to get parliament info');
         let isAccepted = false;
         for (const law of parliament.laws) {
             if (law.text.includes(text)) {
-                await proLaw(user, capitalId, law);
+                await proLaw(user, capital, law);
                 isAccepted = true;
                 break;
             }
@@ -30,8 +30,8 @@ async function proLawByText(user, text) {
         return null;
     }
 }
-async function proLaw(user, capitalId, law) {
-    return await user.ajax(`/parliament/votelaw/${capitalId}/${law.by.id}/${law.id}/pro`);
+async function proLaw(user, capital, law) {
+    return await user.ajax(`/parliament/votelaw/${capital.id}/${law.by.id}/${law.id}/pro`);
 }
 async function cancelSelfLaw(user) {
     return await user.ajax('/parliament/removelaw');

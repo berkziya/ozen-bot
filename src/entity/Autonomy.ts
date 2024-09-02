@@ -63,4 +63,8 @@ export class Autonomy {
       storage: this.storage,
     };
   }
+
+  static [Symbol.hasInstance](instance: any): boolean {
+    return instance && typeof instance === 'object' && 'governor' in instance;
+  }
 }

@@ -1,6 +1,6 @@
 import { Player } from './Player';
 import { Region } from './Region';
-export declare const resourceToId: {
+export declare const factoryIds: {
     gold: number;
     oil: number;
     ore: number;
@@ -19,7 +19,7 @@ export declare class Factory {
     wage_: number;
     isFixed: boolean;
     potentialWage: number;
-    type_: keyof typeof resourceToId;
+    type_: keyof typeof factoryIds;
     constructor(id_: number);
     setOwner(player: Player): void;
     setRegion(region: Region): void;
@@ -38,4 +38,5 @@ export declare class Factory {
         potentialWage: number;
         type: string;
     };
+    static [Symbol.hasInstance](instance: any): boolean;
 }

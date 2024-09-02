@@ -32,4 +32,12 @@ export class Bloc {
       openBorders: this.openBorders,
     };
   }
+
+  static [Symbol.hasInstance](instance: any): boolean {
+    return (
+      instance &&
+      typeof instance === 'object' &&
+      'militaryAgreement' in instance
+    );
+  }
 }

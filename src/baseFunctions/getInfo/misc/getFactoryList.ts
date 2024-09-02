@@ -1,29 +1,26 @@
-import { Factory, resourceToId } from '../../../entity/Factory';
+import { Factory, factoryIds } from '../../../entity/Factory';
+import { State } from '../../../entity/State';
 import { Region } from '../../../entity/Region';
 import { UserContext } from '../../../UserContext';
 import * as cheerio from 'cheerio';
 
 export async function getFactoryList(
   user: UserContext,
-  locationId: number,
-  isState: boolean = false,
-  resource: keyof typeof resourceToId = 'gold'
+  location: State | Region,
+  resource: keyof typeof factoryIds = 'gold'
 ) {
-  const resourceId = resourceToId[resource];
+  const resourceId = factoryIds[resource];
 
-  const link = isState
-    ? `/factory/state/${locationId}/0/${resourceId}/`
-    : `/factory/search/${locationId}/0/${resourceId}/`;
+  const link =
+    location instanceof State
+      ? `/factory/state/${location.id}/0/${resourceId}/`
+      : `/factory/search/${location.id}/0/${resourceId}/`;
 
   const content = await user.get(link);
 
   if (!content || content.length < 150) return null;
 
   const $ = cheerio.load(content);
-
-  const location = isState
-    ? await user.models.getState(locationId)
-    : await user.models.getRegion(locationId);
 
   const factories: Set<Factory> = new Set();
 

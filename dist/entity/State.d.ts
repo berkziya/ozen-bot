@@ -50,6 +50,7 @@ export declare class State {
         leaderTermStart: Date | null;
         storage: {
             subStorages: Storage[];
+            owner: number | undefined;
             stateMoney: number;
             stateGold: number;
             stateOil: number;
@@ -80,4 +81,5 @@ export declare class State {
         };
         bloc: number | undefined;
     };
+    static [Symbol.hasInstance](instance: any): boolean;
 }

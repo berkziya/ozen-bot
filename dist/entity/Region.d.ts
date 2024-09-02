@@ -100,4 +100,5 @@ export declare class Region {
         };
         factories: number[];
     };
+    static [Symbol.hasInstance](instance: any): boolean;
 }

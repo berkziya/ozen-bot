@@ -26,16 +26,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getParliamentInfo = getParliamentInfo;
 const cheerio = __importStar(require("cheerio"));
 const Parliament_1 = require("../../../entity/shared/Parliament");
-async function getParliamentInfo(user, capitalId, isAutonomy = false) {
+async function getParliamentInfo(user, capital, isAutonomy = false) {
     const url = isAutonomy
-        ? '/parliament/auto/' + capitalId
-        : '/parliament/index/' + capitalId;
+        ? '/parliament/auto/' + capital.id
+        : '/parliament/index/' + capital.id;
     const content = await user.get(url);
     if (!content || content.length < 150)
         return null;
     const parliament = new Parliament_1.Parliament();
     parliament.isAutonomy = isAutonomy;
-    parliament.capitalRegion = await user.models.getRegion(capitalId);
+    parliament.capitalRegion = capital;
     const $ = cheerio.load(content);
     for (const el of $('div.parliament_law')) {
         const action = $(el).attr('action').split('/');

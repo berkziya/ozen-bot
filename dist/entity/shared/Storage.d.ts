@@ -58,6 +58,7 @@ export declare class Storage {
     setBudgetFromDiv(div: Cheerio<Element>): Promise<void>;
     toJSON(): {
         subStorages: Storage[];
+        owner: number | undefined;
         stateMoney: number;
         stateGold: number;
         stateOil: number;

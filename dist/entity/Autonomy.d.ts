@@ -27,4 +27,5 @@ export declare class Autonomy {
         governor: number | undefined;
         storage: Storage;
     };
+    static [Symbol.hasInstance](instance: any): boolean;
 }

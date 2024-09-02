@@ -25,20 +25,18 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getFactoryList = getFactoryList;
 const Factory_1 = require("../../../entity/Factory");
+const State_1 = require("../../../entity/State");
 const Region_1 = require("../../../entity/Region");
 const cheerio = __importStar(require("cheerio"));
-async function getFactoryList(user, locationId, isState = false, resource = 'gold') {
-    const resourceId = Factory_1.resourceToId[resource];
-    const link = isState
-        ? `/factory/state/${locationId}/0/${resourceId}/`
-        : `/factory/search/${locationId}/0/${resourceId}/`;
+async function getFactoryList(user, location, resource = 'gold') {
+    const resourceId = Factory_1.factoryIds[resource];
+    const link = location instanceof State_1.State
+        ? `/factory/state/${location.id}/0/${resourceId}/`
+        : `/factory/search/${location.id}/0/${resourceId}/`;
     const content = await user.get(link);
     if (!content || content.length < 150)
         return null;
     const $ = cheerio.load(content);
-    const location = isState
-        ? await user.models.getState(locationId)
-        : await user.models.getRegion(locationId);
     const factories = new Set();
     const factoryElements = $('tr[user]');
     for (let i = 0; i < factoryElements.length; i++) {

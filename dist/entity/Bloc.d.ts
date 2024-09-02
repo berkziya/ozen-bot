@@ -16,4 +16,5 @@ export declare class Bloc {
         militaryAgreement: boolean;
         openBorders: boolean;
     };
+    static [Symbol.hasInstance](instance: any): boolean;
 }

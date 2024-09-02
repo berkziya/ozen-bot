@@ -62,4 +62,10 @@ export class Party {
       members: Array.from(this.members, (member) => member.id),
     };
   }
+
+  static [Symbol.hasInstance](instance: any): boolean {
+    return (
+      instance && typeof instance === 'object' && 'secretaries' in instance
+    );
+  }
 }

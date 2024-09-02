@@ -23,4 +23,5 @@ export declare class Party {
         secretaries: number[];
         members: number[];
     };
+    static [Symbol.hasInstance](instance: any): boolean;
 }

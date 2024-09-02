@@ -167,4 +167,10 @@ export class Player {
       regionPermits: Array.from(this.regionPermits, (region) => region.id),
     };
   }
+
+  static [Symbol.hasInstance](instance: any): boolean {
+    return (
+      instance && typeof instance === 'object' && 'homelandBonus' in instance
+    );
+  }
 }

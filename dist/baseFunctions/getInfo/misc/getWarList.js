@@ -26,12 +26,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getWarList = getWarList;
 const cheerio = __importStar(require("cheerio"));
 async function getWarList(user, stateId) {
-    // if (user.isMobile) {
-    //   return await mobileWarList(user, stateId);
-    // }
-    return await desktopWarList(user, stateId);
-}
-async function desktopWarList(user, stateId) {
     const content = await user.get('/listed/statewars/' + stateId);
     if (!content || content.length < 150)
         return null;
@@ -74,8 +68,3 @@ async function desktopWarList(user, stateId) {
     }
     return [...wars];
 }
-// async function mobileWarList(user: UserContext, stateId: number) {
-//   const content = await user.get('/listed/statewars/' + stateId);
-//   if (!content || content.length < 150) return null;
-//   const $ = cheerio.load(content);
-// }

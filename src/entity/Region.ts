@@ -199,4 +199,8 @@ export class Region {
       factories: Array.from(this.factories, (factory) => factory.id),
     };
   }
+
+  static [Symbol.hasInstance](instance: any): boolean {
+    return instance && typeof instance === 'object' && 'buildings' in instance;
+  }
 }

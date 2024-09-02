@@ -45,4 +45,10 @@ export class War {
       }),
     };
   }
+
+  static [Symbol.hasInstance](instance: any): boolean {
+    return (
+      instance && typeof instance === 'object' && 'aggressorDamage' in instance
+    );
+  }
 }

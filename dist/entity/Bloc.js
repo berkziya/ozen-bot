@@ -27,5 +27,10 @@ class Bloc {
             openBorders: this.openBorders,
         };
     }
+    static [Symbol.hasInstance](instance) {
+        return (instance &&
+            typeof instance === 'object' &&
+            'militaryAgreement' in instance);
+    }
 }
 exports.Bloc = Bloc;

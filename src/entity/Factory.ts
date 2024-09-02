@@ -2,7 +2,7 @@ import { dotless, toCamelCase } from '../misc/utils';
 import { Player } from './Player';
 import { Region } from './Region';
 
-export const resourceToId = {
+export const factoryIds = {
   gold: 6,
   oil: 2,
   ore: 5,
@@ -26,7 +26,7 @@ export class Factory {
   isFixed: boolean = false;
   potentialWage: number = 0;
 
-  type_!: keyof typeof resourceToId;
+  type_!: keyof typeof factoryIds;
 
   constructor(id_: number) {
     this.id = id_;
@@ -69,7 +69,7 @@ export class Factory {
     } else if (theType === 'liquifaction') {
       this.type_ = 'liquidOxygen';
     } else {
-      this.type_ = theType as keyof typeof resourceToId;
+      this.type_ = theType as keyof typeof factoryIds;
     }
   }
 
@@ -85,5 +85,9 @@ export class Factory {
       potentialWage: this.potentialWage,
       type: this.type,
     };
+  }
+
+  static [Symbol.hasInstance](instance: any): boolean {
+    return instance && typeof instance === 'object' && 'isFixed' in instance;
   }
 }

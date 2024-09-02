@@ -71,6 +71,7 @@ class Storage {
     toJSON() {
         return {
             subStorages: this.subStorages,
+            owner: this.owner?.id,
             stateMoney: this.stateMoney,
             stateGold: this.stateGold,
             stateOil: this.stateOil,

@@ -32,4 +32,5 @@ export declare class War {
             damage: number;
         }[];
     };
+    static [Symbol.hasInstance](instance: any): boolean;
 }

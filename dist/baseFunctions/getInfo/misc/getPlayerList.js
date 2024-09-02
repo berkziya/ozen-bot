@@ -23,12 +23,21 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCitizenList = getCitizenList;
-exports.getResidentList = getResidentList;
-exports.getStateCitizens = getStateCitizens;
-exports.getStateResidents = getStateResidents;
+exports.getCitizens = getCitizens;
+exports.getResidents = getResidents;
 exports.getWarDamageList = getWarDamageList;
+const State_1 = require("../../../entity/State");
 const cheerio = __importStar(require("cheerio"));
+async function getCitizens(user, location) {
+    return location instanceof State_1.State
+        ? getStateCitizens(user, location.id)
+        : getCitizenList(user, location.id);
+}
+async function getResidents(user, location) {
+    return location instanceof State_1.State
+        ? getStateResidents(user, location.id)
+        : getResidentList(user, location.id);
+}
 async function getCitizenList(user, id) {
     return getPlayerList(user, user.link + `/listed/region/${id}/0/`);
 }
@@ -41,8 +50,8 @@ async function getStateCitizens(user, id) {
 async function getStateResidents(user, id) {
     return getPlayerList(user, user.link + `/listed/residency_state/${id}/0/`);
 }
-async function getWarDamageList(user, id, aggressor) {
-    return getPlayerList(user, user.link + `/war/damage/${id}/${aggressor ? 0 : 1}/`);
+async function getWarDamageList(user, id, defender) {
+    return getPlayerList(user, user.link + `/war/damage/${id}/${defender ? 1 : 0}/`);
 }
 async function getPlayerList(user, link) {
     const players = [];

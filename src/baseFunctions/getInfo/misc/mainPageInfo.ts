@@ -4,13 +4,6 @@ import { dotless } from '../../../misc/utils';
 import { getTimestamp } from '../../../misc/timestamps';
 
 export async function mainPageInfo(user: UserContext) {
-  if (user.isMobile) {
-    return await mobilePageInfo(user);
-  }
-  return await desktopPageInfo(user);
-}
-
-async function desktopPageInfo(user: UserContext) {
   const content = await user.get('/main/content');
 
   if (!content || content.length < 150) return null;
@@ -159,84 +152,6 @@ async function desktopPageInfo(user: UserContext) {
   const end = parseInt(endDiv.text());
   toBeReturned['edu'] = end;
   user.player.perks.end = end;
-
-  return toBeReturned;
-}
-
-async function mobilePageInfo(user: UserContext) {
-  const content = await user.get('/main/content');
-
-  if (!content || content.length < 150) return null;
-
-  const $ = cheerio.load(content);
-  const toBeReturned: { [key: string]: any } = {};
-
-  // Get data from scripts
-  $('script').each((_i, el) => {
-    const script = $(el).html();
-    if (script) {
-      const trainingWarId = script.match(/slide_header\('war\/details\/(\d+)/);
-      if (trainingWarId) toBeReturned['trainingWarId'] = trainingWarId[1];
-
-      const hitCountdownSeconds = script.match(
-        /\$\('\.war_index_war_countdown'\)\.countdown\({\s*until:\s*(\d+)/
-      );
-      if (hitCountdownSeconds)
-        toBeReturned['hitCountdown'] = parseInt(hitCountdownSeconds[1]);
-
-      const moving = script.match(
-        /\$\('\.ind_tr_3'\)\.countdown\({\s*until:\s*(\d+)/
-      );
-      if (moving) {
-        toBeReturned['moving'] = true;
-        toBeReturned['movingTime'] = parseInt(moving[1]);
-      }
-    }
-  });
-  const mobilePlayerId = parseInt($('input[name="id"]').attr('value')!);
-  if (mobilePlayerId) toBeReturned['playerId'] = mobilePlayerId;
-
-  // Current state
-  const stateDiv = $('#mob_box_region_2');
-  const stateId = stateDiv.attr('action')!.split('/').pop()!;
-  const stateName = $(
-    'div.small.tc.tc_tran.mob_topbox > b:nth-child(2)'
-  ).text();
-  const state = await user.models.getState(stateId);
-  state.name = stateName;
-  toBeReturned['state'] = state;
-
-  // Current region
-  const regionDiv = $('div.mob_box_region_s > div[action^="map/details/"]');
-  const regionId = regionDiv.attr('action')!.split('/').pop()!;
-  const regionName = $(
-    'div.small.tc.tc_tran.mob_topbox > b:nth-child(2)'
-  ).text();
-  const region = await user.models.getRegion(regionId);
-  region.name = regionName;
-  user.player.setRegion(region);
-  region.setState(state);
-  toBeReturned['region'] = region;
-
-  // Current auto war
-  try {
-    const autoWarSpan = $(
-      '#content > div:nth-child(7) > div.button_red.index_auto.pointer.mslide'
-    );
-    if (autoWarSpan.text() == 'auto') {
-      const autoWarId = autoWarSpan.attr('action')!.split('/').pop()!;
-      toBeReturned['autoWarId'] = autoWarId;
-    }
-  } catch {
-    toBeReturned['autWarId'] = null;
-  }
-
-  // If moving
-  if (toBeReturned['moving']) {
-    const movingToId = $('#div.ind_tr_2').attr('action')!.split('/').pop()!;
-    const movingToRegion = await user.models.getRegion(movingToId);
-    toBeReturned['movingTo'] = movingToRegion;
-  }
 
   return toBeReturned;
 }

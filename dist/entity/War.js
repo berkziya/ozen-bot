@@ -37,5 +37,8 @@ class War {
             }),
         };
     }
+    static [Symbol.hasInstance](instance) {
+        return (instance && typeof instance === 'object' && 'aggressorDamage' in instance);
+    }
 }
 exports.War = War;

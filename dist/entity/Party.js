@@ -51,5 +51,8 @@ class Party {
             members: Array.from(this.members, (member) => member.id),
         };
     }
+    static [Symbol.hasInstance](instance) {
+        return (instance && typeof instance === 'object' && 'secretaries' in instance);
+    }
 }
 exports.Party = Party;
