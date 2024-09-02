@@ -51,15 +51,15 @@ export class Party {
     this.members.delete(player);
   }
 
-  // toJSON() {
-  //   return {
-  //     lastUpdate: this.lastUpdate,
-  //     id: this.id,
-  //     name: this.name,
-  //     region: this.region?.id,
-  //     leader: this.leader?.id,
-  //     secretaries: Array.from(this.secretaries, (secretary) => secretary.id),
-  //     members: Array.from(this.members, (member) => member.id),
-  //   };
-  // }
+  toJSON() {
+    return {
+      lastUpdate: this.lastUpdate,
+      id: this.id,
+      name: this.name,
+      region: this.region?.id,
+      leader: this.leader?.id,
+      secretaries: Array.from(this.secretaries, (secretary) => secretary.id),
+      members: Array.from(this.members, (member) => member.id),
+    };
+  }
 }

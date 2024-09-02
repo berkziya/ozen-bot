@@ -63,5 +63,18 @@ class Factory {
             this.type_ = theType;
         }
     }
+    toJSON() {
+        return {
+            id: this.id,
+            name: this.name,
+            level: this.level,
+            owner: this.owner?.id,
+            region: this.region?.id,
+            wage: this.wage,
+            isFixed: this.isFixed,
+            potentialWage: this.potentialWage,
+            type: this.type,
+        };
+    }
 }
 exports.Factory = Factory;

@@ -14,4 +14,13 @@ export declare class Party {
     addSecretary(player: Player): void;
     addMember(player: Player): void;
     removeMember(player: Player): void;
+    toJSON(): {
+        lastUpdate: Date;
+        id: number;
+        name: string;
+        region: number | undefined;
+        leader: number | undefined;
+        secretaries: number[];
+        members: number[];
+    };
 }

@@ -57,4 +57,47 @@ export declare class Region {
     addResident(player: Player): void;
     removeResident(player: Player): void;
     addParty(party: Party): void;
+    toJSON(): {
+        lastUpdate: Date;
+        id: number;
+        name: string;
+        state: number | undefined;
+        needResidencyToWork: boolean;
+        taxRate: number;
+        marketTaxes: number;
+        factoryOutputTaxes: {
+            gold: number;
+            oil: number;
+            ore: number;
+            uranium: number;
+            diamonds: number;
+        };
+        autonomy: number | undefined;
+        profitShare: number;
+        borderRegions: number[];
+        buildings: {
+            militaryAcademy: number;
+            hospital: number;
+            militaryBase: number;
+            school: number;
+            missileSystem: number;
+            seaPort: number;
+            powerPlant: number;
+            spaceport: number;
+            airport: number;
+            houseFund: number;
+        };
+        seaAccess: boolean;
+        citizens: number[];
+        residents: number[];
+        parties: number[];
+        resources: {
+            gold: number;
+            oil: number;
+            ore: number;
+            uranium: number;
+            diamonds: number;
+        };
+        factories: number[];
+    };
 }

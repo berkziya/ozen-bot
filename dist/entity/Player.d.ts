@@ -41,4 +41,28 @@ export declare class Player {
     addFactory(factory: Factory): void;
     addStatePermit(state: State): void;
     addRegionPermit(region: Region): void;
+    toJSON(): {
+        lastUpdate: Date;
+        id: number;
+        name: string;
+        level: number;
+        exp: number;
+        perks: {
+            str: number;
+            edu: number;
+            end: number;
+        };
+        region: number | undefined;
+        residency: number | undefined;
+        homelandBonus: number | undefined;
+        leaderOfState: number | undefined;
+        econMinisterOfState: number | undefined;
+        foreignMinisterOfState: number | undefined;
+        governorOfAuto: number | undefined;
+        party: number | undefined;
+        storage: Storage;
+        factories: number[];
+        statePermits: number[];
+        regionPermits: number[];
+    };
 }

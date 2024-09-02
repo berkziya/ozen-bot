@@ -27,4 +27,15 @@ export declare class Factory {
     get wage(): number;
     get type(): string;
     set type(theType: string);
+    toJSON(): {
+        id: number;
+        name: string;
+        level: number;
+        owner: number;
+        region: number;
+        wage: number;
+        isFixed: boolean;
+        potentialWage: number;
+        type: string;
+    };
 }
