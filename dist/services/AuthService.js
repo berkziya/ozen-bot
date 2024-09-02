@@ -26,23 +26,24 @@ class AuthService {
             try {
                 cookiesDict = JSON.parse(source);
             }
-            catch (error) {
+            catch (e) {
                 throw new Error('Failed to parse cookies from string source');
             }
         }
-        else {
+        else
             cookiesDict = await source.cookies();
-        }
         this.cookies = cookiesDict
             .map((x) => `${x.name}=${x.value}`)
             .join('; ');
     }
-    async login(mail, password, useCookies = true) {
+    async login(mail, password, useCookies = true, cookies) {
         try {
             const { page, context } = await this.browserService.getPage();
             await page.goto(this.link);
             const sanitizedMail = mail.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-            const cookiesPath = node_path_1.default.join(Client_1.cookiesDir, `${sanitizedMail}_${this.isMobile ? 'm_' : ''}cookies.json`);
+            const cookiesPath = node_path_1.default.join(Client_1.cookiesDir, `${sanitizedMail}-${this.isMobile ? 'm_' : ''}cookies.json`);
+            if (cookies)
+                await this.saveCookies(cookies);
             if (useCookies) {
                 try {
                     await node_fs_1.promises.access(cookiesPath);
@@ -66,7 +67,7 @@ class AuthService {
             await page.waitForSelector('#chat_send');
             await this.saveCookies(context);
             if (!(await this.amILoggedIn())) {
-                if (useCookies) {
+                if (useCookies && password) {
                     return this.login(mail, password, false);
                 }
                 else {

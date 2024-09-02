@@ -12,7 +12,7 @@ export declare class UserContext {
     get link(): string;
     get cookies(): string;
     get c_html(): string;
-    login(mail: string, password: string, useCookies?: boolean): Promise<number | null>;
+    login(mail: string, password?: string | null, useCookies?: boolean, cookies?: string): Promise<number | null>;
     ajax(url: string, data?: {
         [key: string]: string | number;
     }): Promise<Response>;

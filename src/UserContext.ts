@@ -32,8 +32,18 @@ export class UserContext {
     return this.authService.c_html;
   }
 
-  async login(mail: string, password: string, useCookies: boolean = true) {
-    const result = await this.authService.login(mail, password, useCookies);
+  async login(
+    mail: string,
+    password?: string | null,
+    useCookies: boolean = true,
+    cookies?: string
+  ) {
+    const result = await this.authService.login(
+      mail,
+      password,
+      useCookies,
+      cookies
+    );
     if (result) this.player = await this.models.getPlayer(result);
     return result;
   }

@@ -1,6 +1,7 @@
 import { firefox, Browser } from 'playwright';
 import { UserContext } from './UserContext';
 import invariant from 'tiny-invariant';
+import { promises as fs } from 'node:fs';
 import { ModelService } from './services/ModelService';
 import path from 'node:path';
 
@@ -54,6 +55,21 @@ export class Client {
   }
 
   async autoCreateContexts() {
-    
+    const jsonFiles = (await fs.readdir(cookiesDir)).filter((file) =>
+      file.endsWith('.json')
+    );
+
+    for (const file of jsonFiles) {
+      const filePath = path.join(cookiesDir, file);
+      const fileContents = await fs.readFile(filePath, 'utf-8');
+      const user = await this.createUserContext();
+      const id = await user?.login(
+        file.split('-')[0],
+        null,
+        true,
+        fileContents
+      );
+      if (id) this.users.add(user!);
+    }
   }
 }

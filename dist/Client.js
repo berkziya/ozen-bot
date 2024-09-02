@@ -7,6 +7,7 @@ exports.Client = exports.cookiesDir = void 0;
 const playwright_1 = require("playwright");
 const UserContext_1 = require("./UserContext");
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
+const node_fs_1 = require("node:fs");
 const ModelService_1 = require("./services/ModelService");
 const node_path_1 = __importDefault(require("node:path"));
 exports.cookiesDir = node_path_1.default.join(process.cwd(), 'cookies');
@@ -52,6 +53,15 @@ class Client {
         }
     }
     async autoCreateContexts() {
+        const jsonFiles = (await node_fs_1.promises.readdir(exports.cookiesDir)).filter((file) => file.endsWith('.json'));
+        for (const file of jsonFiles) {
+            const filePath = node_path_1.default.join(exports.cookiesDir, file);
+            const fileContents = await node_fs_1.promises.readFile(filePath, 'utf-8');
+            const user = await this.createUserContext();
+            const id = await user?.login(file.split('-')[0], null, true, fileContents);
+            if (id)
+                this.users.add(user);
+        }
     }
 }
 exports.Client = Client;

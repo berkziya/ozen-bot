@@ -20,17 +20,13 @@ export class AuthService {
 
   async saveCookies(source: BrowserContext | string) {
     let cookiesDict;
-
     if (typeof source === 'string') {
       try {
         cookiesDict = JSON.parse(source);
-      } catch (error) {
+      } catch (e) {
         throw new Error('Failed to parse cookies from string source');
       }
-    } else {
-      cookiesDict = await source.cookies();
-    }
-
+    } else cookiesDict = await source.cookies();
     this.cookies = cookiesDict
       .map((x: { name: string; value: string }) => `${x.name}=${x.value}`)
       .join('; ');
@@ -38,8 +34,9 @@ export class AuthService {
 
   async login(
     mail: string,
-    password?: string,
-    useCookies: boolean = true
+    password?: string | null,
+    useCookies: boolean = true,
+    cookies?: string
   ): Promise<number | null> {
     try {
       const { page, context } = await this.browserService.getPage();
@@ -48,8 +45,10 @@ export class AuthService {
       const sanitizedMail = mail.replace(/[^a-z0-9]/gi, '_').toLowerCase();
       const cookiesPath = path.join(
         cookiesDir,
-        `${sanitizedMail}_${this.isMobile ? 'm_' : ''}cookies.json`
+        `${sanitizedMail}-${this.isMobile ? 'm_' : ''}cookies.json`
       );
+
+      if (cookies) await this.saveCookies(cookies);
 
       if (useCookies) {
         try {
@@ -77,7 +76,7 @@ export class AuthService {
       await this.saveCookies(context);
 
       if (!(await this.amILoggedIn())) {
-        if (useCookies) {
+        if (useCookies && password) {
           return this.login(mail, password, false);
         } else {
           throw new Error('Failed to login');

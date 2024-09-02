@@ -8,6 +8,6 @@ export declare class AuthService {
     constructor(browserService: BrowserService, isMobile: boolean);
     get link(): string;
     saveCookies(source: BrowserContext | string): Promise<void>;
-    login(mail: string, password?: string, useCookies?: boolean): Promise<number | null>;
+    login(mail: string, password?: string | null, useCookies?: boolean, cookies?: string): Promise<number | null>;
     private amILoggedIn;
 }
