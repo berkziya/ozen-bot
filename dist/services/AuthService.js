@@ -12,6 +12,7 @@ class AuthService {
     isMobile;
     cookies;
     c_html;
+    cookiesDir = node_path_1.default.join(process.cwd(), 'cookies');
     constructor(browserService, isMobile) {
         this.browserService = browserService;
         this.isMobile = isMobile;
@@ -19,13 +20,18 @@ class AuthService {
     get link() {
         return `https://${this.isMobile ? 'm.' : ''}rivalregions.com`;
     }
+    async applyCookies(source) {
+        const cookies = JSON.parse(source);
+        this.cookies = cookies
+            .map((x) => `${x.name}=${x.value}`)
+            .join('; ');
+    }
     async login(mail, password, useCookies = true) {
         try {
             const page = await this.browserService.getPage();
             await page.goto(this.link);
             const sanitizedMail = mail.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-            const cookiesDir = node_path_1.default.join(process.cwd(), 'cookies');
-            const cookiesPath = node_path_1.default.join(cookiesDir, `${sanitizedMail}_${this.isMobile ? 'm_' : ''}cookies.json`);
+            const cookiesPath = node_path_1.default.join(this.cookiesDir, `${sanitizedMail}_${this.isMobile ? 'm_' : ''}cookies.json`);
             if (useCookies) {
                 try {
                     await node_fs_1.promises.access(cookiesPath);
@@ -58,11 +64,10 @@ class AuthService {
             (0, tiny_invariant_1.default)(id, 'Failed to get player id');
             const c_html = await page.evaluate(() => c_html);
             this.c_html = c_html;
-            const cookies = await page.context().cookies();
+            const cookiesFromContext = await page.context().cookies();
             // Ensure the directory exists
-            await node_fs_1.promises.mkdir(cookiesDir, { recursive: true });
-            // Write cookies to the file
-            await node_fs_1.promises.writeFile(cookiesPath, JSON.stringify(cookies));
+            await node_fs_1.promises.mkdir(this.cookiesDir, { recursive: true });
+            await node_fs_1.promises.writeFile(cookiesPath, JSON.stringify(cookiesFromContext));
             return id;
         }
         catch (e) {
@@ -74,20 +79,14 @@ class AuthService {
         }
     }
     async amILoggedIn() {
-        const { context } = this.browserService;
         try {
-            const cookiesFromContext = await context.cookies();
-            this.cookies = cookiesFromContext
-                .map((x) => `${x.name}=${x.value}`)
-                .join('; ');
             const x = await fetch(this.link + '/map/details/100002', {
                 headers: { cookie: this.cookies },
             });
-            if (x.status !== 200)
-                throw new Error('No response from the server');
+            (0, tiny_invariant_1.default)(x.status == 200, 'No response from the server');
             const content = await x.text();
-            if (content.length <= 150)
-                throw new Error('Player is not logged in');
+            (0, tiny_invariant_1.default)(content.length > 150, 'Player is not logged in');
+            this.c_html = content.match(/c_html = '([0-9a-f]{32})';/)[1];
             return true;
         }
         catch (e) {

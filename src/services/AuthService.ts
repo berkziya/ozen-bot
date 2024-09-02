@@ -7,6 +7,8 @@ export class AuthService {
   public cookies!: string;
   public c_html!: string;
 
+  private cookiesDir = path.join(process.cwd(), 'cookies');
+
   constructor(
     private browserService: BrowserService,
     private isMobile: boolean
@@ -14,6 +16,13 @@ export class AuthService {
 
   get link() {
     return `https://${this.isMobile ? 'm.' : ''}rivalregions.com`;
+  }
+
+  async applyCookies(source: string) {
+    const cookies = JSON.parse(source);
+    this.cookies = cookies
+      .map((x: { name: string; value: string }) => `${x.name}=${x.value}`)
+      .join('; ');
   }
 
   async login(
@@ -26,9 +35,8 @@ export class AuthService {
       await page.goto(this.link);
 
       const sanitizedMail = mail.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-      const cookiesDir = path.join(process.cwd(), 'cookies');
       const cookiesPath = path.join(
-        cookiesDir,
+        this.cookiesDir,
         `${sanitizedMail}_${this.isMobile ? 'm_' : ''}cookies.json`
       );
 
@@ -69,13 +77,11 @@ export class AuthService {
       const c_html: string = await page.evaluate(() => c_html);
       this.c_html = c_html;
 
-      const cookies = await page.context().cookies();
+      const cookiesFromContext = await page.context().cookies();
 
       // Ensure the directory exists
-      await fs.mkdir(cookiesDir, { recursive: true });
-
-      // Write cookies to the file
-      await fs.writeFile(cookiesPath, JSON.stringify(cookies));
+      await fs.mkdir(this.cookiesDir, { recursive: true });
+      await fs.writeFile(cookiesPath, JSON.stringify(cookiesFromContext));
 
       return id;
     } catch (e) {
@@ -87,21 +93,17 @@ export class AuthService {
   }
 
   private async amILoggedIn() {
-    const { context } = this.browserService;
     try {
-      const cookiesFromContext = await context.cookies();
-      this.cookies = cookiesFromContext
-        .map((x: any) => `${x.name}=${x.value}`)
-        .join('; ');
-
       const x = await fetch(this.link + '/map/details/100002', {
         headers: { cookie: this.cookies },
       });
 
-      if (x.status !== 200) throw new Error('No response from the server');
+      invariant(x.status == 200, 'No response from the server');
 
       const content = await x.text();
-      if (content.length <= 150) throw new Error('Player is not logged in');
+      invariant(content.length > 150, 'Player is not logged in');
+
+      this.c_html = content.match(/c_html = '([0-9a-f]{32})';/)![1];
 
       return true;
     } catch (e) {
