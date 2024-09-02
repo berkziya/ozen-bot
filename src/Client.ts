@@ -2,6 +2,9 @@ import { firefox, Browser } from 'playwright';
 import { UserContext } from './UserContext';
 import invariant from 'tiny-invariant';
 import { ModelService } from './services/ModelService';
+import path from 'node:path';
+
+export const cookiesDir = path.join(process.cwd(), 'cookies');
 
 export class Client {
   public browser!: Browser;
@@ -48,5 +51,9 @@ export class Client {
       console.error('Failed to create user context:', e);
       return null;
     }
+  }
+
+  async autoCreateContexts() {
+    
   }
 }

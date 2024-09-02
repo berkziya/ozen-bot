@@ -3,12 +3,11 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { BrowserContext } from 'playwright';
 import invariant from 'tiny-invariant';
+import { cookiesDir } from '../Client';
 
 export class AuthService {
   public cookies!: string;
   public c_html!: string;
-
-  private cookiesDir = path.join(process.cwd(), 'cookies');
 
   constructor(
     private browserService: BrowserService,
@@ -19,16 +18,27 @@ export class AuthService {
     return `https://${this.isMobile ? 'm.' : ''}rivalregions.com`;
   }
 
-  async rememberCookies(context: BrowserContext) {
-    const cookiesFromContext = await context.cookies();
-    this.cookies = cookiesFromContext
+  async saveCookies(source: BrowserContext | string) {
+    let cookiesDict;
+
+    if (typeof source === 'string') {
+      try {
+        cookiesDict = JSON.parse(source);
+      } catch (error) {
+        throw new Error('Failed to parse cookies from string source');
+      }
+    } else {
+      cookiesDict = await source.cookies();
+    }
+
+    this.cookies = cookiesDict
       .map((x: { name: string; value: string }) => `${x.name}=${x.value}`)
       .join('; ');
   }
 
   async login(
     mail: string,
-    password: string,
+    password?: string,
     useCookies: boolean = true
   ): Promise<number | null> {
     try {
@@ -37,7 +47,7 @@ export class AuthService {
 
       const sanitizedMail = mail.replace(/[^a-z0-9]/gi, '_').toLowerCase();
       const cookiesPath = path.join(
-        this.cookiesDir,
+        cookiesDir,
         `${sanitizedMail}_${this.isMobile ? 'm_' : ''}cookies.json`
       );
 
@@ -56,6 +66,7 @@ export class AuthService {
       }
 
       if (!useCookies) {
+        invariant(password, 'No password given');
         await page.fill('input[name="mail"]', mail);
         await page.fill('input[name="p"]', password);
         await page.click('input[name="s"]');
@@ -63,7 +74,7 @@ export class AuthService {
 
       await page.waitForSelector('#chat_send');
 
-      this.rememberCookies(context);
+      await this.saveCookies(context);
 
       if (!(await this.amILoggedIn())) {
         if (useCookies) {
@@ -83,7 +94,7 @@ export class AuthService {
       const cookiesFromContext = await page.context().cookies();
 
       // Ensure the directory exists
-      await fs.mkdir(this.cookiesDir, { recursive: true });
+      await fs.mkdir(cookiesDir, { recursive: true });
       await fs.writeFile(cookiesPath, JSON.stringify(cookiesFromContext));
 
       return id;

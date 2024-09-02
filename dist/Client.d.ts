@@ -1,6 +1,7 @@
 import { Browser } from 'playwright';
 import { UserContext } from './UserContext';
 import { ModelService } from './services/ModelService';
+export declare const cookiesDir: string;
 export declare class Client {
     browser: Browser;
     modelService: ModelService;
@@ -12,4 +13,5 @@ export declare class Client {
     createUserContext({ isMobile, }?: {
         isMobile?: boolean;
     }): Promise<UserContext | null>;
+    autoCreateContexts(): Promise<void>;
 }

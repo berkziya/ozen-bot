@@ -7,12 +7,12 @@ exports.AuthService = void 0;
 const node_fs_1 = require("node:fs");
 const node_path_1 = __importDefault(require("node:path"));
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
+const Client_1 = require("../Client");
 class AuthService {
     browserService;
     isMobile;
     cookies;
     c_html;
-    cookiesDir = node_path_1.default.join(process.cwd(), 'cookies');
     constructor(browserService, isMobile) {
         this.browserService = browserService;
         this.isMobile = isMobile;
@@ -20,9 +20,20 @@ class AuthService {
     get link() {
         return `https://${this.isMobile ? 'm.' : ''}rivalregions.com`;
     }
-    async rememberCookies(context) {
-        const cookiesFromContext = await context.cookies();
-        this.cookies = cookiesFromContext
+    async saveCookies(source) {
+        let cookiesDict;
+        if (typeof source === 'string') {
+            try {
+                cookiesDict = JSON.parse(source);
+            }
+            catch (error) {
+                throw new Error('Failed to parse cookies from string source');
+            }
+        }
+        else {
+            cookiesDict = await source.cookies();
+        }
+        this.cookies = cookiesDict
             .map((x) => `${x.name}=${x.value}`)
             .join('; ');
     }
@@ -31,7 +42,7 @@ class AuthService {
             const { page, context } = await this.browserService.getPage();
             await page.goto(this.link);
             const sanitizedMail = mail.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-            const cookiesPath = node_path_1.default.join(this.cookiesDir, `${sanitizedMail}_${this.isMobile ? 'm_' : ''}cookies.json`);
+            const cookiesPath = node_path_1.default.join(Client_1.cookiesDir, `${sanitizedMail}_${this.isMobile ? 'm_' : ''}cookies.json`);
             if (useCookies) {
                 try {
                     await node_fs_1.promises.access(cookiesPath);
@@ -47,12 +58,13 @@ class AuthService {
                 }
             }
             if (!useCookies) {
+                (0, tiny_invariant_1.default)(password, 'No password given');
                 await page.fill('input[name="mail"]', mail);
                 await page.fill('input[name="p"]', password);
                 await page.click('input[name="s"]');
             }
             await page.waitForSelector('#chat_send');
-            this.rememberCookies(context);
+            await this.saveCookies(context);
             if (!(await this.amILoggedIn())) {
                 if (useCookies) {
                     return this.login(mail, password, false);
@@ -67,7 +79,7 @@ class AuthService {
             this.c_html = c_html;
             const cookiesFromContext = await page.context().cookies();
             // Ensure the directory exists
-            await node_fs_1.promises.mkdir(this.cookiesDir, { recursive: true });
+            await node_fs_1.promises.mkdir(Client_1.cookiesDir, { recursive: true });
             await node_fs_1.promises.writeFile(cookiesPath, JSON.stringify(cookiesFromContext));
             return id;
         }

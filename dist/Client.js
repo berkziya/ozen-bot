@@ -3,11 +3,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Client = void 0;
+exports.Client = exports.cookiesDir = void 0;
 const playwright_1 = require("playwright");
 const UserContext_1 = require("./UserContext");
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
 const ModelService_1 = require("./services/ModelService");
+const node_path_1 = __importDefault(require("node:path"));
+exports.cookiesDir = node_path_1.default.join(process.cwd(), 'cookies');
 class Client {
     browser;
     modelService = ModelService_1.ModelService.getInstance();
@@ -48,6 +50,8 @@ class Client {
             console.error('Failed to create user context:', e);
             return null;
         }
+    }
+    async autoCreateContexts() {
     }
 }
 exports.Client = Client;
