@@ -6,6 +6,9 @@ export declare class BrowserService {
     context: BrowserContext;
     page: Page;
     constructor(browser: Browser, isMobile: boolean);
-    getPage(): Promise<Page>;
+    getPage(): Promise<{
+        page: Page;
+        context: BrowserContext;
+    }>;
     closePage(): Promise<void>;
 }

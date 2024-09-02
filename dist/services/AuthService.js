@@ -20,15 +20,15 @@ class AuthService {
     get link() {
         return `https://${this.isMobile ? 'm.' : ''}rivalregions.com`;
     }
-    async applyCookies(source) {
-        const cookies = JSON.parse(source);
-        this.cookies = cookies
+    async rememberCookies(context) {
+        const cookiesFromContext = await context.cookies();
+        this.cookies = cookiesFromContext
             .map((x) => `${x.name}=${x.value}`)
             .join('; ');
     }
     async login(mail, password, useCookies = true) {
         try {
-            const page = await this.browserService.getPage();
+            const { page, context } = await this.browserService.getPage();
             await page.goto(this.link);
             const sanitizedMail = mail.replace(/[^a-z0-9]/gi, '_').toLowerCase();
             const cookiesPath = node_path_1.default.join(this.cookiesDir, `${sanitizedMail}_${this.isMobile ? 'm_' : ''}cookies.json`);
@@ -52,6 +52,7 @@ class AuthService {
                 await page.click('input[name="s"]');
             }
             await page.waitForSelector('#chat_send');
+            this.rememberCookies(context);
             if (!(await this.amILoggedIn())) {
                 if (useCookies) {
                     return this.login(mail, password, false);

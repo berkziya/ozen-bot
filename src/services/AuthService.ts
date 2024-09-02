@@ -1,6 +1,7 @@
 import { BrowserService } from './BrowserService';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
+import { BrowserContext } from 'playwright';
 import invariant from 'tiny-invariant';
 
 export class AuthService {
@@ -18,9 +19,9 @@ export class AuthService {
     return `https://${this.isMobile ? 'm.' : ''}rivalregions.com`;
   }
 
-  async applyCookies(source: string) {
-    const cookies = JSON.parse(source);
-    this.cookies = cookies
+  async rememberCookies(context: BrowserContext) {
+    const cookiesFromContext = await context.cookies();
+    this.cookies = cookiesFromContext
       .map((x: { name: string; value: string }) => `${x.name}=${x.value}`)
       .join('; ');
   }
@@ -31,7 +32,7 @@ export class AuthService {
     useCookies: boolean = true
   ): Promise<number | null> {
     try {
-      const page = await this.browserService.getPage();
+      const { page, context } = await this.browserService.getPage();
       await page.goto(this.link);
 
       const sanitizedMail = mail.replace(/[^a-z0-9]/gi, '_').toLowerCase();
@@ -61,6 +62,8 @@ export class AuthService {
       }
 
       await page.waitForSelector('#chat_send');
+
+      this.rememberCookies(context);
 
       if (!(await this.amILoggedIn())) {
         if (useCookies) {

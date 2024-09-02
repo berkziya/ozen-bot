@@ -22,7 +22,7 @@ export class BrowserService {
       hasTouch: this.isMobile,
     });
     this.page = await this.context.newPage();
-    return this.page
+    return { page: this.page, context: this.context };
   }
 
   async closePage() {

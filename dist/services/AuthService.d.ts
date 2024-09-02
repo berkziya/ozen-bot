@@ -1,4 +1,5 @@
 import { BrowserService } from './BrowserService';
+import { BrowserContext } from 'playwright';
 export declare class AuthService {
     private browserService;
     private isMobile;
@@ -7,7 +8,7 @@ export declare class AuthService {
     private cookiesDir;
     constructor(browserService: BrowserService, isMobile: boolean);
     get link(): string;
-    applyCookies(source: string): Promise<void>;
+    rememberCookies(context: BrowserContext): Promise<void>;
     login(mail: string, password: string, useCookies?: boolean): Promise<number | null>;
     private amILoggedIn;
 }
