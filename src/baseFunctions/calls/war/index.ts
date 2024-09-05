@@ -2,7 +2,7 @@ import { War } from '../../../entity/War';
 import { UserContext } from '../../../UserContext';
 import { calculateTroops } from './calculateTroops';
 
-export const TROOP_ADMG: { [key: string]: number } = {
+export const troopAlphaDamage: { [key: string]: number } = {
   laserDrones: 6000,
   tanks: 10,
   aircrafts: 75,
@@ -13,7 +13,7 @@ export const TROOP_ADMG: { [key: string]: number } = {
   // missiles: 900,
 };
 
-const TROOP_IDS: { [key: string]: string } = {
+const troopIds: { [key: string]: string } = {
   aircrafts: 't1',
   tanks: 't2',
   missiles: 't14',
@@ -40,21 +40,12 @@ export async function attack(
     const calculatedTroops = calculateTroops(user.player, 300, war, drones);
     const aim = defend ? 1 : 0;
 
-    const troops = Object.fromEntries(
-      Object.entries(calculatedTroops).map(([key, value]) => [
-        key,
-        value.toString(),
-      ])
+    const troops = Object.entries(calculatedTroops).reduce(
+      (acc, [key, value]) => ({ ...acc, [troopIds[key]]: value.toString() }),
+      {}
     );
 
-    let n = JSON.stringify(troops)
-      .replace(/'/g, '"')
-      .replace(/ /g, '')
-      .replace(/:/g, ': ');
-
-    for (const troop in TROOP_IDS) {
-      n = n.replace(troop, TROOP_IDS[troop]);
-    }
+    let n = JSON.stringify(troops);
 
     await cancel_autoattack(user);
 

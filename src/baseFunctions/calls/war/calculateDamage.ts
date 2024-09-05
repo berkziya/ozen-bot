@@ -1,4 +1,4 @@
-import { TROOP_ADMG } from '.';
+import { troopAlphaDamage } from '.';
 import { Player } from '../../../entity/Player';
 import { Region } from '../../../entity/Region';
 import { War } from '../../../entity/War';
@@ -85,17 +85,17 @@ export function calculateDamage(
 
   const troops = calculateTroops(player, 300, war);
   const alpha = Object.keys(troops).reduce(
-    (acc, troop) => acc + troops[troop] * TROOP_ADMG[troop],
+    (acc, troop) => acc + troops[troop] * troopAlphaDamage[troop],
     0
   );
 
-  const tanks_ratio = (troops['tanks'] * TROOP_ADMG['tanks']) / alpha;
+  const tanks_ratio = (troops['tanks'] * troopAlphaDamage['tanks']) / alpha;
   const ships_ratio =
-    (troops['battleships'] * TROOP_ADMG['battleships']) / alpha;
+    (troops['battleships'] * troopAlphaDamage['battleships']) / alpha;
   const space_ratio =
-    (troops['spaceStations'] * TROOP_ADMG['spaceStations']) / alpha;
+    (troops['spaceStations'] * troopAlphaDamage['spaceStations']) / alpha;
   const drone_ratio =
-    (troops['laserDrones'] * TROOP_ADMG['laserDrones']) / alpha;
+    (troops['laserDrones'] * troopAlphaDamage['laserDrones']) / alpha;
 
   const troop_bonus =
     1 +

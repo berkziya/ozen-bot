@@ -6,7 +6,7 @@ import { Player } from './entity/Player';
 
 export class UserContext {
   private authService: AuthService;
-  private browserService: BrowserService;
+  public browserService: BrowserService;
 
   public models: ModelService = ModelService.getInstance();
   public player!: Player;
@@ -44,7 +44,7 @@ export class UserContext {
       useCookies,
       cookies
     );
-    if (result) this.player = await this.models.getPlayer(result);
+    if (result?.id) this.player = await this.models.getPlayer(result.id);
     return result;
   }
 

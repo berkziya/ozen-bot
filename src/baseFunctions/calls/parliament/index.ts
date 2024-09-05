@@ -5,6 +5,15 @@ import { getStateInfo } from '../../getInfo/getStateInfo';
 import { getParliamentInfo } from '../../getInfo/misc/getParliamentInfo';
 import { Region } from '../../../entity/Region';
 
+export const resourceIds = {
+  money: 1,
+  gold: 0,
+  oil: 3,
+  ore: 4,
+  uranium: 11,
+  diamonds: 15,
+};
+
 export async function proLawByText(user: UserContext, text: string) {
   try {
     await getStateInfo(user, user.player.region!.state!.id, true);

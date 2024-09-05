@@ -1,7 +1,7 @@
 import { BrowserService } from './BrowserService';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
-import { BrowserContext } from 'playwright';
+import { BrowserContext, Page } from 'playwright';
 import invariant from 'tiny-invariant';
 import { cookiesDir } from '../Client';
 
@@ -45,8 +45,9 @@ export class AuthService {
     mail: string,
     password?: string | null,
     useCookies: boolean = true,
-    cookies?: string
-  ): Promise<number | null> {
+    cookies?: string,
+    close: boolean = true
+  ): Promise<{ id: number | null; page: Page | null }> {
     this.mail = mail;
     try {
       const { page, context } = await this.browserService.getPage();
@@ -91,12 +92,13 @@ export class AuthService {
       const c_html: string = await page.evaluate(() => c_html);
       this.c_html = c_html;
 
-      return id;
+      return { id, page };
     } catch (e) {
       console.error('Failed to login:', e);
-      return null;
+      close = true;
+      return { id: null, page: null };
     } finally {
-      await this.browserService.closePage();
+      if (close) await this.browserService.closePage();
     }
   }
 

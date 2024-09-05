@@ -61,12 +61,12 @@ export class Client {
       const filePath = path.join(cookiesDir, file);
       const fileContents = await fs.readFile(filePath, 'utf-8');
       const user = await this.createUserContext();
-      const id = await user?.login(
+      const { id } = (await user?.login(
         file.split('-')[0],
         null,
         true,
         fileContents
-      );
+      )) || { id: null };
       if (id) this.users.add(user!);
     }
   }

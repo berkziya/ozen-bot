@@ -32,10 +32,9 @@ export async function amIMinister(user: UserContext, playerId?: number) {
       (player.leaderOfState &&
         player.leaderOfState.id === user.player.region!.state?.id) ??
       false;
-    if (toBeReturned.leader) {
+    if (toBeReturned.leader)
       toBeReturned.dicta =
         player.leaderOfState?.governmentForm === 'dictatorship';
-    }
     toBeReturned.econ =
       (player.econMinisterOfState &&
         player.econMinisterOfState.id === user.player.region!.state?.id) ??
