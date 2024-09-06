@@ -3,12 +3,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.resourceIds = void 0;
 exports.proLawByText = proLawByText;
 exports.proLaw = proLaw;
 exports.cancelSelfLaw = cancelSelfLaw;
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
 const getStateInfo_1 = require("../../getInfo/getStateInfo");
 const getParliamentInfo_1 = require("../../getInfo/misc/getParliamentInfo");
+exports.resourceIds = {
+    money: 1,
+    gold: 0,
+    oil: 3,
+    ore: 4,
+    uranium: 11,
+    diamonds: 15,
+};
 async function proLawByText(user, text) {
     try {
         await (0, getStateInfo_1.getStateInfo)(user, user.player.region.state.id, true);

@@ -1,0 +1,20 @@
+import { ModelService } from './services/ModelService';
+import { Player } from './entity/Player';
+export declare class User {
+    who: string;
+    isMobile: boolean;
+    private authService;
+    private browserService;
+    models: ModelService;
+    player: Player;
+    constructor(who: string, isMobile?: boolean);
+    get id(): number;
+    get link(): string;
+    get cookies(): string;
+    get c_html(): string;
+    init(mail?: string, password?: string, cookies?: string): Promise<number>;
+    ajax(url: string, data?: {
+        [key: string]: string | number;
+    }): Promise<Response>;
+    get(url: string): Promise<string>;
+}

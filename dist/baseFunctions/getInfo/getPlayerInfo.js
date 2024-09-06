@@ -25,8 +25,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPlayerInfo = getPlayerInfo;
 const cheerio = __importStar(require("cheerio"));
-const utils_1 = require("../../misc/utils");
 const getRegionInfo_1 = require("./getRegionInfo");
+const utils_1 = require("../../misc/utils");
 async function getPlayerInfo(user, playerId, force) {
     if (!playerId) {
         playerId = user.player.id;

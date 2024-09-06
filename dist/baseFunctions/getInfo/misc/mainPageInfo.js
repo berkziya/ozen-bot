@@ -75,7 +75,6 @@ async function mainPageInfo(user) {
         .trim();
     const state = await user.models.getState(stateId);
     state.name = stateName;
-    toBeReturned['state'] = state;
     // Current region
     const regionDiv = $('#index_region > div:nth-child(3) > div > span[action^="map/details/"]');
     const regionId = regionDiv.attr('action').split('/').pop();

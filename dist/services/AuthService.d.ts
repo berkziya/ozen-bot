@@ -1,16 +1,15 @@
 import { BrowserService } from './BrowserService';
 import { BrowserContext } from 'playwright';
 export declare class AuthService {
-    private browserService;
+    private who;
     private isMobile;
-    private mail;
+    private browserService;
     cookieDict: [];
     c_html: string;
-    constructor(browserService: BrowserService, isMobile: boolean);
-    get link(): string;
+    constructor(who: string, isMobile: boolean, browserService: BrowserService);
     get cookies(): string;
     get cookiesPath(): string;
     saveCookies(source: BrowserContext | string): Promise<void>;
-    login(mail: string, password?: string | null, useCookies?: boolean, cookies?: string): Promise<number | null>;
-    private amILoggedIn;
+    amILoggedIn(): Promise<boolean>;
+    login(mail?: string, password?: string, cookies?: string): Promise<number | null>;
 }

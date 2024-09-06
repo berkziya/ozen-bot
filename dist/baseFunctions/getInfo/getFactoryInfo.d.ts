@@ -1,2 +1,2 @@
-import { UserContext } from '../../UserContext';
-export declare function getFactoryInfo(user: UserContext, factoryId: number, force?: boolean): Promise<import("../../entity/Factory").Factory | null>;
+import { User } from '../../User';
+export declare function getFactoryInfo(user: User, factoryId: number, force?: boolean): Promise<import("../../entity/Factory").Factory | null>;

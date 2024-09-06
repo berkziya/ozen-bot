@@ -1,5 +1,5 @@
-import { UserContext } from '../../../UserContext';
-export declare function amIMinister(user: UserContext, playerId?: number): Promise<{
+import { User } from '../../../User';
+export declare function amIMinister(user: User, playerId?: number): Promise<{
     leader: boolean;
     dicta: boolean;
     econ: boolean;

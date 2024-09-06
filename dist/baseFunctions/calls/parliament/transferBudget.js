@@ -12,40 +12,30 @@ const getAutonomyInfo_1 = require("../../getInfo/getAutonomyInfo");
 const getStateInfo_1 = require("../../getInfo/getStateInfo");
 const amIMinister_1 = require("../../getInfo/misc/amIMinister");
 const _1 = require(".");
-const resourceIds = {
-    money: 1,
-    gold: 0,
-    oil: 3,
-    ore: 4,
-    uranium: 11,
-    diamonds: 15,
-};
-async function transferBudget(user, to, resource, amount) {
+async function transferBudget(user, target, resource, amount) {
     try {
         const ministerInfo = await (0, amIMinister_1.amIMinister)(user);
         (0, tiny_invariant_1.default)(ministerInfo, 'Failed to get minister info');
-        if (!ministerInfo.econ || (!ministerInfo.leader && ministerInfo.dicta)) {
-            return "You don't have permission to transfer budget";
-        }
-        let capitalId = 0;
-        if (to instanceof State_1.State) {
-            if (!(0, getStateInfo_1.getStateInfo)(user, to.id, true)) {
+        (0, tiny_invariant_1.default)(ministerInfo.econ, 'Not the Econ Minister');
+        (0, tiny_invariant_1.default)(ministerInfo.leader && ministerInfo.dicta, 'Not the Dictator');
+        let targetCapitalId = 0;
+        if (target instanceof State_1.State) {
+            if (!(0, getStateInfo_1.getStateInfo)(user, target.id, true)) {
                 return 'Failed to get state info';
             }
-            capitalId = to.capital.id;
+            targetCapitalId = target.capital.id;
         }
-        else if (to instanceof Autonomy_1.Autonomy) {
-            if (!(0, getAutonomyInfo_1.getAutonomyInfo)(user, to.id)) {
+        else if (target instanceof Autonomy_1.Autonomy) {
+            if (!(0, getAutonomyInfo_1.getAutonomyInfo)(user, target.id)) {
                 return 'Failed to get autonomy info';
             }
-            capitalId = to.capital.id;
+            targetCapitalId = target.capital.id;
         }
-        else if (to instanceof Region_1.Region) {
-            capitalId = to.id;
+        else if (target instanceof Region_1.Region) {
+            targetCapitalId = target.id;
         }
-        (0, tiny_invariant_1.default)(capitalId, 'Failed to get id');
-        console.log(`Transfering ${amount} ${resource} to ${to}`);
-        await user.ajax(`/parliament/donew/send_${resourceIds[resource]}/${amount}/${capitalId}`, { tmp_gov: amount });
+        (0, tiny_invariant_1.default)(targetCapitalId, 'Failed to get the target capital');
+        await user.ajax(`/parliament/donew/send_${_1.resourceIds[resource]}/${amount}/${targetCapitalId}`, { tmp_gov: amount });
         const result = await (0, _1.proLawByText)(user, 'Budget transfer');
         return result;
     }

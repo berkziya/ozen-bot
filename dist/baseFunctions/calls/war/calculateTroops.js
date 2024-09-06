@@ -16,10 +16,10 @@ function calculateTroops(player, energy = 300, war, drones = false) {
     let alpha = player.alpha(energy);
     const n = {};
     for (const troop of TROOPS_FOR_WAR_TYPES[war.type]) {
-        let count = Math.floor(alpha / _1.TROOP_ADMG[troop]);
+        let count = Math.floor(alpha / _1.troopAlphaDamage[troop]);
         if (!drones && ['laserDrones', 'spaceStations'].includes(troop))
             count = 0;
-        alpha -= count * _1.TROOP_ADMG[troop];
+        alpha -= count * _1.troopAlphaDamage[troop];
         n[troop] = count;
     }
     return n;

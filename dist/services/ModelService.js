@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModelService = void 0;
 const Autonomy_1 = require("../entity/Autonomy");
-// import { Bloc } from '../entity/Bloc';
+const Bloc_1 = require("../entity/Bloc");
 const Factory_1 = require("../entity/Factory");
 const Player_1 = require("../entity/Player");
 const Region_1 = require("../entity/Region");
@@ -12,7 +12,7 @@ class ModelService {
     static instance;
     models = {
         autonomies: new Map(),
-        // blocs: new Map<number, Bloc>(),
+        blocs: new Map(),
         factories: new Map(),
         players: new Map(),
         regions: new Map(),
@@ -40,9 +40,9 @@ class ModelService {
     async getAutonomy(autonomyId) {
         return this.getModel(this.models.autonomies, autonomyId, Autonomy_1.Autonomy);
     }
-    // async getBloc(blocId: number | string) {
-    //   return this.getModel(this.models.blocs, blocId, Bloc);
-    // }
+    async getBloc(blocId) {
+        return this.getModel(this.models.blocs, blocId, Bloc_1.Bloc);
+    }
     async getFactory(factoryId) {
         return this.getModel(this.models.factories, factoryId, Factory_1.Factory);
     }

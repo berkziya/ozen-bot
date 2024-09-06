@@ -1,3 +1,3 @@
 import { War } from '../../../entity/War';
-import { UserContext } from '../../../UserContext';
-export declare function getWarList(user: UserContext, stateId: number): Promise<War[] | null>;
+import { User } from '../../../User';
+export declare function getWarList(user: User, stateId: number): Promise<War[] | null>;

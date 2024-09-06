@@ -1,4 +1,4 @@
-import { UserContext } from '../../../UserContext';
-export declare function mainPageInfo(user: UserContext): Promise<{
+import { User } from '../../../User';
+export declare function mainPageInfo(user: User): Promise<{
     [key: string]: any;
 } | null>;

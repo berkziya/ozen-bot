@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.State = void 0;
-const utils_1 = require("../misc/utils");
 const Storage_1 = require("./shared/Storage");
+const utils_1 = require("../misc/utils");
 class State {
     lastUpdate = new Date(0);
     id;

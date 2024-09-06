@@ -1,28 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Storage = exports.idToResource = void 0;
+exports.Storage = void 0;
 const utils_1 = require("../../misc/utils");
-exports.idToResource = {
-    3: 'oil',
-    4: 'ore',
-    11: 'uranium',
-    15: 'diamonds',
-    21: 'liquidOxygen',
-    24: 'helium3',
-    26: 'rivalium',
-    13: 'antirad',
-    17: 'energyDrink',
-    20: 'spaceRockets',
-    25: 'lss',
-    2: 'tanks',
-    1: 'aircrafts',
-    14: 'missiles',
-    16: 'bombers',
-    18: 'battleships',
-    27: 'laserDrones',
-    22: 'moonTanks',
-    23: 'spaceStations',
-};
 class Storage {
     constructor() {
         this.subStorages = [];

@@ -1,4 +1,5 @@
 import { Autonomy } from '../entity/Autonomy';
+import { Bloc } from '../entity/Bloc';
 import { Factory } from '../entity/Factory';
 import { Player } from '../entity/Player';
 import { Region } from '../entity/Region';
@@ -11,6 +12,7 @@ export declare class ModelService {
     static getInstance(): ModelService;
     private getModel;
     getAutonomy(autonomyId: number | string): Promise<Autonomy>;
+    getBloc(blocId: number | string): Promise<Bloc>;
     getFactory(factoryId: number | string): Promise<Factory>;
     getPlayer(playerId: number | string): Promise<Player>;
     getRegion(regionId: number | string): Promise<Region>;

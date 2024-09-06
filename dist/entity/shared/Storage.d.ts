@@ -2,27 +2,6 @@ import { Cheerio, Element } from 'cheerio';
 import { Autonomy } from '../Autonomy';
 import { Player } from '../Player';
 import { State } from '../State';
-export declare const idToResource: {
-    3: string;
-    4: string;
-    11: string;
-    15: string;
-    21: string;
-    24: string;
-    26: string;
-    13: string;
-    17: string;
-    20: string;
-    25: string;
-    2: string;
-    1: string;
-    14: string;
-    16: string;
-    18: string;
-    27: string;
-    22: string;
-    23: string;
-};
 export declare class Storage {
     constructor();
     owner: Player | State | Autonomy | null;

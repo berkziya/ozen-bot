@@ -69,11 +69,11 @@ function calculateDamage(player, war, defend = true) {
     const ships_bonus = 0; // TODO
     const drone_bonus = 0.35;
     const troops = (0, calculateTroops_1.calculateTroops)(player, 300, war);
-    const alpha = Object.keys(troops).reduce((acc, troop) => acc + troops[troop] * _1.TROOP_ADMG[troop], 0);
-    const tanks_ratio = (troops['tanks'] * _1.TROOP_ADMG['tanks']) / alpha;
-    const ships_ratio = (troops['battleships'] * _1.TROOP_ADMG['battleships']) / alpha;
-    const space_ratio = (troops['spaceStations'] * _1.TROOP_ADMG['spaceStations']) / alpha;
-    const drone_ratio = (troops['laserDrones'] * _1.TROOP_ADMG['laserDrones']) / alpha;
+    const alpha = Object.keys(troops).reduce((acc, troop) => acc + troops[troop] * _1.troopAlphaDamage[troop], 0);
+    const tanks_ratio = (troops['tanks'] * _1.troopAlphaDamage['tanks']) / alpha;
+    const ships_ratio = (troops['battleships'] * _1.troopAlphaDamage['battleships']) / alpha;
+    const space_ratio = (troops['spaceStations'] * _1.troopAlphaDamage['spaceStations']) / alpha;
+    const drone_ratio = (troops['laserDrones'] * _1.troopAlphaDamage['laserDrones']) / alpha;
     const troop_bonus = 1 +
         tanks_bonus * tanks_ratio +
         ships_bonus * ships_ratio +
