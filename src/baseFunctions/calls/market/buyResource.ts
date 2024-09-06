@@ -1,4 +1,4 @@
-import { UserContext } from '../../../UserContext';
+import { User } from '../../../User';
 import { parseMarketData } from '../../getInfo/misc/parseMarketData';
 import invariant from 'tiny-invariant';
 
@@ -25,7 +25,7 @@ const resourceToId = {
 };
 
 export async function buyResource(
-  user: UserContext,
+  user: User,
   resource: keyof typeof resourceToId,
   amount: number
 ) {

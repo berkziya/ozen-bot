@@ -1,5 +1,5 @@
 import { Autonomy } from '../entity/Autonomy';
-// import { Bloc } from '../entity/Bloc';
+import { Bloc } from '../entity/Bloc';
 import { Factory } from '../entity/Factory';
 import { Player } from '../entity/Player';
 import { Region } from '../entity/Region';
@@ -11,7 +11,7 @@ export class ModelService {
 
   private models = {
     autonomies: new Map<number, Autonomy>(),
-    // blocs: new Map<number, Bloc>(),
+    blocs: new Map<number, Bloc>(),
     factories: new Map<number, Factory>(),
     players: new Map<number, Player>(),
     regions: new Map<number, Region>(),
@@ -49,9 +49,9 @@ export class ModelService {
     return this.getModel(this.models.autonomies, autonomyId, Autonomy);
   }
 
-  // async getBloc(blocId: number | string) {
-  //   return this.getModel(this.models.blocs, blocId, Bloc);
-  // }
+  async getBloc(blocId: number | string) {
+    return this.getModel(this.models.blocs, blocId, Bloc);
+  }
 
   async getFactory(factoryId: number | string) {
     return this.getModel(this.models.factories, factoryId, Factory);

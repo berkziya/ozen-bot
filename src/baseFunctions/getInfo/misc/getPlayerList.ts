@@ -1,16 +1,16 @@
 import { Region } from '../../../entity/Region';
 import { State } from '../../../entity/State';
-import { UserContext } from '../../../UserContext';
+import { User } from '../../../User';
 import * as cheerio from 'cheerio';
 
-export async function getCitizens(user: UserContext, location: Region | State) {
+export async function getCitizens(user: User, location: Region | State) {
   return location instanceof State
     ? getStateCitizens(user, location.id)
     : getCitizenList(user, location.id);
 }
 
 export async function getResidents(
-  user: UserContext,
+  user: User,
   location: Region | State
 ) {
   return location instanceof State
@@ -18,24 +18,24 @@ export async function getResidents(
     : getResidentList(user, location.id);
 }
 
-async function getCitizenList(user: UserContext, id: number) {
+async function getCitizenList(user: User, id: number) {
   return getPlayerList(user, user.link + `/listed/region/${id}/0/`);
 }
 
-async function getResidentList(user: UserContext, id: number) {
+async function getResidentList(user: User, id: number) {
   return getPlayerList(user, user.link + `/listed/residency/${id}/0/`);
 }
 
-async function getStateCitizens(user: UserContext, id: number) {
+async function getStateCitizens(user: User, id: number) {
   return getPlayerList(user, user.link + `/listed/state_population/${id}/`);
 }
 
-async function getStateResidents(user: UserContext, id: number) {
+async function getStateResidents(user: User, id: number) {
   return getPlayerList(user, user.link + `/listed/residency_state/${id}/0/`);
 }
 
 export async function getWarDamageList(
-  user: UserContext,
+  user: User,
   id: number,
   defender: boolean
 ) {
@@ -45,7 +45,7 @@ export async function getWarDamageList(
   );
 }
 
-async function getPlayerList(user: UserContext, link: string) {
+async function getPlayerList(user: User, link: string) {
   const players = [];
   while (true) {
     const content = await user.get(link + players.length);

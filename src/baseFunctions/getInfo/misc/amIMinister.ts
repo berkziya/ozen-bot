@@ -1,9 +1,9 @@
 import invariant from 'tiny-invariant';
-import { UserContext } from '../../../UserContext';
+import { User } from '../../../User';
 import { getPlayerInfo } from '../getPlayerInfo';
 import { getRegionInfo } from '../getRegionInfo';
 
-export async function amIMinister(user: UserContext, playerId?: number) {
+export async function amIMinister(user: User, playerId?: number) {
   if (!playerId) {
     playerId = user.player.id;
   }

@@ -1,10 +1,10 @@
 import { proLawByText, resourceIds } from '.';
-import { UserContext } from '../../../UserContext';
+import { User } from '../../../User';
 import { amIMinister } from '../../getInfo/misc/amIMinister';
 import invariant from 'tiny-invariant';
 
 export async function resourceRefill(
-  user: UserContext,
+  user: User,
   resource: keyof typeof resourceIds = 'gold'
 ) {
   try {

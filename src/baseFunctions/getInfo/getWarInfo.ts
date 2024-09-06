@@ -1,10 +1,10 @@
-import { UserContext } from '../../UserContext';
+import { User } from '../../User';
 import * as cheerio from 'cheerio';
 import { dotless } from '../../misc/utils';
 import { getTimestamp } from '../../misc/timestamps';
 
 export async function getWarInfo(
-  user: UserContext,
+  user: User,
   warId: number,
   force: boolean = false
 ) {

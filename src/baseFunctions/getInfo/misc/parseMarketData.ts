@@ -1,4 +1,4 @@
-import { UserContext } from '../../../UserContext';
+import { User } from '../../../User';
 import * as cheerio from 'cheerio';
 
 const resourceToId = {
@@ -24,7 +24,7 @@ const resourceToId = {
 };
 
 export async function parseMarketData(
-  user: UserContext,
+  user: User,
   resource: keyof typeof resourceToId
 ) {
   const content = await user.get('/storage/listed/' + resourceToId[resource]);
@@ -35,7 +35,7 @@ export async function parseMarketData(
 
   const listings = $('tr[user]');
 
-  const parsedOffers = [];
+  const parsedOffers: { userId: number; amount: string; price: string }[] = [];
   for (let i = 0; i < listings.length; i++) {
     const offer = listings.eq(i);
     const offerById = parseInt(offer.attr('user')!);

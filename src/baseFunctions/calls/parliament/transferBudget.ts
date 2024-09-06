@@ -2,14 +2,14 @@ import invariant from 'tiny-invariant';
 import { Autonomy } from '../../../entity/Autonomy';
 import { Region } from '../../../entity/Region';
 import { State } from '../../../entity/State';
-import { UserContext } from '../../../UserContext';
+import { User } from '../../../User';
 import { getAutonomyInfo } from '../../getInfo/getAutonomyInfo';
 import { getStateInfo } from '../../getInfo/getStateInfo';
 import { amIMinister } from '../../getInfo/misc/amIMinister';
 import { proLawByText, resourceIds } from '.';
 
 export async function transferBudget(
-  user: UserContext,
+  user: User,
   target: State | Region | Autonomy,
   resource: keyof typeof resourceIds,
   amount: number
@@ -37,8 +37,6 @@ export async function transferBudget(
     }
 
     invariant(targetCapitalId, 'Failed to get the target capital');
-
-    console.log(`Transfering ${amount} ${resource} to ${target}`);
 
     await user.ajax(
       `/parliament/donew/send_${resourceIds[resource]}/${amount}/${targetCapitalId}`,

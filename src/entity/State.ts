@@ -1,9 +1,9 @@
 import { Player } from './Player';
 import { Region } from './Region';
 import { Autonomy } from './Autonomy';
-import { toCamelCase } from '../misc/utils';
 import { Storage } from './shared/Storage';
 import { Bloc } from './Bloc';
+import { toCamelCase } from '../misc/utils';
 
 export class State {
   lastUpdate: Date = new Date(0);

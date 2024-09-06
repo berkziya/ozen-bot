@@ -1,10 +1,10 @@
-import { UserContext } from '../../../UserContext';
+import { User } from '../../../User';
 import * as cheerio from 'cheerio';
 import { Law, Parliament } from '../../../entity/shared/Parliament';
 import { Region } from '../../../entity/Region';
 
 export async function getParliamentInfo(
-  user: UserContext,
+  user: User,
   capital: Region,
   isAutonomy: boolean = false
 ) {

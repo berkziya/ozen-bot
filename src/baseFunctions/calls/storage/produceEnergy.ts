@@ -1,9 +1,9 @@
 import invariant from 'tiny-invariant';
-import { UserContext } from '../../../UserContext';
+import { User } from '../../../User';
 import { storageInfo } from '../../getInfo/misc/storageInfo';
 
 export async function produceEnergy(
-  user: UserContext,
+  user: User,
   amount?: number,
   target?: number,
   leaveAtLeastXGold: number = 0

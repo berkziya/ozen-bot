@@ -1,8 +1,8 @@
 import { dotless } from '../../../misc/utils';
-import { UserContext } from '../../../UserContext';
+import { User } from '../../../User';
 import * as cheerio from 'cheerio';
 
-export async function storageInfo(user: UserContext) {
+export async function storageInfo(user: User) {
   const content = await user.get('/storage');
 
   if (!content || content.length < 150) return null;

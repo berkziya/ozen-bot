@@ -1,11 +1,11 @@
-import { UserContext } from '../../UserContext';
+import { User } from '../../User';
 import * as cheerio from 'cheerio';
-import { dotless, toCamelCase } from '../../misc/utils';
 import { Autonomy } from '../../entity/Autonomy';
 import { Region } from '../../entity/Region';
+import { dotless, toCamelCase } from '../../misc/utils';
 
 export async function getRegionInfo(
-  user: UserContext,
+  user: User,
   regionId: number,
   force?: boolean
 ) {
@@ -23,7 +23,7 @@ export async function getRegionInfo(
 }
 
 export async function getRegionInfoInner(
-  user: UserContext,
+  user: User,
   regionId: number,
   getAutonomy: boolean = false
 ): Promise<Autonomy | Region | null> {

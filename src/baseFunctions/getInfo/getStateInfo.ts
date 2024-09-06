@@ -1,9 +1,9 @@
-import { UserContext } from '../../UserContext';
+import { dotless, toCamelCase } from '../../misc/utils';
+import { User } from '../../User';
 import * as cheerio from 'cheerio';
-import { toCamelCase, dotless } from '../../misc/utils';
 
 export async function getStateInfo(
-  user: UserContext,
+  user: User,
   stateId: number,
   force?: boolean
 ) {

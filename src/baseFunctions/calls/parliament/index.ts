@@ -1,5 +1,5 @@
 import invariant from 'tiny-invariant';
-import { UserContext } from '../../../UserContext';
+import { User } from '../../../User';
 import { Law } from '../../../entity/shared/Parliament';
 import { getStateInfo } from '../../getInfo/getStateInfo';
 import { getParliamentInfo } from '../../getInfo/misc/getParliamentInfo';
@@ -14,7 +14,7 @@ export const resourceIds = {
   diamonds: 15,
 };
 
-export async function proLawByText(user: UserContext, text: string) {
+export async function proLawByText(user: User, text: string) {
   try {
     await getStateInfo(user, user.player.region!.state!.id, true);
 
@@ -39,12 +39,12 @@ export async function proLawByText(user: UserContext, text: string) {
   }
 }
 
-export async function proLaw(user: UserContext, capital: Region, law: Law) {
+export async function proLaw(user: User, capital: Region, law: Law) {
   return await user.ajax(
     `/parliament/votelaw/${capital.id}/${law.by!.id}/${law.id}/pro`
   );
 }
 
-export async function cancelSelfLaw(user: UserContext) {
+export async function cancelSelfLaw(user: User) {
   return await user.ajax('/parliament/removelaw');
 }

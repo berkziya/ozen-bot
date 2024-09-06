@@ -1,4 +1,4 @@
-import { UserContext } from '../../../UserContext';
+import { User } from '../../../User';
 
 const deptIds = {
   buildings: 'w1',
@@ -15,16 +15,18 @@ const deptIds = {
 };
 
 export async function workStateDept(
-  user: UserContext,
+  user: User,
   dept: keyof typeof deptIds = 'tanks'
 ) {
-  const toBeWorked = Object.entries(deptIds).reduce(
-    (acc, [key, value]) => ({ ...acc, [value]: dept == key ? 10 : 0 }),
-    { state: user.player.region!.state!.id }
-  );
-
-  const what = JSON.stringify(toBeWorked);
-
-  console.log('done');
-  return await user.ajax('/rival/instwork', { what });
+  try {
+    const toBeWorked = Object.entries(deptIds).reduce(
+      (acc, [key, value]) => ({ ...acc, [value]: dept == key ? 10 : 0 }),
+      { state: user.player.region!.state!.id }
+    );
+    const what = JSON.stringify(toBeWorked);
+    return await user.ajax('/rival/instwork', { what });
+  } catch (e) {
+    console.error('Failed to work state dept', e);
+    return null;
+  }
 }

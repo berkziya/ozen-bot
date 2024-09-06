@@ -1,9 +1,9 @@
-import { UserContext } from '../../../UserContext';
+import { User } from '../../../User';
 import * as cheerio from 'cheerio';
 import { dotless } from '../../../misc/utils';
 import { getTimestamp } from '../../../misc/timestamps';
 
-export async function mainPageInfo(user: UserContext) {
+export async function mainPageInfo(user: User) {
   const content = await user.get('/main/content');
 
   if (!content || content.length < 150) return null;
@@ -62,7 +62,6 @@ export async function mainPageInfo(user: UserContext) {
     .trim();
   const state = await user.models.getState(stateId);
   state.name = stateName;
-  toBeReturned['state'] = state;
 
   // Current region
   const regionDiv = $(

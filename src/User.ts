@@ -1,19 +1,24 @@
-import { Browser } from 'playwright';
 import { AuthService } from './services/AuthService';
 import { BrowserService } from './services/BrowserService';
 import { ModelService } from './services/ModelService';
 import { Player } from './entity/Player';
+import invariant from 'tiny-invariant';
+import { sanitizer } from './misc/sanitizer';
 
-export class UserContext {
+export class User {
   private authService: AuthService;
-  public browserService: BrowserService;
-
-  public models: ModelService = ModelService.getInstance();
+  private browserService: BrowserService;
+  public models = ModelService.getInstance();
   public player!: Player;
 
-  constructor(browser: Browser, public isMobile: boolean) {
-    this.browserService = new BrowserService(browser, isMobile);
-    this.authService = new AuthService(this.browserService, isMobile);
+  constructor(public who: string, public isMobile: boolean = false) {
+    const sanitizedWho = sanitizer(who);
+    this.browserService = new BrowserService(sanitizedWho, isMobile);
+    this.authService = new AuthService(
+      sanitizedWho,
+      isMobile,
+      this.browserService
+    );
   }
 
   get id() {
@@ -21,7 +26,7 @@ export class UserContext {
   }
 
   get link() {
-    return `https://${this.isMobile ? 'm.' : ''}rivalregions.com`;
+    return this.browserService.link;
   }
 
   get cookies() {
@@ -32,19 +37,10 @@ export class UserContext {
     return this.authService.c_html;
   }
 
-  async login(
-    mail: string,
-    password?: string | null,
-    useCookies: boolean = true,
-    cookies?: string
-  ) {
-    const result = await this.authService.login(
-      mail,
-      password,
-      useCookies,
-      cookies
-    );
-    if (result?.id) this.player = await this.models.getPlayer(result.id);
+  async init(mail?: string, password?: string, cookies?: string) {
+    const result = await this.authService.login(mail, password, cookies);
+    invariant(result, 'Login failed');
+    this.player = await this.models.getPlayer(result);
     return result;
   }
 

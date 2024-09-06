@@ -1,10 +1,10 @@
-import { UserContext } from '../../UserContext';
+import { User } from '../../User';
 import * as cheerio from 'cheerio';
-import { toCamelCase } from '../../misc/utils';
 import { getRegionInfoInner } from './getRegionInfo';
+import { toCamelCase } from '../../misc/utils';
 
 export async function getAutonomyInfo(
-  user: UserContext,
+  user: User,
   autonomyId: number,
   force?: boolean
 ) {

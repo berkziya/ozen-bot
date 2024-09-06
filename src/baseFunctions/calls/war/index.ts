@@ -1,5 +1,5 @@
 import { War } from '../../../entity/War';
-import { UserContext } from '../../../UserContext';
+import { User } from '../../../User';
 import { calculateTroops } from './calculateTroops';
 
 export const troopAlphaDamage: { [key: string]: number } = {
@@ -24,12 +24,12 @@ const troopIds: { [key: string]: string } = {
   laserDrones: 't27',
 };
 
-export async function cancel_autoattack(user: UserContext) {
+export async function cancel_autoattack(user: User) {
   return await user.ajax('/war/autoset_cancel/');
 }
 
 export async function attack(
-  user: UserContext,
+  user: User,
   war: War,
   defend: boolean = true,
   max: boolean = false,
@@ -45,7 +45,7 @@ export async function attack(
       {}
     );
 
-    let n = JSON.stringify(troops);
+    const n = JSON.stringify(troops);
 
     await cancel_autoattack(user);
 

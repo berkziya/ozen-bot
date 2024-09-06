@@ -5,6 +5,7 @@
 .LSOverride
 test.ts
 cookies/*
+browsers/*
 
 # Icon must end with two \r
 Icon

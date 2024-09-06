@@ -1,9 +1,9 @@
 import { Region } from '../../../entity/Region';
 import { War } from '../../../entity/War';
-import { UserContext } from '../../../UserContext';
+import { User } from '../../../User';
 import * as cheerio from 'cheerio';
 
-export async function getWarList(user: UserContext, stateId: number) {
+export async function getWarList(user: User, stateId: number) {
   const content = await user.get('/listed/statewars/' + stateId);
 
   if (!content || content.length < 150) return null;

@@ -1,9 +1,9 @@
-import { UserContext } from '../../UserContext';
+import { User } from '../../User';
 import * as cheerio from 'cheerio';
 import { dotless } from '../../misc/utils';
 
 export async function getFactoryInfo(
-  user: UserContext,
+  user: User,
   factoryId: number,
   force?: boolean
 ) {

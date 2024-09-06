@@ -1,11 +1,11 @@
 import { Factory, factoryIds } from '../../../entity/Factory';
 import { State } from '../../../entity/State';
 import { Region } from '../../../entity/Region';
-import { UserContext } from '../../../UserContext';
+import { User } from '../../../User';
 import * as cheerio from 'cheerio';
 
 export async function getFactoryList(
-  user: UserContext,
+  user: User,
   location: State | Region,
   resource: keyof typeof factoryIds = 'gold'
 ) {

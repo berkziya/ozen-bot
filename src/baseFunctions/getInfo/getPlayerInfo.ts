@@ -1,10 +1,10 @@
-import { UserContext } from '../../UserContext';
+import { User } from '../../User';
 import * as cheerio from 'cheerio';
-import { dotless, toCamelCase } from '../../misc/utils';
 import { getRegionInfo } from './getRegionInfo';
+import { dotless, toCamelCase } from '../../misc/utils';
 
 export async function getPlayerInfo(
-  user: UserContext,
+  user: User,
   playerId?: number,
   force?: boolean
 ) {
