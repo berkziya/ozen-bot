@@ -39,6 +39,9 @@ class Player {
         this.factories = new Set();
         this.storage.setOwner(this);
     }
+    get totalGold() {
+        return Math.floor(this.storage.gold + this.storage.energyDrink / 10);
+    }
     alpha(energy = 300) {
         const slot = Math.floor(energy / 6);
         return 50 * (this.level + 20) * slot;

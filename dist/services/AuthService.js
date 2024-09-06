@@ -54,7 +54,6 @@ class AuthService {
     async login(mail, password, cookies) {
         try {
             const { page, context } = await this.browserService.getPage();
-            this.saveCookies(context);
             const onSuccess = async () => {
                 try {
                     this.saveCookies(context);

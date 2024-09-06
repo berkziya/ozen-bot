@@ -63,7 +63,6 @@ export class AuthService {
   ): Promise<number | null> {
     try {
       const { page, context } = await this.browserService.getPage();
-      this.saveCookies(context);
 
       const onSuccess = async () => {
         try {
