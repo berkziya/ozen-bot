@@ -1,5 +1,5 @@
-import { User } from '../../../User';
 import * as cheerio from 'cheerio';
+import { User } from '../../../User';
 
 const resourceToId = {
   oil: 3,

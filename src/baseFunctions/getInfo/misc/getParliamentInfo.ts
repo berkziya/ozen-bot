@@ -1,7 +1,7 @@
-import { User } from '../../../User';
 import * as cheerio from 'cheerio';
-import { Law, Parliament } from '../../../entity/shared/Parliament';
 import { Region } from '../../../entity/Region';
+import { Law, Parliament } from '../../../entity/shared/Parliament';
+import { User } from '../../../User';
 
 export async function getParliamentInfo(
   user: User,

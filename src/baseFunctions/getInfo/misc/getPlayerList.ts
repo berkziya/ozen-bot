@@ -1,7 +1,7 @@
+import * as cheerio from 'cheerio';
 import { Region } from '../../../entity/Region';
 import { State } from '../../../entity/State';
 import { User } from '../../../User';
-import * as cheerio from 'cheerio';
 
 export async function getCitizens(user: User, location: Region | State) {
   return location instanceof State

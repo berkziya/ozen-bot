@@ -1,5 +1,5 @@
-import { BrowserService } from './BrowserService';
 import { BrowserContext } from 'playwright';
+import { BrowserService } from './BrowserService';
 export declare class AuthService {
     private who;
     private isMobile;

@@ -4,11 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
+const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
+const sanitizer_1 = require("./misc/sanitizer");
 const AuthService_1 = require("./services/AuthService");
 const BrowserService_1 = require("./services/BrowserService");
 const ModelService_1 = require("./services/ModelService");
-const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
-const sanitizer_1 = require("./misc/sanitizer");
 class User {
     who;
     isMobile;

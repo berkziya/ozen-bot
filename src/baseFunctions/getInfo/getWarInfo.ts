@@ -1,7 +1,7 @@
-import { User } from '../../User';
 import * as cheerio from 'cheerio';
-import { dotless } from '../../misc/utils';
 import { getTimestamp } from '../../misc/timestamps';
+import { dotless } from '../../misc/utils';
+import { User } from '../../User';
 
 export async function getWarInfo(
   user: User,

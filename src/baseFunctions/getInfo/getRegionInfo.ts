@@ -1,8 +1,8 @@
-import { User } from '../../User';
 import * as cheerio from 'cheerio';
 import { Autonomy } from '../../entity/Autonomy';
 import { Region } from '../../entity/Region';
 import { dotless, toCamelCase } from '../../misc/utils';
+import { User } from '../../User';
 
 export async function getRegionInfo(
   user: User,

@@ -4,10 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserHandler = exports.browserDir = exports.cookiesDir = void 0;
-const User_1 = require("./User");
 const node_fs_1 = require("node:fs");
-const ModelService_1 = require("./services/ModelService");
 const node_path_1 = __importDefault(require("node:path"));
+const ModelService_1 = require("./services/ModelService");
+const User_1 = require("./User");
 exports.cookiesDir = node_path_1.default.join(process.cwd(), 'cookies');
 exports.browserDir = node_path_1.default.join(process.cwd(), 'browsers');
 class UserHandler {

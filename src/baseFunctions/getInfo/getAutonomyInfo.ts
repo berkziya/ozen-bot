@@ -1,7 +1,7 @@
-import { User } from '../../User';
 import * as cheerio from 'cheerio';
-import { getRegionInfoInner } from './getRegionInfo';
 import { toCamelCase } from '../../misc/utils';
+import { User } from '../../User';
+import { getRegionInfoInner } from './getRegionInfo';
 
 export async function getAutonomyInfo(
   user: User,

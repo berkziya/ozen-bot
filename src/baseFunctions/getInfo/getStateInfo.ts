@@ -1,6 +1,6 @@
+import * as cheerio from 'cheerio';
 import { dotless, toCamelCase } from '../../misc/utils';
 import { User } from '../../User';
-import * as cheerio from 'cheerio';
 
 export async function getStateInfo(
   user: User,

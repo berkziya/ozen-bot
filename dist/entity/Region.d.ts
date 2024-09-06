@@ -1,8 +1,8 @@
-import { State } from './State';
 import { Autonomy } from './Autonomy';
-import { Player } from './Player';
-import { Party } from './Party';
 import { Factory } from './Factory';
+import { Party } from './Party';
+import { Player } from './Player';
+import { State } from './State';
 export declare class Region {
     lastUpdate: Date;
     id: number;

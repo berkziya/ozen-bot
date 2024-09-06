@@ -1,5 +1,5 @@
-import { User } from './User';
 import { ModelService } from './services/ModelService';
+import { User } from './User';
 export declare const cookiesDir: string;
 export declare const browserDir: string;
 export declare class UserHandler {

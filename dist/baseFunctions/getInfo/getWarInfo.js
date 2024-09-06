@@ -25,8 +25,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getWarInfo = getWarInfo;
 const cheerio = __importStar(require("cheerio"));
-const utils_1 = require("../../misc/utils");
 const timestamps_1 = require("../../misc/timestamps");
+const utils_1 = require("../../misc/utils");
 async function getWarInfo(user, warId, force = false) {
     const war = await user.models.getWar(warId);
     if (!force &&

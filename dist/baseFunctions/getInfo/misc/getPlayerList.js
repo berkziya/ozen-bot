@@ -26,8 +26,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCitizens = getCitizens;
 exports.getResidents = getResidents;
 exports.getWarDamageList = getWarDamageList;
-const State_1 = require("../../../entity/State");
 const cheerio = __importStar(require("cheerio"));
+const State_1 = require("../../../entity/State");
 async function getCitizens(user, location) {
     return location instanceof State_1.State
         ? getStateCitizens(user, location.id)

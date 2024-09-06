@@ -1,9 +1,9 @@
 import invariant from 'tiny-invariant';
 import { User } from '../../../User';
+import { Region } from '../../../entity/Region';
 import { Law } from '../../../entity/shared/Parliament';
 import { getStateInfo } from '../../getInfo/getStateInfo';
 import { getParliamentInfo } from '../../getInfo/misc/getParliamentInfo';
-import { Region } from '../../../entity/Region';
 
 export const resourceIds = {
   money: 1,

@@ -1,10 +1,10 @@
-import { BrowserService } from './BrowserService';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { BrowserContext } from 'playwright';
 import invariant from 'tiny-invariant';
 import { cookiesDir } from '../UserHandler';
 import { sanitizer } from '../misc/sanitizer';
+import { BrowserService } from './BrowserService';
 
 export class AuthService {
   public cookieDict!: [];

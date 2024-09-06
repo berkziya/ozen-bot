@@ -25,8 +25,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAutonomyInfo = getAutonomyInfo;
 const cheerio = __importStar(require("cheerio"));
-const getRegionInfo_1 = require("./getRegionInfo");
 const utils_1 = require("../../misc/utils");
+const getRegionInfo_1 = require("./getRegionInfo");
 async function getAutonomyInfo(user, autonomyId, force) {
     const autonomy = await user.models.getAutonomy(autonomyId);
     if (!force &&

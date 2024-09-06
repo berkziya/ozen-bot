@@ -1,8 +1,8 @@
 import { Cheerio, Element } from 'cheerio';
+import { dotless } from '../../misc/utils';
 import { Autonomy } from '../Autonomy';
 import { Player } from '../Player';
 import { State } from '../State';
-import { dotless } from '../../misc/utils';
 
 export class Storage {
   constructor() {

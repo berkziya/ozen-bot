@@ -24,10 +24,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getFactoryList = getFactoryList;
-const Factory_1 = require("../../../entity/Factory");
-const State_1 = require("../../../entity/State");
-const Region_1 = require("../../../entity/Region");
 const cheerio = __importStar(require("cheerio"));
+const Factory_1 = require("../../../entity/Factory");
+const Region_1 = require("../../../entity/Region");
+const State_1 = require("../../../entity/State");
 async function getFactoryList(user, location, resource = 'gold') {
     const resourceId = Factory_1.factoryIds[resource];
     const link = location instanceof State_1.State

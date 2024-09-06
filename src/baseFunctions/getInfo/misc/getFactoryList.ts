@@ -1,8 +1,8 @@
-import { Factory, factoryIds } from '../../../entity/Factory';
-import { State } from '../../../entity/State';
-import { Region } from '../../../entity/Region';
-import { User } from '../../../User';
 import * as cheerio from 'cheerio';
+import { Factory, factoryIds } from '../../../entity/Factory';
+import { Region } from '../../../entity/Region';
+import { State } from '../../../entity/State';
+import { User } from '../../../User';
 
 export async function getFactoryList(
   user: User,

@@ -1,7 +1,7 @@
-import { User } from './User';
 import { promises as fs } from 'node:fs';
-import { ModelService } from './services/ModelService';
 import path from 'node:path';
+import { ModelService } from './services/ModelService';
+import { User } from './User';
 
 export const cookiesDir = path.join(process.cwd(), 'cookies');
 export const browserDir = path.join(process.cwd(), 'browsers');

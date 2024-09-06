@@ -1,7 +1,7 @@
+import * as cheerio from 'cheerio';
 import { Region } from '../../../entity/Region';
 import { War } from '../../../entity/War';
 import { User } from '../../../User';
-import * as cheerio from 'cheerio';
 
 export async function getWarList(user: User, stateId: number) {
   const content = await user.get('/listed/statewars/' + stateId);

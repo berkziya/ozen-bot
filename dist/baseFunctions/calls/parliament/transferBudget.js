@@ -5,13 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.transferBudget = transferBudget;
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
+const _1 = require(".");
 const Autonomy_1 = require("../../../entity/Autonomy");
 const Region_1 = require("../../../entity/Region");
 const State_1 = require("../../../entity/State");
 const getAutonomyInfo_1 = require("../../getInfo/getAutonomyInfo");
 const getStateInfo_1 = require("../../getInfo/getStateInfo");
 const amIMinister_1 = require("../../getInfo/misc/amIMinister");
-const _1 = require(".");
 async function transferBudget(user, target, resource, amount) {
     try {
         const ministerInfo = await (0, amIMinister_1.amIMinister)(user);

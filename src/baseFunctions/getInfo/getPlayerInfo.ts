@@ -1,7 +1,7 @@
-import { User } from '../../User';
 import * as cheerio from 'cheerio';
-import { getRegionInfo } from './getRegionInfo';
 import { dotless, toCamelCase } from '../../misc/utils';
+import { User } from '../../User';
+import { getRegionInfo } from './getRegionInfo';
 
 export async function getPlayerInfo(
   user: User,

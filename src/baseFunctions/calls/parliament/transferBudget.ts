@@ -1,4 +1,5 @@
 import invariant from 'tiny-invariant';
+import { proLawByText, resourceIds } from '.';
 import { Autonomy } from '../../../entity/Autonomy';
 import { Region } from '../../../entity/Region';
 import { State } from '../../../entity/State';
@@ -6,7 +7,6 @@ import { User } from '../../../User';
 import { getAutonomyInfo } from '../../getInfo/getAutonomyInfo';
 import { getStateInfo } from '../../getInfo/getStateInfo';
 import { amIMinister } from '../../getInfo/misc/amIMinister';
-import { proLawByText, resourceIds } from '.';
 
 export async function transferBudget(
   user: User,

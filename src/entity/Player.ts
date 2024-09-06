@@ -1,9 +1,9 @@
-import { Storage } from './shared/Storage';
-import { Region } from './Region';
-import { State } from './State';
 import { Autonomy } from './Autonomy';
-import { Party } from './Party';
 import { Factory } from './Factory';
+import { Party } from './Party';
+import { Region } from './Region';
+import { Storage } from './shared/Storage';
+import { State } from './State';
 
 export class Player {
   lastUpdate: Date = new Date(0);

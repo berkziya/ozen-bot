@@ -1,5 +1,5 @@
-import { ModelService } from './services/ModelService';
 import { Player } from './entity/Player';
+import { ModelService } from './services/ModelService';
 export declare class User {
     who: string;
     isMobile: boolean;

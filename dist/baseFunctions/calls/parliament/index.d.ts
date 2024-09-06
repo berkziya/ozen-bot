@@ -1,6 +1,6 @@
 import { User } from '../../../User';
-import { Law } from '../../../entity/shared/Parliament';
 import { Region } from '../../../entity/Region';
+import { Law } from '../../../entity/shared/Parliament';
 export declare const resourceIds: {
     money: number;
     gold: number;

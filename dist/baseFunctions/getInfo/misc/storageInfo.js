@@ -24,8 +24,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.storageInfo = storageInfo;
-const utils_1 = require("../../../misc/utils");
 const cheerio = __importStar(require("cheerio"));
+const utils_1 = require("../../../misc/utils");
 async function storageInfo(user) {
     const content = await user.get('/storage');
     if (!content || content.length < 150)

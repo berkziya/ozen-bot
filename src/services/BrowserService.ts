@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { BrowserContext, chromium, firefox, Page } from 'playwright';
+import { BrowserContext, firefox, Page } from 'playwright';
 import { browserDir } from '../UserHandler';
 
 export const iPhoneUserAgent =
