@@ -1,14 +1,15 @@
 import * as cheerio from 'cheerio';
+import invariant from 'tiny-invariant';
 import { Autonomy } from '../../entity/Autonomy';
 import { Region } from '../../entity/Region';
 import { dotless, toCamelCase } from '../../misc/utils';
 import { User } from '../../User';
+import { UserHandler } from '../../UserHandler';
 
-export async function getRegionInfo(
-  user: User,
-  regionId: number,
-  force?: boolean
-) {
+export async function getRegionInfo(regionId: number, force?: boolean) {
+  const user = UserHandler.getInstance().getUser();
+  invariant(user, 'Failed to get user');
+
   const region = await user.models.getRegion(regionId);
 
   if (

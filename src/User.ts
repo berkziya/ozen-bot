@@ -37,8 +37,13 @@ export class User {
     return this.authService.c_html;
   }
 
+  async amILoggedIn() {
+    return await this.authService.amILoggedIn();
+  }
+
   async init(mail?: string, password?: string, cookies?: string) {
     const result = await this.authService.login(mail, password, cookies);
+    await this.browserService.closePage();
     invariant(result, 'Login failed');
     this.player = await this.models.getPlayer(result);
     return result;
@@ -54,13 +59,16 @@ export class User {
       }
     }
 
-    return await fetch(this.link + url, {
+    const result = await fetch(this.link + url, {
       method: 'POST',
       headers: {
         Cookie: this.cookies,
       },
       body: formData,
     });
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    return result;
   }
 
   async get(url: string) {

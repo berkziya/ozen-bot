@@ -11,7 +11,7 @@ export class War {
 
   endingTime!: Date | null;
 
-  aggressor!: Region | 'revolution' | 'coup';
+  aggressor!: Region;
   defender!: Region;
 
   aggressorDamage: number = 0;
@@ -32,8 +32,7 @@ export class War {
       name: this.name,
       type: this.type,
       endingTime: this.endingTime,
-      aggresor:
-        this.aggressor instanceof Region ? this.aggressor.id : this.aggressor,
+      aggresor: this.aggressor.id,
       defender: this.defender.id,
       aggressorDamage: this.aggressorDamage,
       defenderDamage: this.defenderDamage,

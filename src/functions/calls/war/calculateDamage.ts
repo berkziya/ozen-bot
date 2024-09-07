@@ -29,7 +29,7 @@ export function calculateDamage(
   let airport_diff = 0;
   let sea_diff = 0;
 
-  if (war.aggressor instanceof Region) {
+  if (war.aggressor.id) {
     missile_diff =
       (war.aggressor.buildings.missileSystem -
         war.defender.buildings.missileSystem) /
@@ -52,7 +52,7 @@ export function calculateDamage(
       diffs += point25(clamp(0, airport_diff, 0.75));
     if (['sea'].includes(war.type)) diffs += point25(clamp(-0.75, sea_diff, 0));
 
-    if (war.aggressor instanceof Region) buffs += macademy_buff(war.aggressor);
+    if (war.aggressor.id) buffs += macademy_buff(war.aggressor);
     if (['revolution', 'coup'].includes(war.type)) {
       buffs += 0.05;
     } else {

@@ -65,20 +65,18 @@ export class AuthService {
       const { page, context } = await this.browserService.getPage();
 
       const onSuccess = async () => {
-        try {
-          this.saveCookies(context);
-          const id: number = await page.evaluate(() => id);
-          const c_html: string = await page.evaluate(() => c_html);
-          this.browserService.closePage();
-          this.c_html = c_html;
-          return id;
-        } catch (e) {
-          console.error(e);
-          return null;
-        }
+        this.saveCookies(context);
+        const id: number = await page.evaluate(() => id);
+        const c_html: string = await page.evaluate(() => c_html);
+        this.c_html = c_html;
+        return id;
       };
 
-      if (await this.amILoggedIn()) return onSuccess();
+      try {
+        // check if already logged in
+        const id: number = await page.evaluate(() => id);
+        if (id) return onSuccess();
+      } catch {}
 
       try {
         await fs.access(this.cookiesPath);

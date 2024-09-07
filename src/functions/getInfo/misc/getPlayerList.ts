@@ -1,18 +1,20 @@
 import * as cheerio from 'cheerio';
+import invariant from 'tiny-invariant';
 import { Region } from '../../../entity/Region';
 import { State } from '../../../entity/State';
 import { User } from '../../../User';
+import { UserHandler } from '../../../UserHandler';
 
-export async function getCitizens(user: User, location: Region | State) {
+export async function getCitizens(location: Region | State) {
+  const user = UserHandler.getInstance().getUser();
+  invariant(user, 'Failed to get user');
+
   return location instanceof State
     ? getStateCitizens(user, location.id)
     : getCitizenList(user, location.id);
 }
 
-export async function getResidents(
-  user: User,
-  location: Region | State
-) {
+export async function getResidents(user: User, location: Region | State) {
   return location instanceof State
     ? getStateResidents(user, location.id)
     : getResidentList(user, location.id);

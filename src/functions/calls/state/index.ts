@@ -18,15 +18,10 @@ export async function workStateDept(
   user: User,
   dept: keyof typeof deptIds = 'tanks'
 ) {
-  try {
-    const toBeWorked = Object.entries(deptIds).reduce(
-      (acc, [key, value]) => ({ ...acc, [value]: dept == key ? 10 : 0 }),
-      { state: user.player.region!.state!.id }
-    );
-    const what = JSON.stringify(toBeWorked);
-    return await user.ajax('/rival/instwork', { what });
-  } catch (e) {
-    console.error('Failed to work state dept', e);
-    return null;
-  }
+  const toBeWorked = Object.entries(deptIds).reduce(
+    (acc, [key, value]) => ({ ...acc, [value]: dept == key ? 10 : 0 }),
+    { state: user.player.region!.state!.id }
+  );
+  const what = JSON.stringify(toBeWorked);
+  return await user.ajax('/rival/instwork', { what });
 }

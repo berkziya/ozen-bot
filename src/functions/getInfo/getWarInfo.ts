@@ -1,13 +1,13 @@
 import * as cheerio from 'cheerio';
+import invariant from 'tiny-invariant';
 import { getTimestamp } from '../../misc/timestamps';
 import { dotless } from '../../misc/utils';
-import { User } from '../../User';
+import { UserHandler } from '../../UserHandler';
 
-export async function getWarInfo(
-  user: User,
-  warId: number,
-  force: boolean = false
-) {
+export async function getWarInfo(warId: number, force: boolean = false) {
+  const user = UserHandler.getInstance().getUser();
+  invariant(user, 'Failed to get user');
+
   const war = await user.models.getWar(warId);
 
   if (

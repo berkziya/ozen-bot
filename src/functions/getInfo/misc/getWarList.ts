@@ -1,9 +1,13 @@
 import * as cheerio from 'cheerio';
+import invariant from 'tiny-invariant';
 import { Region } from '../../../entity/Region';
 import { War } from '../../../entity/War';
-import { User } from '../../../User';
+import { UserHandler } from '../../../UserHandler';
 
-export async function getWarList(user: User, stateId: number) {
+export async function getWarList(stateId: number) {
+  const user = UserHandler.getInstance().getUser();
+  invariant(user, 'Failed to get user');
+
   const content = await user.get('/listed/statewars/' + stateId);
 
   if (!content || content.length < 150) return null;
@@ -20,11 +24,11 @@ export async function getWarList(user: User, stateId: number) {
       }
       return 'revolution';
     }
-    const region = await user.models.getRegion(regionId);
+    const region = await user!.models.getRegion(regionId);
 
     const stateDiv = td.find('div[action^="map/state"]');
     const stateId = parseInt(stateDiv.attr('action')!.split('/').pop()!);
-    const state = await user.models.getState(stateId);
+    const state = await user!.models.getState(stateId);
 
     const regionName = stateDiv.attr('title')!;
     const stateName = td.find('span').text().replace(regionName, '').trim();
@@ -49,12 +53,13 @@ export async function getWarList(user: User, stateId: number) {
     const defenderRegion = await tdToRegion(
       warTr.find('td[action^="map/details"]').last()
     );
-    war.aggressor = attackerRegion;
-    war.defender = defenderRegion as Region;
+    const aggressor = attackerRegion;
+    if (aggressor === 'coup' || aggressor === 'revolution') {
+      war.type = aggressor;
+      war.aggressor = await user.models.getRegion(0);
+    } else war.aggressor = aggressor;
 
-    if (war.aggressor === 'coup' || war.aggressor === 'revolution') {
-      war.type = war.aggressor;
-    }
+    war.defender = defenderRegion as Region;
 
     // war.diff = parseInt(warTr.find('td[rat][action]').first().attr('rat')!);
 
@@ -66,4 +71,3 @@ export async function getWarList(user: User, stateId: number) {
   }
   return [...wars];
 }
-

@@ -10,6 +10,7 @@ export async function cancelAutoWork(user: User) {
 }
 
 export async function autoWork(user: User, factory: Factory) {
+  await assignToFactory(user, factory);
   return await user.ajax('/work/autoset', {
     mentor: 0,
     factory: factory.id,

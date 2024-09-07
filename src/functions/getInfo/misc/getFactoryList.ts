@@ -1,14 +1,17 @@
 import * as cheerio from 'cheerio';
+import invariant from 'tiny-invariant';
 import { Factory, factoryIds } from '../../../entity/Factory';
 import { Region } from '../../../entity/Region';
 import { State } from '../../../entity/State';
-import { User } from '../../../User';
+import { UserHandler } from '../../../UserHandler';
 
 export async function getFactoryList(
-  user: User,
   location: State | Region,
   resource: keyof typeof factoryIds = 'gold'
 ) {
+  const user = UserHandler.getInstance().getUser();
+  invariant(user, 'Failed to get user');
+
   const resourceId = factoryIds[resource];
 
   const link =
@@ -41,4 +44,13 @@ export async function getFactoryList(
   }
 
   return [...factories];
+}
+
+export async function getBestFactory(
+  location: State | Region,
+  resource: keyof typeof factoryIds = 'gold'
+) {
+  const factories = await getFactoryList(location, resource);
+  if (!factories) return null;
+  return [...factories].sort((a, b) => b.wage - a.wage)[0];
 }

@@ -1,3 +1,4 @@
+import { Region } from '../../../entity/Region';
 import { War } from '../../../entity/War';
 import { User } from '../../../User';
 import { calculateTroops } from './calculateTroops';
@@ -24,7 +25,7 @@ const troopIds: { [key: string]: string } = {
   laserDrones: 't27',
 };
 
-export async function cancel_autoattack(user: User) {
+export async function cancelAutoAttack(user: User) {
   return await user.ajax('/war/autoset_cancel/');
 }
 
@@ -35,27 +36,24 @@ export async function attack(
   max: boolean = false,
   drones: boolean = false
 ) {
-  try {
-    const free_ene = max ? 0 : 1;
-    const calculatedTroops = calculateTroops(user.player, 300, war, drones);
-    const aim = defend ? 1 : 0;
+  const free_ene = max ? 0 : 1;
+  const calculatedTroops = calculateTroops(user.player, 300, war, drones);
+  const aim = defend ? war.defender.id : war.aggressor.id;
 
-    const troops = Object.entries(calculatedTroops).reduce(
-      (acc, [key, value]) => ({ ...acc, [troopIds[key]]: value.toString() }),
-      {}
-    );
+  const troops = Object.entries(calculatedTroops).reduce(
+    (acc, [key, value]) => ({ ...acc, [troopIds[key]]: value.toString() }),
+    {}
+  );
 
-    const n = JSON.stringify(troops);
+  const n = JSON.stringify(troops);
 
-    await cancel_autoattack(user);
+  await cancelAutoAttack(user);
 
-    return await user.ajax('/war/autoset/', {
-      free_ene,
-      n,
-      aim,
-      edit: war.id,
-    });
-  } catch (e) {
-    console.error('Error attacking', e);
-  }
+  const result = await user.ajax('/war/autoset/', {
+    free_ene,
+    n,
+    aim,
+    edit: war.id,
+  });
+  return result;
 }

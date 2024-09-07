@@ -1,12 +1,11 @@
 import * as cheerio from 'cheerio';
+import invariant from 'tiny-invariant';
 import { dotless } from '../../misc/utils';
-import { User } from '../../User';
+import { UserHandler } from '../../UserHandler';
 
-export async function getFactoryInfo(
-  user: User,
-  factoryId: number,
-  force?: boolean
-) {
+export async function getFactoryInfo(factoryId: number, force?: boolean) {
+  const user = UserHandler.getInstance().getUser();
+  invariant(user, 'Failed to get user');
   const factory = await user.models.getFactory(factoryId);
 
   if (
@@ -23,46 +22,40 @@ export async function getFactoryInfo(
 
   const $ = cheerio.load(content);
 
-  try {
-    factory.name = $('body > div.margin > h1')
-      .contents()
-      .filter(function () {
-        return this.type === 'text';
-      })
-      .first()
-      .text()
-      .trim();
+  factory.name = $('body > div.margin > h1')
+    .contents()
+    .filter(function () {
+      return this.type === 'text';
+    })
+    .first()
+    .text()
+    .trim();
 
-    factory.type = $(
-      'div.float_left > div.change_paper_about_target.float_left > span'
-    )
-      .text()
-      .split(' ')[0];
+  factory.type = $(
+    'div.float_left > div.change_paper_about_target.float_left > span'
+  )
+    .text()
+    .split(' ')[0];
 
-    factory.level = dotless(
-      $(
-        'div.float_left > div.change_paper_about_target.float_left > span'
-      ).text()
-    );
-    factory.owner = await user.models.getPlayer(
-      $('span[action*="profile"]').attr('action')!.split('/').pop()!
-    );
-    factory.owner.setName($('span[action*="profile"]').text().trim());
-    const region = await user.models.getRegion(
-      $('span[action*="map"]').attr('action')!.split('/').pop()!
-    );
-    factory.setRegion(region);
-    factory.region.name = $('span[action*="map"]').text().trim();
-    factory.setWage($('h2.white.imp').first().text());
+  factory.level = dotless(
+    $('div.float_left > div.change_paper_about_target.float_left > span').text()
+  );
+  factory.owner = await user.models.getPlayer(
+    $('span[action*="profile"]').attr('action')!.split('/').pop()!
+  );
+  factory.owner.setName($('span[action*="profile"]').text().trim());
+  const region = await user.models.getRegion(
+    $('span[action*="map"]').attr('action')!.split('/').pop()!
+  );
+  factory.setRegion(region);
+  factory.region.name = $('span[action*="map"]').text().trim();
+  factory.setWage($('h2.white.imp').first().text());
 
-    const potentialWage = dotless(
-      $('h2[class$="imp"]').last().text().split(' ')[0]
-    );
-    if (potentialWage) {
-      factory.potentialWage = potentialWage;
-    }
-  } catch (e) {
-    console.error(e);
+  const potentialWage = dotless(
+    $('h2[class$="imp"]').last().text().split(' ')[0]
+  );
+  if (potentialWage) {
+    factory.potentialWage = potentialWage;
   }
   return factory;
 }

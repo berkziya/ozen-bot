@@ -10,7 +10,7 @@ export class UserHandler {
   private static instance: UserHandler;
 
   public modelService: ModelService = ModelService.getInstance();
-  public users: Set<User> = new Set();
+  public users: User[] = [];
 
   private constructor() {}
 
@@ -24,7 +24,7 @@ export class UserHandler {
   getUser(id?: number, who?: string): User | undefined {
     if (id) return [...this.users].find((u) => u.id === id);
     if (who) return [...this.users].find((u) => u.who === who);
-    const random = Math.floor(Math.random() * this.users.size);
+    const random = Math.floor(Math.random() * this.users.length);
     return [...this.users][random];
   }
 
@@ -34,9 +34,10 @@ export class UserHandler {
     password?: string,
     cookies?: string
   ) {
-    const user = new User(who);
+    const existing = this.users.find((u) => u.who === who);
+    const user = existing || new User(who);
     const id = await user.init(mail, password, cookies);
-    if (id) this.users.add(user);
+    if (id) this.users.push(user);
     return user;
   }
 

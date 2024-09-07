@@ -1,12 +1,12 @@
 import * as cheerio from 'cheerio';
+import invariant from 'tiny-invariant';
 import { dotless, toCamelCase } from '../../misc/utils';
-import { User } from '../../User';
+import { UserHandler } from '../../UserHandler';
 
-export async function getStateInfo(
-  user: User,
-  stateId: number,
-  force?: boolean
-) {
+export async function getStateInfo(stateId: number, force?: boolean) {
+  const user = UserHandler.getInstance().getUser();
+  invariant(user, 'Failed to get user');
+
   const state = await user.models.getState(stateId);
 
   if (
@@ -30,7 +30,7 @@ export async function getStateInfo(
 
   async function playerFromDiv(div: cheerio.Cheerio<cheerio.Element>) {
     const playerDiv = div.find('div[action*="profile"]');
-    const player = await user.models.getPlayer(
+    const player = await user!.models.getPlayer(
       playerDiv.attr('action')!.split('/').pop()!
     );
     const playerName = playerDiv.text().match(/([^]*)Wage:/);

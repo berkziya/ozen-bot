@@ -15,28 +15,23 @@ export const resourceIds = {
 };
 
 export async function proLawByText(user: User, text: string) {
-  try {
-    await getStateInfo(user, user.player.region!.state!.id, true);
+  await getStateInfo(user.player.region!.state!.id);
 
-    const capital = user.player.region!.state!.capital!;
-    const parliament = await getParliamentInfo(user, capital);
+  const capital = user.player.region!.state!.capital!;
+  const parliament = await getParliamentInfo(capital);
 
-    invariant(parliament, 'Failed to get parliament info');
+  invariant(parliament, 'Failed to get parliament info');
 
-    let isAccepted = false;
-    for (const law of parliament.laws) {
-      if (law.text.includes(text)) {
-        await proLaw(user, capital, law);
-        isAccepted = true;
-        break;
-      }
+  let isAccepted = false;
+  for (const law of parliament.laws) {
+    if (law.text.includes(text)) {
+      await proLaw(user, capital, law);
+      isAccepted = true;
+      break;
     }
-
-    return isAccepted;
-  } catch (e) {
-    console.error(e);
-    return null;
   }
+
+  return isAccepted;
 }
 
 export async function proLaw(user: User, capital: Region, law: Law) {

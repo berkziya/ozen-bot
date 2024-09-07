@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio';
-import { User } from '../../../User';
+import invariant from 'tiny-invariant';
+import { UserHandler } from '../../../UserHandler';
 
 const resourceToId = {
   oil: 3,
@@ -23,10 +24,10 @@ const resourceToId = {
   spaceStations: 23,
 };
 
-export async function parseMarketData(
-  user: User,
-  resource: keyof typeof resourceToId
-) {
+export async function parseMarketData(resource: keyof typeof resourceToId) {
+  const user = UserHandler.getInstance().getUser();
+  invariant(user, 'Failed to get user');
+
   const content = await user.get('/storage/listed/' + resourceToId[resource]);
 
   if (!content || content.length < 150) return null;
@@ -35,7 +36,7 @@ export async function parseMarketData(
 
   const listings = $('tr[user]');
 
-  const parsedOffers: { userId: number; amount: string; price: string }[] = [];
+  const parsedOffers: { userId: number; amount: number; price: number }[] = [];
   for (let i = 0; i < listings.length; i++) {
     const offer = listings.eq(i);
     const offerById = parseInt(offer.attr('user')!);
@@ -49,8 +50,8 @@ export async function parseMarketData(
     //   .attr('action')!
     //   .split('/')
     //   .pop();
-    const offerAmount = offer.find('td:nth-child(4)').attr('rat')!;
-    const offerPrice = offer.find('td:nth-child(5)').attr('rat')!;
+    const offerAmount = parseInt(offer.find('td:nth-child(4)').attr('rat')!);
+    const offerPrice = parseInt(offer.find('td:nth-child(5)').attr('rat')!);
     parsedOffers.push({
       userId: offerById,
       // userName: offerByName,

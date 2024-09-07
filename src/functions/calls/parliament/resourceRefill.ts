@@ -7,22 +7,15 @@ export async function resourceRefill(
   user: User,
   resource: keyof typeof resourceIds = 'gold'
 ) {
-  try {
-    const ministerInfo = await amIMinister(user);
-    invariant(ministerInfo, 'Failed to get minister info');
+  const ministerInfo = await amIMinister(user.id);
+  invariant(ministerInfo, 'Failed to get minister info');
 
-    invariant(ministerInfo.econ, 'Not the Econ Minister');
-    invariant(
-      ministerInfo.econ || !(ministerInfo.leader && ministerInfo.dicta),
-      'Not the Dictator'
-    );
+  if (!ministerInfo.econ && !(ministerInfo.leader && ministerInfo.dicta))
+    return null;
 
-    await user.ajax(`/parliament/donew/42/${resourceIds[resource]}/0`);
+  await user.ajax(`/parliament/donew/42/${resourceIds[resource]}/0`);
 
-    const result = await proLawByText(user, 'Resources exploration');
+  const result = await proLawByText(user, 'Resources exploration');
 
-    return result;
-  } catch (e) {
-    console.error(e);
-  }
+  return result;
 }

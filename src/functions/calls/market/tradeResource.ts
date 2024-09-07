@@ -7,11 +7,12 @@ import { parseMarketData } from '../../getInfo/misc/parseMarketData';
 export async function buyResource(
   user: User,
   resource: keyof typeof resourceToId,
-  amount: number
+  amount?: number
 ) {
-  const offers = await parseMarketData(user, resource);
+  const offers = await parseMarketData(resource);
   invariant(offers);
   const offer = offers[0];
+  if (!amount) amount = offer.amount;
   return await user.ajax(
     `/storage/buy/${resourceToId[resource]}/${offer.userId}/${amount}/${offer.price}`
   );

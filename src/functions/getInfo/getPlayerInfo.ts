@@ -1,16 +1,12 @@
 import * as cheerio from 'cheerio';
+import invariant from 'tiny-invariant';
 import { dotless, toCamelCase } from '../../misc/utils';
-import { User } from '../../User';
+import { UserHandler } from '../../UserHandler';
 import { getRegionInfo } from './getRegionInfo';
 
-export async function getPlayerInfo(
-  user: User,
-  playerId?: number,
-  force?: boolean
-) {
-  if (!playerId) {
-    playerId = user.player.id;
-  }
+export async function getPlayerInfo(playerId: number, force?: boolean) {
+  const user = UserHandler.getInstance().getUser();
+  invariant(user, 'Failed to get user');
 
   const player = await user.models.getPlayer(playerId);
 
@@ -123,7 +119,7 @@ export async function getPlayerInfo(
       const name = tr.find('div[action^="map/"]').text().trim();
       switch (key) {
         case 'governor': {
-          const region = await getRegionInfo(user, parseInt(id));
+          const region = await getRegionInfo(parseInt(id));
           const autonomy = region!.autonomy!;
           autonomy.name = name;
           player.setGovernor(autonomy);

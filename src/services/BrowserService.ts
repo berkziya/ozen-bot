@@ -21,7 +21,7 @@ export class BrowserService {
       this.context = await firefox.launchPersistentContext(
         path.join(browserDir, this.who),
         {
-          headless: true,
+          headless: false,
           timezoneId: 'UTC',
           locale: 'en-US',
           viewport: this.isMobile ? mobileViewport : undefined,

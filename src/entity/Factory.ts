@@ -55,7 +55,9 @@ export class Factory {
   }
 
   get wage() {
-    return this.isFixed ? this.wage_ : this.wage_ * Math.pow(this.level, 0.8);
+    return this.isFixed
+      ? this.wage_
+      : this.wage_ * Math.pow(this.level, 0.8) * 1.2;
   }
 
   get type(): string {
