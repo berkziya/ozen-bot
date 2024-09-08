@@ -36,6 +36,7 @@ export async function mainPageInfo(user: User) {
         user.player.storage.gold = dotless(gold[1]);
       }
 
+      toBeReturned['remainingPerkTime'] = 0;
       const upgradingPerk = script.match(/\.perk_square_f\[perk="(\d)/);
       if (upgradingPerk) {
         toBeReturned['upgradingPerk'] = upgradingPerk[1];

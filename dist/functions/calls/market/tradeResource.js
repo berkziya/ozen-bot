@@ -34,9 +34,11 @@ const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
 const _1 = require(".");
 const parseMarketData_1 = require("../../getInfo/misc/parseMarketData");
 async function buyResource(user, resource, amount) {
-    const offers = await (0, parseMarketData_1.parseMarketData)(user, resource);
+    const offers = await (0, parseMarketData_1.parseMarketData)(resource);
     (0, tiny_invariant_1.default)(offers);
     const offer = offers[0];
+    if (!amount)
+        amount = offer.amount;
     return await user.ajax(`/storage/buy/${_1.resourceToId[resource]}/${offer.userId}/${amount}/${offer.price}`);
 }
 async function sellResource(user, resource, amount, price) {

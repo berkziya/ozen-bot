@@ -16,7 +16,7 @@ export async function getWarList(stateId: number) {
 
   const wars: Set<War> = new Set();
 
-  async function tdToRegion(td: cheerio.Cheerio<cheerio.Element>) {
+  async function tdToRegion(td: any) {
     const regionId = parseInt(td.attr('action')!.split('/').pop()!);
     if (!regionId) {
       if (td.text()!.includes('Coup')) {

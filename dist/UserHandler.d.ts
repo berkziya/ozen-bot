@@ -5,7 +5,7 @@ export declare const browserDir: string;
 export declare class UserHandler {
     private static instance;
     modelService: ModelService;
-    users: Set<User>;
+    users: User[];
     private constructor();
     static getInstance(): UserHandler;
     getUser(id?: number, who?: string): User | undefined;

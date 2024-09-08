@@ -13,7 +13,7 @@ exports.browserDir = node_path_1.default.join(process.cwd(), 'browsers');
 class UserHandler {
     static instance;
     modelService = ModelService_1.ModelService.getInstance();
-    users = new Set();
+    users = [];
     constructor() { }
     static getInstance() {
         if (!UserHandler.instance) {
@@ -26,14 +26,15 @@ class UserHandler {
             return [...this.users].find((u) => u.id === id);
         if (who)
             return [...this.users].find((u) => u.who === who);
-        const random = Math.floor(Math.random() * this.users.size);
+        const random = Math.floor(Math.random() * this.users.length);
         return [...this.users][random];
     }
     async createUser(who, mail, password, cookies) {
-        const user = new User_1.User(who);
+        const existing = this.users.find((u) => u.who === who);
+        const user = existing || new User_1.User(who);
         const id = await user.init(mail, password, cookies);
         if (id)
-            this.users.add(user);
+            this.users.push(user);
         return user;
     }
     async autoCreateUsers() {

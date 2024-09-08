@@ -2,10 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.calculateDamage = calculateDamage;
 const _1 = require(".");
-const Region_1 = require("../../../entity/Region");
 const calculateTroops_1 = require("./calculateTroops");
 function calculateDamage(player, war, defend = true) {
-    const clamp = (num, min, max) => {
+    const clamp = (min, num, max) => {
         return Math.max(min, Math.min(num, max));
     };
     const point25 = (num) => {
@@ -17,7 +16,7 @@ function calculateDamage(player, war, defend = true) {
     let missile_diff = 0;
     let airport_diff = 0;
     let sea_diff = 0;
-    if (war.aggressor instanceof Region_1.Region) {
+    if (war.aggressor.id) {
         missile_diff =
             (war.aggressor.buildings.missileSystem -
                 war.defender.buildings.missileSystem) /
@@ -29,16 +28,18 @@ function calculateDamage(player, war, defend = true) {
     }
     let diffs = 0;
     let buffs = 0;
-    if (war.type === 'training')
+    if (war.type === 'training') {
         diffs = 0.75;
-    if (defend) {
+        // buffs += war.defender.indexes['military'] / 20;
+    }
+    else if (!defend) {
         if (['ground', 'troopers'].includes(war.type))
             diffs += point25(clamp(-0.75, missile_diff, 0));
         if (['ground', 'troopers', 'moon'].includes(war.type))
             diffs += point25(clamp(0, airport_diff, 0.75));
         if (['sea'].includes(war.type))
             diffs += point25(clamp(-0.75, sea_diff, 0));
-        if (war.aggressor instanceof Region_1.Region)
+        if (war.aggressor.id)
             buffs += macademy_buff(war.aggressor);
         if (['revolution', 'coup'].includes(war.type)) {
             buffs += 0.05;
@@ -58,7 +59,7 @@ function calculateDamage(player, war, defend = true) {
         // buffs += war.defender.indexes['military'] / 20;
     }
     buffs +=
-        (600 + // homeland bonus
+        (600 + // if homeland bonus
             player.perks['str'] * 2 +
             player.perks['edu'] +
             player.perks['end'] +
@@ -70,16 +71,17 @@ function calculateDamage(player, war, defend = true) {
     const drone_bonus = 0.35;
     const troops = (0, calculateTroops_1.calculateTroops)(player, 300, war);
     const alpha = Object.keys(troops).reduce((acc, troop) => acc + troops[troop] * _1.troopAlphaDamage[troop], 0);
-    const tanks_ratio = (troops['tanks'] * _1.troopAlphaDamage['tanks']) / alpha;
-    const ships_ratio = (troops['battleships'] * _1.troopAlphaDamage['battleships']) / alpha;
-    const space_ratio = (troops['spaceStations'] * _1.troopAlphaDamage['spaceStations']) / alpha;
-    const drone_ratio = (troops['laserDrones'] * _1.troopAlphaDamage['laserDrones']) / alpha;
+    const tanks_ratio = ((troops['tanks'] || 0) * _1.troopAlphaDamage['tanks']) / alpha;
+    const ships_ratio = ((troops['battleships'] || 0) * _1.troopAlphaDamage['battleships']) / alpha;
+    const space_ratio = ((troops['spaceStations'] || 0) * _1.troopAlphaDamage['spaceStations']) /
+        alpha;
+    const drone_ratio = ((troops['laserDrones'] || 0) * _1.troopAlphaDamage['laserDrones']) / alpha;
     const troop_bonus = 1 +
         tanks_bonus * tanks_ratio +
         ships_bonus * ships_ratio +
         space_bonus * space_ratio +
         drone_bonus * drone_ratio;
     const user_bonus = 1; // + player.house["gym"]/100
-    const damage = (4 + diffs + buffs) * alpha * troop_bonus * user_bonus;
+    const damage = (1 + diffs + buffs) * alpha * troop_bonus * user_bonus;
     return Math.floor(damage);
 }

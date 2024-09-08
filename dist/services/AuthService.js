@@ -55,21 +55,19 @@ class AuthService {
         try {
             const { page, context } = await this.browserService.getPage();
             const onSuccess = async () => {
-                try {
-                    this.saveCookies(context);
-                    const id = await page.evaluate(() => id);
-                    const c_html = await page.evaluate(() => c_html);
-                    this.browserService.closePage();
-                    this.c_html = c_html;
-                    return id;
-                }
-                catch (e) {
-                    console.error(e);
-                    return null;
-                }
+                this.saveCookies(context);
+                const id = await page.evaluate(() => id);
+                const c_html = await page.evaluate(() => c_html);
+                this.c_html = c_html;
+                return id;
             };
-            if (await this.amILoggedIn())
-                return onSuccess();
+            try {
+                // check if already logged in
+                const id = await page.evaluate(() => id);
+                if (id)
+                    return onSuccess();
+            }
+            catch { }
             try {
                 await node_fs_1.promises.access(this.cookiesPath);
                 const cookiesData = await node_fs_1.promises.readFile(this.cookiesPath, 'utf8');

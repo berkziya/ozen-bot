@@ -22,12 +22,19 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getWarInfo = getWarInfo;
 const cheerio = __importStar(require("cheerio"));
+const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
 const timestamps_1 = require("../../misc/timestamps");
 const utils_1 = require("../../misc/utils");
-async function getWarInfo(user, warId, force = false) {
+const UserHandler_1 = require("../../UserHandler");
+async function getWarInfo(warId, force = false) {
+    const user = UserHandler_1.UserHandler.getInstance().getUser();
+    (0, tiny_invariant_1.default)(user, 'Failed to get user');
     const war = await user.models.getWar(warId);
     if (!force &&
         war.lastUpdate &&
@@ -40,6 +47,7 @@ async function getWarInfo(user, warId, force = false) {
     const $ = cheerio.load(content);
     const typeElement = $('body > div.margin > h1 > div:nth-child(2)');
     let type = typeElement.text();
+    console.log(type);
     if (type.includes('Troopers')) {
         type = 'troopers';
     }
@@ -77,13 +85,16 @@ async function getWarInfo(user, warId, force = false) {
         const aggressor = await user.models.getRegion(parseInt(attackerId));
         war.aggressor = aggressor;
     }
-    else {
-        const aggressor = await user.models.getRegion(0);
-        war.aggressor = aggressor;
-    }
     if (type === 'training') {
         war.lastUpdate = new Date();
         war.name = 'training war';
+        const defenderId = $('#war_w_ata_s > div[side="atack"][url]')
+            .last()
+            .attr('url');
+        const defender = await user.models.getRegion(parseInt(defenderId));
+        war.defender = defender;
+        const aggressor = await user.models.getRegion(0);
+        war.aggressor = aggressor;
         return war;
     }
     const defenderId = $('#war_w_def_s > span:nth-child(3)')

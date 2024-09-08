@@ -22,10 +22,17 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getWarList = getWarList;
 const cheerio = __importStar(require("cheerio"));
-async function getWarList(user, stateId) {
+const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
+const UserHandler_1 = require("../../../UserHandler");
+async function getWarList(stateId) {
+    const user = UserHandler_1.UserHandler.getInstance().getUser();
+    (0, tiny_invariant_1.default)(user, 'Failed to get user');
     const content = await user.get('/listed/statewars/' + stateId);
     if (!content || content.length < 150)
         return null;
@@ -57,11 +64,14 @@ async function getWarList(user, stateId) {
         const war = await user.models.getWar(warId);
         const attackerRegion = await tdToRegion(warTr.find('td[action^="map/details"]').first());
         const defenderRegion = await tdToRegion(warTr.find('td[action^="map/details"]').last());
-        war.aggressor = attackerRegion;
-        war.defender = defenderRegion;
-        if (war.aggressor === 'coup' || war.aggressor === 'revolution') {
-            war.type = war.aggressor;
+        const aggressor = attackerRegion;
+        if (aggressor === 'coup' || aggressor === 'revolution') {
+            war.type = aggressor;
+            war.aggressor = await user.models.getRegion(0);
         }
+        else
+            war.aggressor = aggressor;
+        war.defender = defenderRegion;
         // war.diff = parseInt(warTr.find('td[rat][action]').first().attr('rat')!);
         war.endingTime = new Date(parseInt(warTr.find('td[rat]').last().attr('rat')));
         wars.add(war);

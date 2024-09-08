@@ -9,6 +9,6 @@ export declare const resourceIds: {
     uranium: number;
     diamonds: number;
 };
-export declare function proLawByText(user: User, text: string): Promise<boolean | null>;
+export declare function proLawByText(user: User, text: string): Promise<boolean>;
 export declare function proLaw(user: User, capital: Region, law: Law): Promise<Response>;
 export declare function cancelSelfLaw(user: User): Promise<Response>;

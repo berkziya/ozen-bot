@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.War = void 0;
-const Region_1 = require("./Region");
 class War {
     lastUpdate = new Date(0);
     id;
@@ -25,7 +24,7 @@ class War {
             name: this.name,
             type: this.type,
             endingTime: this.endingTime,
-            aggresor: this.aggressor instanceof Region_1.Region ? this.aggressor.id : this.aggressor,
+            aggresor: this.aggressor.id,
             defender: this.defender.id,
             aggressorDamage: this.aggressorDamage,
             defenderDamage: this.defenderDamage,

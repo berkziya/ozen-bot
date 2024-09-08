@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.troopAlphaDamage = void 0;
-exports.cancel_autoattack = cancel_autoattack;
+exports.cancelAutoAttack = cancelAutoAttack;
 exports.attack = attack;
 const calculateTroops_1 = require("./calculateTroops");
 exports.troopAlphaDamage = {
@@ -24,25 +24,21 @@ const troopIds = {
     spaceStations: 't23',
     laserDrones: 't27',
 };
-async function cancel_autoattack(user) {
+async function cancelAutoAttack(user) {
     return await user.ajax('/war/autoset_cancel/');
 }
 async function attack(user, war, defend = true, max = false, drones = false) {
-    try {
-        const free_ene = max ? 0 : 1;
-        const calculatedTroops = (0, calculateTroops_1.calculateTroops)(user.player, 300, war, drones);
-        const aim = defend ? 1 : 0;
-        const troops = Object.entries(calculatedTroops).reduce((acc, [key, value]) => ({ ...acc, [troopIds[key]]: value.toString() }), {});
-        const n = JSON.stringify(troops);
-        await cancel_autoattack(user);
-        return await user.ajax('/war/autoset/', {
-            free_ene,
-            n,
-            aim,
-            edit: war.id,
-        });
-    }
-    catch (e) {
-        console.error('Error attacking', e);
-    }
+    const free_ene = max ? 0 : 1;
+    const calculatedTroops = (0, calculateTroops_1.calculateTroops)(user.player, 300, war, drones);
+    const aim = defend ? war.defender.id : war.aggressor.id;
+    const troops = Object.entries(calculatedTroops).reduce((acc, [key, value]) => ({ ...acc, [troopIds[key]]: value.toString() }), {});
+    const n = JSON.stringify(troops);
+    await cancelAutoAttack(user);
+    const result = await user.ajax('/war/autoset/', {
+        free_ene,
+        n,
+        aim,
+        edit: war.id,
+    });
+    return result;
 }

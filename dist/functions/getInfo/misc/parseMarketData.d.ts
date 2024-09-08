@@ -1,4 +1,3 @@
-import { User } from '../../../User';
 declare const resourceToId: {
     oil: number;
     ore: number;
@@ -20,9 +19,9 @@ declare const resourceToId: {
     moonTanks: number;
     spaceStations: number;
 };
-export declare function parseMarketData(user: User, resource: keyof typeof resourceToId): Promise<{
+export declare function parseMarketData(resource: keyof typeof resourceToId): Promise<{
     userId: number;
-    amount: string;
-    price: string;
+    amount: number;
+    price: number;
 }[] | null>;
 export {};

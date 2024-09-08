@@ -6,7 +6,7 @@ export declare class War {
     name: string;
     type: 'troopers' | 'sea' | 'training' | 'revolution' | 'coup' | 'ground';
     endingTime: Date | null;
-    aggressor: Region | 'revolution' | 'coup';
+    aggressor: Region;
     defender: Region;
     aggressorDamage: number;
     defenderDamage: number;
@@ -19,7 +19,7 @@ export declare class War {
         name: string;
         type: "troopers" | "sea" | "training" | "revolution" | "coup" | "ground";
         endingTime: Date | null;
-        aggresor: number | "revolution" | "coup";
+        aggresor: number;
         defender: number;
         aggressorDamage: number;
         defenderDamage: number;

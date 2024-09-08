@@ -1,7 +1,7 @@
 import { Region } from '../../../entity/Region';
 import { State } from '../../../entity/State';
 import { User } from '../../../User';
-export declare function getCitizens(user: User, location: Region | State): Promise<{
+export declare function getCitizens(location: Region | State): Promise<{
     id: number;
     name: string;
     level: number;

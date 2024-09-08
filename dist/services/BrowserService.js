@@ -24,7 +24,7 @@ class BrowserService {
     async getPage() {
         if (!this.context)
             this.context = await playwright_1.firefox.launchPersistentContext(node_path_1.default.join(UserHandler_1.browserDir, this.who), {
-                headless: true,
+                headless: false,
                 timezoneId: 'UTC',
                 locale: 'en-US',
                 viewport: this.isMobile ? mobileViewport : undefined,

@@ -22,9 +22,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseMarketData = parseMarketData;
 const cheerio = __importStar(require("cheerio"));
+const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
+const UserHandler_1 = require("../../../UserHandler");
 const resourceToId = {
     oil: 3,
     ore: 4,
@@ -46,7 +51,9 @@ const resourceToId = {
     moonTanks: 22,
     spaceStations: 23,
 };
-async function parseMarketData(user, resource) {
+async function parseMarketData(resource) {
+    const user = UserHandler_1.UserHandler.getInstance().getUser();
+    (0, tiny_invariant_1.default)(user, 'Failed to get user');
     const content = await user.get('/storage/listed/' + resourceToId[resource]);
     if (!content || content.length < 150)
         return null;
@@ -66,8 +73,8 @@ async function parseMarketData(user, resource) {
         //   .attr('action')!
         //   .split('/')
         //   .pop();
-        const offerAmount = offer.find('td:nth-child(4)').attr('rat');
-        const offerPrice = offer.find('td:nth-child(5)').attr('rat');
+        const offerAmount = parseInt(offer.find('td:nth-child(4)').attr('rat'));
+        const offerPrice = parseInt(offer.find('td:nth-child(5)').attr('rat'));
         parsedOffers.push({
             userId: offerById,
             // userName: offerByName,

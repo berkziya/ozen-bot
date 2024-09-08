@@ -22,12 +22,19 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAutonomyInfo = getAutonomyInfo;
 const cheerio = __importStar(require("cheerio"));
+const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
 const utils_1 = require("../../misc/utils");
+const UserHandler_1 = require("../../UserHandler");
 const getRegionInfo_1 = require("./getRegionInfo");
-async function getAutonomyInfo(user, autonomyId, force) {
+async function getAutonomyInfo(autonomyId, force) {
+    const user = UserHandler_1.UserHandler.getInstance().getUser();
+    (0, tiny_invariant_1.default)(user, 'Failed to get user');
     const autonomy = await user.models.getAutonomy(autonomyId);
     if (!force &&
         autonomy.lastUpdate &&

@@ -172,3 +172,5 @@ out
 
 # SvelteKit build / generate output
 .svelte-kit
+dist/test.js
+dist/test.d.ts

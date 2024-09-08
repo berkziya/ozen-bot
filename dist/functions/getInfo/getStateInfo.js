@@ -22,11 +22,18 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getStateInfo = getStateInfo;
 const cheerio = __importStar(require("cheerio"));
+const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
 const utils_1 = require("../../misc/utils");
-async function getStateInfo(user, stateId, force) {
+const UserHandler_1 = require("../../UserHandler");
+async function getStateInfo(stateId, force) {
+    const user = UserHandler_1.UserHandler.getInstance().getUser();
+    (0, tiny_invariant_1.default)(user, 'Failed to get user');
     const state = await user.models.getState(stateId);
     if (!force &&
         state.lastUpdate &&

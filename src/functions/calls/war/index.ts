@@ -1,4 +1,3 @@
-import { Region } from '../../../entity/Region';
 import { War } from '../../../entity/War';
 import { User } from '../../../User';
 import { calculateTroops } from './calculateTroops';

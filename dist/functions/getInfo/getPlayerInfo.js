@@ -22,15 +22,19 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPlayerInfo = getPlayerInfo;
 const cheerio = __importStar(require("cheerio"));
+const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
 const utils_1 = require("../../misc/utils");
+const UserHandler_1 = require("../../UserHandler");
 const getRegionInfo_1 = require("./getRegionInfo");
-async function getPlayerInfo(user, playerId, force) {
-    if (!playerId) {
-        playerId = user.player.id;
-    }
+async function getPlayerInfo(playerId, force) {
+    const user = UserHandler_1.UserHandler.getInstance().getUser();
+    (0, tiny_invariant_1.default)(user, 'Failed to get user');
     const player = await user.models.getPlayer(playerId);
     if (!force &&
         player.lastUpdate &&
@@ -125,7 +129,7 @@ async function getPlayerInfo(user, playerId, force) {
             const name = tr.find('div[action^="map/"]').text().trim();
             switch (key) {
                 case 'governor': {
-                    const region = await (0, getRegionInfo_1.getRegionInfo)(user, parseInt(id));
+                    const region = await (0, getRegionInfo_1.getRegionInfo)(parseInt(id));
                     const autonomy = region.autonomy;
                     autonomy.name = name;
                     player.setGovernor(autonomy);

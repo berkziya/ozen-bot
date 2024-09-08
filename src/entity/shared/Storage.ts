@@ -1,4 +1,3 @@
-import { Cheerio, Element } from 'cheerio';
 import { dotless } from '../../misc/utils';
 import { Autonomy } from '../Autonomy';
 import { Player } from '../Player';
@@ -48,7 +47,7 @@ export class Storage {
     this.owner = owner;
   }
 
-  async setBudgetFromDiv(div: Cheerio<Element>) {
+  async setBudgetFromDiv(div: any) {
     const spans = div.find('span');
     this.stateMoney = dotless(spans.eq(0).text());
     this.stateGold = dotless(spans.eq(1).text());

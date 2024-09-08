@@ -21,7 +21,7 @@ function getPerkUpgradeTimes(user) {
 async function upgradePerk(user, perk, currency = 'money') {
     return await user.ajax(`/perks/up/${perkToId[perk]}/${currencyToId[currency]}`);
 }
-async function choosePerkToUpgrade(user, gold = ['str', 'edu']) {
+function choosePerkToUpgrade(user, gold = ['str', 'edu']) {
     const times = getPerkUpgradeTimes(user);
     let { str, edu, end } = times;
     str /= 2;
@@ -31,9 +31,9 @@ async function choosePerkToUpgrade(user, gold = ['str', 'edu']) {
         edu *= 0.075;
     if (gold.includes('end'))
         end *= 0.075;
-    if (str >= edu && str >= end)
+    if (str <= edu && str <= end)
         return { perk: 'str', time: str, gold: gold.includes('str') };
-    if (edu >= end)
+    if (edu <= end)
         return { perk: 'edu', time: edu, gold: gold.includes('edu') };
     return { perk: 'end', time: end, gold: gold.includes('end') };
 }

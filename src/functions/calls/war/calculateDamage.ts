@@ -9,7 +9,7 @@ export function calculateDamage(
   war: War,
   defend: boolean = true
 ) {
-  const clamp = (num: number, min: number, max: number): number => {
+  const clamp = (min: number, num: number, max: number): number => {
     return Math.max(min, Math.min(num, max));
   };
 
@@ -43,9 +43,10 @@ export function calculateDamage(
   let diffs = 0;
   let buffs = 0;
 
-  if (war.type === 'training') diffs = 0.75;
-
-  if (defend) {
+  if (war.type === 'training') {
+    diffs = 0.75;
+    // buffs += war.defender.indexes['military'] / 20;
+  } else if (!defend) {
     if (['ground', 'troopers'].includes(war.type))
       diffs += point25(clamp(-0.75, missile_diff, 0));
     if (['ground', 'troopers', 'moon'].includes(war.type))
@@ -71,7 +72,7 @@ export function calculateDamage(
   }
 
   buffs +=
-    (600 + // homeland bonus
+    (600 + // if homeland bonus
       player.perks['str'] * 2 +
       player.perks['edu'] +
       player.perks['end'] +
@@ -89,13 +90,15 @@ export function calculateDamage(
     0
   );
 
-  const tanks_ratio = (troops['tanks'] * troopAlphaDamage['tanks']) / alpha;
+  const tanks_ratio =
+    ((troops['tanks'] || 0) * troopAlphaDamage['tanks']) / alpha;
   const ships_ratio =
-    (troops['battleships'] * troopAlphaDamage['battleships']) / alpha;
+    ((troops['battleships'] || 0) * troopAlphaDamage['battleships']) / alpha;
   const space_ratio =
-    (troops['spaceStations'] * troopAlphaDamage['spaceStations']) / alpha;
+    ((troops['spaceStations'] || 0) * troopAlphaDamage['spaceStations']) /
+    alpha;
   const drone_ratio =
-    (troops['laserDrones'] * troopAlphaDamage['laserDrones']) / alpha;
+    ((troops['laserDrones'] || 0) * troopAlphaDamage['laserDrones']) / alpha;
 
   const troop_bonus =
     1 +
@@ -106,6 +109,6 @@ export function calculateDamage(
 
   const user_bonus = 1; // + player.house["gym"]/100
 
-  const damage = (4 + diffs + buffs) * alpha * troop_bonus * user_bonus;
+  const damage = (1 + diffs + buffs) * alpha * troop_bonus * user_bonus;
   return Math.floor(damage);
 }

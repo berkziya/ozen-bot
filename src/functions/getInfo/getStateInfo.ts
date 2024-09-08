@@ -28,7 +28,7 @@ export async function getStateInfo(stateId: number, force?: boolean) {
   const budgetDiv = $('div.slide_profile_photo > div.imp');
   state.storage.setBudgetFromDiv(budgetDiv);
 
-  async function playerFromDiv(div: cheerio.Cheerio<cheerio.Element>) {
+  async function playerFromDiv(div: any) {
     const playerDiv = div.find('div[action*="profile"]');
     const player = await user!.models.getPlayer(
       playerDiv.attr('action')!.split('/').pop()!

@@ -12,6 +12,7 @@ export declare class User {
     get link(): string;
     get cookies(): string;
     get c_html(): string;
+    amILoggedIn(): Promise<boolean>;
     init(mail?: string, password?: string, cookies?: string): Promise<number>;
     ajax(url: string, data?: {
         [key: string]: string | number;

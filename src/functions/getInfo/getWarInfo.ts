@@ -26,6 +26,7 @@ export async function getWarInfo(warId: number, force: boolean = false) {
 
   const typeElement = $('body > div.margin > h1 > div:nth-child(2)');
   let type = typeElement.text();
+  console.log(type);
 
   if (type.includes('Troopers')) {
     type = 'troopers';
@@ -60,14 +61,18 @@ export async function getWarInfo(warId: number, force: boolean = false) {
       .pop()!;
     const aggressor = await user.models.getRegion(parseInt(attackerId));
     war.aggressor = aggressor;
-  } else {
-    const aggressor = await user.models.getRegion(0);
-    war.aggressor = aggressor;
   }
 
   if (type === 'training') {
     war.lastUpdate = new Date();
     war.name = 'training war';
+    const defenderId = $('#war_w_ata_s > div[side="atack"][url]')
+      .last()
+      .attr('url')!;
+    const defender = await user.models.getRegion(parseInt(defenderId));
+    war.defender = defender;
+    const aggressor = await user.models.getRegion(0);
+    war.aggressor = aggressor;
     return war;
   }
 

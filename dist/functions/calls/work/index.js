@@ -11,6 +11,7 @@ async function cancelAutoWork(user) {
     return await user.ajax('/work/autoset_cancel');
 }
 async function autoWork(user, factory) {
+    await assignToFactory(user, factory);
     return await user.ajax('/work/autoset', {
         mentor: 0,
         factory: factory.id,

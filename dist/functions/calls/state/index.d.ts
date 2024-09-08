@@ -12,5 +12,5 @@ declare const deptIds: {
     spaceStations: string;
     battleships: string;
 };
-export declare function workStateDept(user: User, dept?: keyof typeof deptIds): Promise<Response | null>;
+export declare function workStateDept(user: User, dept?: keyof typeof deptIds): Promise<Response>;
 export {};
