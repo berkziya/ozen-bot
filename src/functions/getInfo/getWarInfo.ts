@@ -26,7 +26,6 @@ export async function getWarInfo(warId: number, force: boolean = false) {
 
   const typeElement = $('body > div.margin > h1 > div:nth-child(2)');
   let type = typeElement.text();
-  console.log(type);
 
   if (type.includes('Troopers')) {
     type = 'troopers';

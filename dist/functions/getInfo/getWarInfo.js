@@ -47,7 +47,6 @@ async function getWarInfo(warId, force = false) {
     const $ = cheerio.load(content);
     const typeElement = $('body > div.margin > h1 > div:nth-child(2)');
     let type = typeElement.text();
-    console.log(type);
     if (type.includes('Troopers')) {
         type = 'troopers';
     }
