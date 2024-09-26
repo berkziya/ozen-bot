@@ -21,23 +21,45 @@ class BrowserService {
     get link() {
         return `https://${this.isMobile ? 'm.' : ''}rivalregions.com`;
     }
-    async getPage() {
-        if (!this.context)
-            this.context = await playwright_1.firefox.launchPersistentContext(node_path_1.default.join(UserHandler_1.browserDir, this.who), {
-                headless: true,
-                timezoneId: 'UTC',
-                locale: 'en-US',
-                viewport: this.isMobile ? mobileViewport : undefined,
-                userAgent: this.isMobile ? exports.iPhoneUserAgent : undefined,
-                hasTouch: this.isMobile,
-            });
-        this.page = this.context.pages()[0];
-        await this.page.goto(this.link);
-        return { page: this.page, context: this.context };
+    async getContext() {
+        try {
+            if (!this.context) {
+                this.context = await playwright_1.firefox.launchPersistentContext(node_path_1.default.join(UserHandler_1.cookiesDir, 'browsers', this.who), {
+                    headless: true,
+                    timezoneId: 'UTC',
+                    locale: 'en-US',
+                    viewport: this.isMobile ? mobileViewport : undefined,
+                    userAgent: this.isMobile ? exports.iPhoneUserAgent : undefined,
+                    hasTouch: this.isMobile,
+                });
+            }
+            return { context: this.context };
+        }
+        catch (e) {
+            console.log('Error launching context', e);
+            return null;
+        }
     }
-    async closePage() {
-        if (this.context)
-            await this.context.close();
+    async getPage() {
+        await this.getContext();
+        try {
+            this.page = this.context.pages()[0] || (await this.context.newPage());
+            await this.page.goto(this.link);
+            return { page: this.page, context: this.context };
+        }
+        catch (e) {
+            console.log('Error getting page', e);
+            return null;
+        }
+    }
+    async closeContext() {
+        try {
+            if (this.context)
+                await this.context.close();
+        }
+        catch (e) {
+            console.log('Error closing context', e);
+        }
     }
 }
 exports.BrowserService = BrowserService;

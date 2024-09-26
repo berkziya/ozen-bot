@@ -1,5 +1,6 @@
 import { Autonomy } from './Autonomy';
 import { Factory } from './Factory';
+import { MercOrder } from './MercOrder';
 import { Party } from './Party';
 import { Region } from './Region';
 import { Storage } from './shared/Storage';
@@ -35,6 +36,8 @@ export class Player {
 
   statePermits: Set<State>;
   regionPermits: Set<Region>;
+
+  mercOrder: MercOrder | null = null;
 
   constructor(id_: number) {
     this.id = id_;
@@ -169,6 +172,7 @@ export class Player {
       factories: Array.from(this.factories, (factory) => factory.id),
       statePermits: Array.from(this.statePermits, (state) => state.id),
       regionPermits: Array.from(this.regionPermits, (region) => region.id),
+      mercOrder: this.mercOrder,
     };
   }
 

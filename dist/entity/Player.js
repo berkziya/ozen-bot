@@ -25,6 +25,7 @@ class Player {
     factories;
     statePermits;
     regionPermits;
+    mercOrder = null;
     constructor(id_) {
         this.id = id_;
         this.name = 'player/' + this.id.toString();
@@ -140,6 +141,7 @@ class Player {
             factories: Array.from(this.factories, (factory) => factory.id),
             statePermits: Array.from(this.statePermits, (state) => state.id),
             regionPermits: Array.from(this.regionPermits, (region) => region.id),
+            mercOrder: this.mercOrder,
         };
     }
     static [Symbol.hasInstance](instance) {

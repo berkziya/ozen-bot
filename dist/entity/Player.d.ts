@@ -1,5 +1,6 @@
 import { Autonomy } from './Autonomy';
 import { Factory } from './Factory';
+import { MercOrder } from './MercOrder';
 import { Party } from './Party';
 import { Region } from './Region';
 import { Storage } from './shared/Storage';
@@ -27,6 +28,7 @@ export declare class Player {
     factories: Set<Factory>;
     statePermits: Set<State>;
     regionPermits: Set<Region>;
+    mercOrder: MercOrder | null;
     constructor(id_: number);
     get totalGold(): number;
     alpha(energy?: number): number;
@@ -65,6 +67,7 @@ export declare class Player {
         factories: number[];
         statePermits: number[];
         regionPermits: number[];
+        mercOrder: MercOrder | null;
     };
     static [Symbol.hasInstance](instance: any): boolean;
 }

@@ -30,11 +30,16 @@ class AuthService {
         return node_path_1.default.join(UserHandler_1.cookiesDir, `${this.who}-${this.isMobile ? 'm_' : ''}cookies.json`);
     }
     async saveCookies(source) {
-        if (!(typeof source === 'string'))
-            source = JSON.stringify(await source.cookies());
-        this.cookieDict = JSON.parse(source);
-        await node_fs_1.promises.mkdir(UserHandler_1.cookiesDir, { recursive: true });
-        await node_fs_1.promises.writeFile(this.cookiesPath, source);
+        try {
+            if (!(typeof source === 'string'))
+                source = JSON.stringify(await source.cookies());
+            this.cookieDict = JSON.parse(source);
+            await node_fs_1.promises.mkdir(UserHandler_1.cookiesDir, { recursive: true });
+            await node_fs_1.promises.writeFile(this.cookiesPath, source);
+        }
+        catch (e) {
+            console.error(e);
+        }
     }
     async amILoggedIn() {
         try {
@@ -53,7 +58,10 @@ class AuthService {
     }
     async login(mail, password, cookies) {
         try {
-            const { page, context } = await this.browserService.getPage();
+            const data = await this.browserService.getPage();
+            if (!data)
+                return null;
+            const { page, context } = data;
             const onSuccess = async () => {
                 this.saveCookies(context);
                 const id = await page.evaluate(() => id);
@@ -67,8 +75,11 @@ class AuthService {
                 if (id)
                     return onSuccess();
             }
-            catch { }
+            catch (e) {
+                console.error('Not logged in', e);
+            }
             try {
+                // check if there is a cookie file
                 await node_fs_1.promises.access(this.cookiesPath);
                 const cookiesData = await node_fs_1.promises.readFile(this.cookiesPath, 'utf8');
                 const cookies = JSON.parse(cookiesData);
@@ -77,7 +88,9 @@ class AuthService {
                 await page.waitForSelector('#header_content', { timeout: 5000 });
                 return onSuccess();
             }
-            catch { }
+            catch (e) {
+                console.error('No cookie file', e);
+            }
             if (mail && password) {
                 try {
                     await page.fill('input[name="mail"]', mail);
@@ -86,7 +99,9 @@ class AuthService {
                     await page.waitForSelector('#header_content', { timeout: 5000 });
                     return onSuccess();
                 }
-                catch { }
+                catch (e) {
+                    console.error('Failed to login with given credentials', e);
+                }
             }
             if (cookies) {
                 try {
@@ -95,7 +110,9 @@ class AuthService {
                     await page.waitForSelector('#header_content', { timeout: 5000 });
                     return onSuccess();
                 }
-                catch { }
+                catch (e) {
+                    console.error('Failed to login with given cookies', e);
+                }
             }
             return null;
         }

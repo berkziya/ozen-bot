@@ -7,9 +7,12 @@ export declare class BrowserService {
     private page;
     constructor(who: string, isMobile: boolean);
     get link(): string;
+    getContext(): Promise<{
+        context: BrowserContext;
+    } | null>;
     getPage(): Promise<{
         page: Page;
         context: BrowserContext;
-    }>;
-    closePage(): Promise<void>;
+    } | null>;
+    closeContext(): Promise<void>;
 }

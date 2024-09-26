@@ -4,7 +4,6 @@ import { ModelService } from './services/ModelService';
 import { User } from './User';
 
 export const cookiesDir = path.join(process.cwd(), 'cookies');
-export const browserDir = path.join(process.cwd(), 'browsers');
 
 export class UserHandler {
   private static instance: UserHandler;

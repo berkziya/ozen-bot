@@ -39,11 +39,11 @@ class User {
         return await this.authService.amILoggedIn();
     }
     async init(mail, password, cookies) {
-        const result = await this.authService.login(mail, password, cookies);
-        await this.browserService.closePage();
-        (0, tiny_invariant_1.default)(result, 'Login failed');
-        this.player = await this.models.getPlayer(result);
-        return result;
+        const userId = await this.authService.login(mail, password, cookies);
+        await this.browserService.closeContext();
+        (0, tiny_invariant_1.default)(userId, 'Login failed');
+        this.player = await this.models.getPlayer(userId);
+        return userId;
     }
     async ajax(url, data) {
         const formData = new FormData();
@@ -64,11 +64,13 @@ class User {
         return result;
     }
     async get(url) {
-        return await fetch(this.link + url + '?c=' + this.c_html, {
+        const result = await fetch(this.link + url + '?c=' + this.c_html, {
             headers: {
                 Cookie: this.cookies,
             },
         }).then((res) => res.text());
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        return result;
     }
 }
 exports.User = User;

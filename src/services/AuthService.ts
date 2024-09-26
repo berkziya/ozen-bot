@@ -32,11 +32,15 @@ export class AuthService {
   }
 
   async saveCookies(source: BrowserContext | string) {
-    if (!(typeof source === 'string'))
-      source = JSON.stringify(await source.cookies());
-    this.cookieDict = JSON.parse(source);
-    await fs.mkdir(cookiesDir, { recursive: true });
-    await fs.writeFile(this.cookiesPath, source);
+    try {
+      if (!(typeof source === 'string'))
+        source = JSON.stringify(await source.cookies());
+      this.cookieDict = JSON.parse(source);
+      await fs.mkdir(cookiesDir, { recursive: true });
+      await fs.writeFile(this.cookiesPath, source);
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   public async amILoggedIn() {
@@ -62,7 +66,9 @@ export class AuthService {
     cookies?: string
   ): Promise<number | null> {
     try {
-      const { page, context } = await this.browserService.getPage();
+      const data = await this.browserService.getPage();
+      if (!data) return null;
+      const { page, context } = data;
 
       const onSuccess = async () => {
         this.saveCookies(context);
@@ -76,9 +82,12 @@ export class AuthService {
         // check if already logged in
         const id: number = await page.evaluate(() => id);
         if (id) return onSuccess();
-      } catch {}
+      } catch (e) {
+        console.error('Not logged in', e);
+      }
 
       try {
+        // check if there is a cookie file
         await fs.access(this.cookiesPath);
         const cookiesData = await fs.readFile(this.cookiesPath, 'utf8');
         const cookies = JSON.parse(cookiesData);
@@ -86,7 +95,9 @@ export class AuthService {
         await page.reload();
         await page.waitForSelector('#header_content', { timeout: 5000 });
         return onSuccess();
-      } catch {}
+      } catch (e) {
+        console.error('No cookie file', e);
+      }
 
       if (mail && password) {
         try {
@@ -95,7 +106,9 @@ export class AuthService {
           await page.click('input[name="s"]');
           await page.waitForSelector('#header_content', { timeout: 5000 });
           return onSuccess();
-        } catch {}
+        } catch (e) {
+          console.error('Failed to login with given credentials', e);
+        }
       }
 
       if (cookies) {
@@ -104,7 +117,9 @@ export class AuthService {
           await page.reload();
           await page.waitForSelector('#header_content', { timeout: 5000 });
           return onSuccess();
-        } catch {}
+        } catch (e) {
+          console.error('Failed to login with given cookies', e);
+        }
       }
 
       return null;

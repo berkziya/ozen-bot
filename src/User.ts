@@ -42,11 +42,11 @@ export class User {
   }
 
   async init(mail?: string, password?: string, cookies?: string) {
-    const result = await this.authService.login(mail, password, cookies);
-    await this.browserService.closePage();
-    invariant(result, 'Login failed');
-    this.player = await this.models.getPlayer(result);
-    return result;
+    const userId = await this.authService.login(mail, password, cookies);
+    await this.browserService.closeContext();
+    invariant(userId, 'Login failed');
+    this.player = await this.models.getPlayer(userId);
+    return userId;
   }
 
   async ajax(url: string, data?: { [key: string]: string | number }) {
@@ -72,10 +72,13 @@ export class User {
   }
 
   async get(url: string) {
-    return await fetch(this.link + url + '?c=' + this.c_html, {
+    const result = await fetch(this.link + url + '?c=' + this.c_html, {
       headers: {
         Cookie: this.cookies,
       },
     }).then((res) => res.text());
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    return result;
   }
 }
