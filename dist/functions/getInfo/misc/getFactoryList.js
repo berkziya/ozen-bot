@@ -57,6 +57,8 @@ async function getFactoryList(location, resource = 'gold') {
         if (location instanceof Region_1.Region)
             factory.setRegion(location);
         factory.setWage(factoryTds.eq(2).text());
+        if (factoryTds.eq(2).attr('class').includes('ore'))
+            factory.setWage('0');
         const ownerId = parseInt(factoryTds.eq(3).attr('rat'));
         factory.owner = await user.models.getPlayer(ownerId);
         factories.add(factory);
