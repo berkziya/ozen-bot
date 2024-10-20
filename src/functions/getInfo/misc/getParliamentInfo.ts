@@ -6,7 +6,7 @@ import { UserHandler } from '../../../UserHandler';
 
 export async function getParliamentInfo(
   capital: Region,
-  isAutonomy: boolean = false
+  isAutonomy = false
 ) {
   const user = UserHandler.getInstance().getUser();
   invariant(user, 'Failed to get user');

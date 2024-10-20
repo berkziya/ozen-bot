@@ -12,8 +12,8 @@ export class Player {
 
   name: string;
 
-  level: number = 30;
-  exp: number = 0;
+  level = 30;
+  exp = 0;
   perks: { str: number; edu: number; end: number } = {
     str: 30,
     edu: 30,

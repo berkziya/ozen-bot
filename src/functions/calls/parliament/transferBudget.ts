@@ -20,7 +20,7 @@ export async function transferBudget(
   if (!ministerInfo.econ || !(ministerInfo.leader && ministerInfo.dicta))
     return null;
 
-  let targetCapitalId: number = 0;
+  let targetCapitalId = 0;
   if (target instanceof State) {
     if (!getStateInfo(target.id)) {
       return 'Failed to get state info';

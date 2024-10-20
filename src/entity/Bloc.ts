@@ -8,8 +8,8 @@ export class Bloc {
 
   states: Set<State>;
 
-  militaryAgreement: boolean = false;
-  openBorders: boolean = false;
+  militaryAgreement = false;
+  openBorders = false;
 
   constructor(id_: number) {
     this.id = id_;

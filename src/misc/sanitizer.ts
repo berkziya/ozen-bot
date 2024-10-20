@@ -10,7 +10,7 @@ export function truncate(sanitized: string, length: number): string {
   return new TextDecoder().decode(truncated);
 }
 
-export function sanitizer(input: string, replacement: string = '') {
+export function sanitizer(input: string, replacement = '') {
   const sanitized = input
     .replace(illegalRe, replacement)
     .replace(controlRe, replacement)

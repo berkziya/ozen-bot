@@ -12,9 +12,9 @@ export class Region {
 
   state: State | null = null;
 
-  needResidencyToWork: boolean = false;
-  taxRate: number = 0;
-  marketTaxes: number = 0;
+  needResidencyToWork = false;
+  taxRate = 0;
+  marketTaxes = 0;
 
   factoryOutputTaxes: {
     gold: number;
@@ -31,10 +31,10 @@ export class Region {
   };
 
   autonomy: Autonomy | null = null;
-  profitShare: number = 0;
+  profitShare = 0;
 
   borderRegions: Set<Region>;
-  seaAccess: boolean = false;
+  seaAccess = false;
 
   parties: Set<Party>;
 

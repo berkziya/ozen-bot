@@ -15,20 +15,20 @@ export class State {
   regions: Set<Region>;
   autonomies: Set<Autonomy>;
 
-  governmentForm: string = 'dictatorship';
+  governmentForm = 'dictatorship';
 
   leader: Player | null = null;
-  leaderIsCommander: boolean = false;
+  leaderIsCommander = false;
 
   econMinister: Player | null = null;
   foreignMinister: Player | null = null;
 
   leaderTermStart: Date | null = null;
 
-  entryFee: number = 0;
-  bordersOpen: boolean = false;
-  needResidencyToWork: boolean = false;
-  residencyIssuedByLeader: boolean = false;
+  entryFee = 0;
+  bordersOpen = false;
+  needResidencyToWork = false;
+  residencyIssuedByLeader = false;
 
   storage: Storage = new Storage();
   bloc: Bloc | null = null;

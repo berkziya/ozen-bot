@@ -6,7 +6,7 @@ export async function produceEnergy(
   user: User,
   amount?: number,
   target?: number,
-  leaveAtLeastXGold: number = 0
+  leaveAtLeastXGold = 0
 ) {
   if (target) {
     const storage = await storageInfo(user);

@@ -14,8 +14,8 @@ export class War {
   aggressor!: Region;
   defender!: Region;
 
-  aggressorDamage: number = 0;
-  defenderDamage: number = 0;
+  aggressorDamage = 0;
+  defenderDamage = 0;
 
   aggresorPlayers: Map<Player, number> = new Map();
   defenderPlayers: Map<Player, number> = new Map();
