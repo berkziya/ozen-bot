@@ -18,13 +18,13 @@ export class Factory {
 
   name: string;
 
-  level: number = 1;
+  level = 1;
   owner!: Player;
   region!: Region;
 
-  wage_: number = 0;
-  isFixed: boolean = false;
-  potentialWage: number = 0;
+  wage_ = 0;
+  isFixed = false;
+  potentialWage = 0;
 
   type_!: keyof typeof factoryIds;
 

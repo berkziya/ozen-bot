@@ -4,7 +4,7 @@ import { getTimestamp } from '../../misc/timestamps';
 import { dotless } from '../../misc/utils';
 import { UserHandler } from '../../UserHandler';
 
-export async function getWarInfo(warId: number, force: boolean = false) {
+export async function getWarInfo(warId: number, force = false) {
   const user = UserHandler.getInstance().getUser();
   invariant(user, 'Failed to get user');
 

@@ -7,7 +7,7 @@ import { calculateTroops } from './calculateTroops';
 export function calculateDamage(
   player: Player,
   war: War,
-  defend: boolean = true
+  defend = true
 ) {
   const clamp = (min: number, num: number, max: number): number => {
     return Math.max(min, Math.min(num, max));

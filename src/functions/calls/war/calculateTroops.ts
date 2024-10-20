@@ -15,9 +15,9 @@ const TROOPS_FOR_WAR_TYPES: { [key: string]: string[] } = {
 
 export function calculateTroops(
   player: Player,
-  energy: number = 300,
+  energy = 300,
   war: War,
-  drones: boolean = false
+  drones = false
 ): { [key: string]: number } {
   let alpha = player.alpha(energy);
   const n: { [key: string]: number } = {};

@@ -14,8 +14,8 @@ export function toCamelCase(str: string): string {
 
 export function numToSlang(
   number: number,
-  alternative: boolean = false,
-  figures: number = 1
+  alternative = false,
+  figures = 1
 ): string {
   let units = ['', 'k', 'kk', 'k' + 'kk', 'T', 'P'];
   if (alternative) {

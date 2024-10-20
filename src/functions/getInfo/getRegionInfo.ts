@@ -26,7 +26,7 @@ export async function getRegionInfo(regionId: number, force?: boolean) {
 export async function getRegionInfoInner(
   user: User,
   regionId: number,
-  getAutonomy: boolean = false
+  getAutonomy = false
 ): Promise<Autonomy | Region | null> {
   const content = await user.get('/map/details/' + regionId);
 

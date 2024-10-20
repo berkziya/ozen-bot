@@ -31,9 +31,9 @@ export async function cancelAutoAttack(user: User) {
 export async function attack(
   user: User,
   war: War,
-  defend: boolean = true,
-  max: boolean = false,
-  drones: boolean = false
+  defend = true,
+  max = false,
+  drones = false
 ) {
   const free_ene = max ? 0 : 1;
   const calculatedTroops = calculateTroops(user.player, 300, war, drones);
