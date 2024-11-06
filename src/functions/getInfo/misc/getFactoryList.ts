@@ -4,6 +4,8 @@ import { Factory, factoryIds } from '../../../entity/Factory';
 import { Region } from '../../../entity/Region';
 import { State } from '../../../entity/State';
 import { UserHandler } from '../../../UserHandler';
+import { getFactoryInfo } from '../getFactoryInfo';
+import { fchmod } from 'fs';
 
 export async function getFactoryList(
   location: State | Region,
@@ -51,7 +53,20 @@ export async function getBestFactory(
   location: State | Region,
   resource: keyof typeof factoryIds = 'gold'
 ) {
-  const factories = await getFactoryList(location, resource);
+  let factories = await getFactoryList(location, resource);
   if (!factories) return null;
-  return [...factories].sort((a, b) => b.wage - a.wage)[0];
+  // return [...factories].sort((a, b) => b.wage - a.wage)[0];
+  if (resource === 'gold') {
+    const best = factories.filter(factory => !factory.isFixed).sort((a, b) => b.wage - a.wage)[0];
+    await getFactoryInfo(best.id);
+    const coef = (best.potentialWage / best.production);
+    factories = factories.map(factory => {
+      if (factory.isFixed) return factory;
+      factory.potentialWage = factory.production * coef;
+      return factory;
+    });
+    return factories.sort((a, b) => b.potentialWage - a.potentialWage)[0];
+  }
+  factories = factories.filter(factory => !factory.isFixed);
+  return factories.sort((a, b) => b.wage - a.wage)[0];
 }

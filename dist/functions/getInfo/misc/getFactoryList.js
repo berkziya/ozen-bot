@@ -34,6 +34,7 @@ const Factory_1 = require("../../../entity/Factory");
 const Region_1 = require("../../../entity/Region");
 const State_1 = require("../../../entity/State");
 const UserHandler_1 = require("../../../UserHandler");
+const getFactoryInfo_1 = require("../getFactoryInfo");
 async function getFactoryList(location, resource = 'gold') {
     const user = UserHandler_1.UserHandler.getInstance().getUser();
     (0, tiny_invariant_1.default)(user, 'Failed to get user');
@@ -66,8 +67,22 @@ async function getFactoryList(location, resource = 'gold') {
     return [...factories];
 }
 async function getBestFactory(location, resource = 'gold') {
-    const factories = await getFactoryList(location, resource);
+    let factories = await getFactoryList(location, resource);
     if (!factories)
         return null;
-    return [...factories].sort((a, b) => b.wage - a.wage)[0];
+    // return [...factories].sort((a, b) => b.wage - a.wage)[0];
+    if (resource === 'gold') {
+        const best = factories.filter(factory => !factory.isFixed).sort((a, b) => b.wage - a.wage)[0];
+        await (0, getFactoryInfo_1.getFactoryInfo)(best.id);
+        const coef = (best.potentialWage / best.production);
+        factories = factories.map(factory => {
+            if (factory.isFixed)
+                return factory;
+            factory.potentialWage = factory.production * coef;
+            return factory;
+        });
+        return factories.sort((a, b) => b.potentialWage - a.potentialWage)[0];
+    }
+    factories = factories.filter(factory => !factory.isFixed);
+    return factories.sort((a, b) => b.wage - a.wage)[0];
 }

@@ -45,10 +45,13 @@ class Factory {
             this.isFixed = true;
         }
     }
+    get production() {
+        return Math.pow(this.level, 0.8);
+    }
     get wage() {
         return this.isFixed
             ? this.wage_
-            : this.wage_ * Math.pow(this.level, 0.8) * 1.2;
+            : this.wage_ * this.production * 1.2;
     }
     get type() {
         return this.type_;

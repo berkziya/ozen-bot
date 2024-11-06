@@ -24,6 +24,7 @@ export declare class Factory {
     setOwner(player: Player): void;
     setRegion(region: Region): void;
     setWage(wage: string): void;
+    get production(): number;
     get wage(): number;
     get type(): string;
     set type(theType: string);

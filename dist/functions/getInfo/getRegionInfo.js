@@ -77,7 +77,7 @@ async function getRegionInfoInner(user, regionId, getAutonomy = false) {
         .first()
         .text()
         .match(/: (region|autonomy) (.*?) and /);
-    if (regionNameMatch && regionNameMatch[2]) {
+    if (regionNameMatch?.[2]) {
         region.name = regionNameMatch[2];
         if (regionNameMatch[1] === 'autonomy') {
             autonomy = await user.models.getAutonomy(region.id);
