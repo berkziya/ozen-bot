@@ -33,7 +33,8 @@ export async function upgradePerk(
 
 export function choosePerkToUpgrade(
   user: User,
-  gold = ['str', 'edu']
+  gold = ['str', 'edu'],
+  goldIfHaveTo = ['str']
 ): {
   perk: keyof typeof perkToId;
   time: number;
@@ -49,7 +50,7 @@ export function choosePerkToUpgrade(
   if (gold.includes('end')) end *= 0.075;
 
   if (str <= edu && str <= end)
-    return { perk: 'str', time: str, gold: gold.includes('str') };
-  if (edu <= end) return { perk: 'edu', time: edu, gold: gold.includes('edu') };
-  return { perk: 'end', time: end, gold: gold.includes('end') };
+    return { perk: 'str', time: str, gold: gold.includes('str') || goldIfHaveTo.includes('str') };
+  if (edu <= end) return { perk: 'edu', time: edu, gold: gold.includes('edu') || goldIfHaveTo.includes('edu') };
+  return { perk: 'end', time: end, gold: gold.includes('end') || goldIfHaveTo.includes('end') };
 }
