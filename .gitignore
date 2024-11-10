@@ -7,11 +7,6 @@ cookies/*
 browsers/*
 
 test.ts
-dist/test.js
-dist/test.d.ts
-dist/testtg.js
-dist/testtg.d.ts
-src/testtg.ts
 
 # Icon must end with two \r
 Icon
