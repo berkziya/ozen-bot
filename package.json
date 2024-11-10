@@ -1,9 +1,6 @@
 {
   "name": "ozen-bot",
-  "version": "0.3.0",
-  "main": "dist/test.js",
-  "bin": "dist/test.js",
-  "types": "dist/test.d.ts",
+  "version": "0.4.0",
   "scripts": {
     "build": "tsc",
     "lint": "eslint ./src"
