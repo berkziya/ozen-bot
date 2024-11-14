@@ -51,22 +51,28 @@ export async function getFactoryList(
 
 export async function getBestFactory(
   location: State | Region,
-  resource: keyof typeof factoryIds = 'gold'
+  resource: keyof typeof factoryIds = 'gold',
+  fixedOK = true
 ) {
   let factories = await getFactoryList(location, resource);
   if (!factories) return null;
-  // return [...factories].sort((a, b) => b.wage - a.wage)[0];
   if (resource === 'gold') {
-    const best = factories.filter(factory => !factory.isFixed).sort((a, b) => b.wage - a.wage)[0];
-    await getFactoryInfo(best.id);
-    const coef = (best.potentialWage / best.production);
-    factories = factories.map(factory => {
-      if (factory.isFixed) return factory;
-      factory.potentialWage = factory.production * coef;
-      return factory;
+    const bestNonFixed = factories.filter(factory => !factory.isFixed).sort((a, b) => b.wage - a.wage)[0];
+    await getFactoryInfo(bestNonFixed.id);
+    const coef = (bestNonFixed.potentialWage / bestNonFixed.production);
+    factories.forEach(factory => factory.potentialWage = factory.production * coef);
+    factories = factories.sort((a, b) => {
+      if (a.isFixed && !b.isFixed) return a.wage - b.potentialWage;
+      if (!a.isFixed && b.isFixed) return a.potentialWage - b.wage;
+      return a.potentialWage - b.potentialWage;
     });
-    return factories.sort((a, b) => b.potentialWage - a.potentialWage)[0];
+    for (const factory of factories) {
+      if (factory.isFixed && fixedOK) {
+        // Are you ripping me off?
+        if (factory.wage >= bestNonFixed.potentialWage) return factory;
+      }
+      return factory;
+    }
   }
-  factories = factories.filter(factory => !factory.isFixed);
-  return factories.sort((a, b) => b.wage - a.wage)[0];
+  return null;
 }

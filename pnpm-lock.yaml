@@ -12,8 +12,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       cron:
-        specifier: ^3.1.9
-        version: 3.1.9
+        specifier: ^3.2.1
+        version: 3.2.1
       playwright:
         specifier: ^1.48.2
         version: 1.48.2
@@ -25,8 +25,8 @@ importers:
         specifier: ^22.9.0
         version: 22.9.0
       '@types/node-fetch':
-        specifier: ^2.6.11
-        version: 2.6.11
+        specifier: ^2.6.12
+        version: 2.6.12
       tsx:
         specifier: ^4.19.2
         version: 4.19.2
@@ -183,8 +183,8 @@ packages:
   '@types/luxon@3.4.2':
     resolution: {integrity: sha512-TifLZlFudklWlMBfhubvgqTXRzLDI5pCbGa4P8a3wPyUQSW+1xQ5eDsreP9DWHX3tjq1ke96uYG/nwundroWcA==}
 
-  '@types/node-fetch@2.6.11':
-    resolution: {integrity: sha512-24xFj9R5+rfQJLRyM56qh+wnVSYhyXC2tkoBndtY0U+vubqNsYXGjufB2nn8Q6gt0LrARwL6UBtMCSVCwl4B1g==}
+  '@types/node-fetch@2.6.12':
+    resolution: {integrity: sha512-8nneRWKCg3rMtF69nLQJnOYUcbafYeFSjqkw3jCRLsqkWFlHaoQrr5mXmofFGOx3DKn7UfmBMyov8ySvLRVldA==}
 
   '@types/node@22.9.0':
     resolution: {integrity: sha512-vuyHg81vvWA1Z1ELfvLko2c8f34gyA0zaic0+Rllc5lbCnbSyuvb2Oxpm6TAUAC/2xZN3QGqxBNggD1nNR2AfQ==}
@@ -206,8 +206,8 @@ packages:
     resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==}
     engines: {node: '>= 0.8'}
 
-  cron@3.1.9:
-    resolution: {integrity: sha512-eNZu+YhLRHLxNJNqZgYuy8mXhzMV0XXmOSh+Ls2j1yTeQLCQ04ya7oNpujxwl4lEyck1fcVa1aRVZ+T4tAC7SA==}
+  cron@3.2.1:
+    resolution: {integrity: sha512-w2n5l49GMmmkBFEsH9FIDhjZ1n1QgTMOCMGuQtOXs5veNiosZmso6bQGuqOJSYAXXrG84WQFVneNk+Yt0Ua9iw==}
 
   css-select@5.1.0:
     resolution: {integrity: sha512-nwoRF1rvRRnnCqqY7updORDsuqKzqYJ28+oSMaJMMgOauh3fvwHqMS7EZpIPqK8GL+g9mKxF1vP/ZjSeNjEVHg==}
@@ -325,8 +325,8 @@ packages:
   undici-types@6.19.8:
     resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
 
-  undici@6.20.1:
-    resolution: {integrity: sha512-AjQF1QsmqfJys+LXfGTNum+qw4S88CojRInG/6t31W/1fk6G59s92bnAvGz5Cmur+kQv2SURXEvvudLmbrE8QA==}
+  undici@6.21.0:
+    resolution: {integrity: sha512-BUgJXc752Kou3oOIuU1i+yZZypyZRqNPW0vqoMPl8VaoalSfeR0D8/t4iAS3yirs79SSMTxTag+ZC86uswv+Cw==}
     engines: {node: '>=18.17'}
 
   whatwg-encoding@3.1.1:
@@ -413,7 +413,7 @@ snapshots:
 
   '@types/luxon@3.4.2': {}
 
-  '@types/node-fetch@2.6.11':
+  '@types/node-fetch@2.6.12':
     dependencies:
       '@types/node': 22.9.0
       form-data: 4.0.1
@@ -446,14 +446,14 @@ snapshots:
       parse5: 7.2.1
       parse5-htmlparser2-tree-adapter: 7.1.0
       parse5-parser-stream: 7.1.2
-      undici: 6.20.1
+      undici: 6.21.0
       whatwg-mimetype: 4.0.0
 
   combined-stream@1.0.8:
     dependencies:
       delayed-stream: 1.0.0
 
-  cron@3.1.9:
+  cron@3.2.1:
     dependencies:
       '@types/luxon': 3.4.2
       luxon: 3.5.0
@@ -599,7 +599,7 @@ snapshots:
 
   undici-types@6.19.8: {}
 
-  undici@6.20.1: {}
+  undici@6.21.0: {}
 
   whatwg-encoding@3.1.1:
     dependencies:
