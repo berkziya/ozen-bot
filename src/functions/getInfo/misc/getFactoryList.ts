@@ -69,7 +69,6 @@ export async function getBestFactory(
       if (!a.isFixed && b.isFixed) return b.potentialWage - a.wage;
       return b.potentialWage - a.potentialWage;
     });
-    factories.forEach(factory => console.log(factory.level, factory.production, factory.wage_, factory.potentialWage));
 
     for (const factory of factories) {
       if (factory.isFixed) {

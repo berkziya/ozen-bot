@@ -83,7 +83,6 @@ async function getBestFactory(location, resource = 'gold', fixedOK = true) {
                 return b.potentialWage - a.wage;
             return b.potentialWage - a.potentialWage;
         });
-        factories.forEach(factory => console.log(factory.level, factory.production, factory.wage_, factory.potentialWage));
         for (const factory of factories) {
             if (factory.isFixed) {
                 if (fixedOK && factory.wage >= bestNonFixed.potentialWage) {
