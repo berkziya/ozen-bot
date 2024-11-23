@@ -4,6 +4,7 @@ import { dotless } from '../../../misc/utils';
 import { User } from '../../../User';
 
 export async function mainPageInfo(user: User) {
+  await user.ajax('/war/create_train');
   const content = await user.get('/main/content');
 
   if (!content || content.length < 150) return null;
