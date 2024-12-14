@@ -1,10 +1,9 @@
-import { Autonomy } from './Autonomy';
-import { Factory } from './Factory';
-import { MercOrder } from './MercOrder';
-import { Party } from './Party';
-import { Region } from './Region';
-import { Storage } from './shared/Storage';
-import { State } from './State';
+import { Autonomy } from "./Autonomy";
+import { Factory } from "./Factory";
+import { Party } from "./Party";
+import { Region } from "./Region";
+import { Storage } from "./shared/Storage";
+import { State } from "./State";
 
 export class Player {
   lastUpdate: Date = new Date(0);
@@ -37,11 +36,9 @@ export class Player {
   statePermits: Set<State>;
   regionPermits: Set<Region>;
 
-  mercOrder: MercOrder | null = null;
-
   constructor(id_: number) {
     this.id = id_;
-    this.name = 'player/' + this.id.toString();
+    this.name = "player/" + this.id.toString();
     this.homelandBonus = null;
     this.leaderOfState = null;
     this.econMinisterOfState = null;
@@ -66,7 +63,7 @@ export class Player {
   setName(name: string) {
     const havePartyTag = name.match(/\[[^\]]{1,3}\]/g);
     if (havePartyTag) {
-      this.name = name.replace(havePartyTag[0], '').trim();
+      this.name = name.replace(havePartyTag[0], "").trim();
     } else {
       this.name = name.trim();
     }
@@ -172,13 +169,12 @@ export class Player {
       factories: Array.from(this.factories, (factory) => factory.id),
       statePermits: Array.from(this.statePermits, (state) => state.id),
       regionPermits: Array.from(this.regionPermits, (region) => region.id),
-      mercOrder: this.mercOrder,
     };
   }
 
   static [Symbol.hasInstance](instance: any): boolean {
     return (
-      instance && typeof instance === 'object' && 'homelandBonus' in instance
+      instance && typeof instance === "object" && "homelandBonus" in instance
     );
   }
 }
