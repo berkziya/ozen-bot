@@ -5,5 +5,10 @@
   "search.exclude": {
     "dist/": true
   },
-  "typescript.preferences.autoImportFileExcludePatterns": ["dist/**.**"]
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "dist/**.**"
+  ],
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.quoteStyle": "single",
+  "prettier.singleQuote": true
 }

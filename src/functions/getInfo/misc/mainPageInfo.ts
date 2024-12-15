@@ -17,13 +17,18 @@ export async function mainPageInfo(user: User) {
     const script = $(el).html();
     if (script) {
       const trainingWarId = script.match(/slide_header\('war\/details\/(\d+)/);
-      if (trainingWarId) toBeReturned['trainingWarId'] = trainingWarId[1];
+      if (trainingWarId)
+        toBeReturned['trainingWarId'] = parseInt(trainingWarId[1]);
 
       const hitCountdownSeconds = script.match(
         /\$\('\.war_index_war_countdown'\)\.countdown\({\s*until:\s*(\d+)/
       );
-      if (hitCountdownSeconds)
-        toBeReturned['hitCountdown'] = parseInt(hitCountdownSeconds[1]);
+      if (hitCountdownSeconds) {
+        const hitDate = new Date(
+          parseInt(hitCountdownSeconds[1]) * 1000 + Date.now()
+        );
+        toBeReturned['hitCountdown'] = hitDate;
+      }
 
       const money = script.match(/new_m\('([0-9.]+)'\);/);
       if (money) {
@@ -40,12 +45,14 @@ export async function mainPageInfo(user: User) {
       toBeReturned['remainingPerkTime'] = 0;
       const upgradingPerk = script.match(/\.perk_square_f\[perk="(\d)/);
       if (upgradingPerk) {
-        toBeReturned['upgradingPerk'] = upgradingPerk[1];
+        toBeReturned['upgradingPerk'] = parseInt(upgradingPerk[1]);
         const remainingPerkTime = script.match(
           /#perk_counter_2'\)\.countdown\({\s*until:\s*(\d+)/
         );
         if (remainingPerkTime)
-          toBeReturned['remainingPerkTime'] = parseInt(remainingPerkTime[1]);
+          toBeReturned['remainingPerkTime'] = new Date(
+            parseInt(remainingPerkTime[1]) * 1000 + Date.now()
+          );
       } else {
         toBeReturned['upgradingPerk'] = null;
       }
@@ -83,8 +90,9 @@ export async function mainPageInfo(user: User) {
       'div.war_index_war > div:nth-child(1) > span:nth-child(4)'
     );
     if (autoWarSpan.text() == 'auto') {
-      const autoWarId = autoWarSpan.attr('action')!.split('/').pop()!;
-      toBeReturned['autoWarId'] = autoWarId;
+      toBeReturned['autoWarId'] = parseInt(
+        autoWarSpan.attr('action')!.split('/').pop()!
+      );
     }
   } catch {
     toBeReturned['autoWarId'] = null;
@@ -99,11 +107,9 @@ export async function mainPageInfo(user: User) {
     const timestamp = getTimestamp(movingText);
     if (movingText.includes('Moving in')) {
       toBeReturned['moving'] = true;
-      toBeReturned['movingToId'] = movingDiv
-        .find('span')
-        .attr('action')!
-        .split('/')
-        .pop()!;
+      toBeReturned['movingToId'] = parseInt(
+        movingDiv.find('span').attr('action')!.split('/').pop()!
+      );
       toBeReturned['movingTime'] = timestamp;
     } else if (movingText.includes('Travelling back')) {
       toBeReturned['movingBack'] = true;
