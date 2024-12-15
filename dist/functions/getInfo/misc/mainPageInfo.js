@@ -54,7 +54,7 @@ async function mainPageInfo(user) {
             const hitCountdownSeconds = script.match(/\$\('\.war_index_war_countdown'\)\.countdown\({\s*until:\s*(\d+)/);
             if (hitCountdownSeconds) {
                 const hitDate = new Date(parseInt(hitCountdownSeconds[1]) * 1000 + Date.now());
-                toBeReturned['hitCountdown'] = hitDate;
+                toBeReturned['nextHitDate'] = hitDate;
             }
             const money = script.match(/new_m\('([0-9.]+)'\);/);
             if (money) {
@@ -66,13 +66,13 @@ async function mainPageInfo(user) {
                 toBeReturned['gold'] = (0, utils_1.dotless)(gold[1]);
                 user.player.storage.gold = (0, utils_1.dotless)(gold[1]);
             }
-            toBeReturned['remainingPerkTime'] = 0;
+            toBeReturned['perkCompletionDate'] = 0;
             const upgradingPerk = script.match(/\.perk_square_f\[perk="(\d)/);
             if (upgradingPerk) {
                 toBeReturned['upgradingPerk'] = parseInt(upgradingPerk[1]);
                 const remainingPerkTime = script.match(/#perk_counter_2'\)\.countdown\({\s*until:\s*(\d+)/);
                 if (remainingPerkTime)
-                    toBeReturned['remainingPerkTime'] = new Date(parseInt(remainingPerkTime[1]) * 1000 + Date.now());
+                    toBeReturned['perkCompletionDate'] = new Date(parseInt(remainingPerkTime[1]) * 1000 + Date.now());
             }
             else {
                 toBeReturned['upgradingPerk'] = null;
@@ -117,11 +117,11 @@ async function mainPageInfo(user) {
         if (movingText.includes('Moving in')) {
             toBeReturned['moving'] = true;
             toBeReturned['movingToId'] = parseInt(movingDiv.find('span').attr('action').split('/').pop());
-            toBeReturned['movingTime'] = timestamp;
+            toBeReturned['movingDate'] = timestamp;
         }
         else if (movingText.includes('Travelling back')) {
             toBeReturned['movingBack'] = true;
-            toBeReturned['movingBackTime'] = timestamp;
+            toBeReturned['movingBackDate'] = timestamp;
         }
     }
     catch {

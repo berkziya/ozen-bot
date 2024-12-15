@@ -27,7 +27,7 @@ export async function mainPageInfo(user: User) {
         const hitDate = new Date(
           parseInt(hitCountdownSeconds[1]) * 1000 + Date.now()
         );
-        toBeReturned['hitCountdown'] = hitDate;
+        toBeReturned['nextHitDate'] = hitDate;
       }
 
       const money = script.match(/new_m\('([0-9.]+)'\);/);
@@ -42,7 +42,7 @@ export async function mainPageInfo(user: User) {
         user.player.storage.gold = dotless(gold[1]);
       }
 
-      toBeReturned['remainingPerkTime'] = 0;
+      toBeReturned['perkCompletionDate'] = 0;
       const upgradingPerk = script.match(/\.perk_square_f\[perk="(\d)/);
       if (upgradingPerk) {
         toBeReturned['upgradingPerk'] = parseInt(upgradingPerk[1]);
@@ -50,7 +50,7 @@ export async function mainPageInfo(user: User) {
           /#perk_counter_2'\)\.countdown\({\s*until:\s*(\d+)/
         );
         if (remainingPerkTime)
-          toBeReturned['remainingPerkTime'] = new Date(
+          toBeReturned['perkCompletionDate'] = new Date(
             parseInt(remainingPerkTime[1]) * 1000 + Date.now()
           );
       } else {
@@ -110,10 +110,10 @@ export async function mainPageInfo(user: User) {
       toBeReturned['movingToId'] = parseInt(
         movingDiv.find('span').attr('action')!.split('/').pop()!
       );
-      toBeReturned['movingTime'] = timestamp;
+      toBeReturned['movingDate'] = timestamp;
     } else if (movingText.includes('Travelling back')) {
       toBeReturned['movingBack'] = true;
-      toBeReturned['movingBackTime'] = timestamp;
+      toBeReturned['movingBackDate'] = timestamp;
     }
   } catch {
     toBeReturned['moving'] = false;
