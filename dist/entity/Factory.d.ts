@@ -9,6 +9,24 @@ export declare const factoryIds: {
     liquidOxygen: number;
     helium3: number;
 };
+export declare const resCoef: {
+    gold: number;
+    oil: number;
+    ore: number;
+    uranium: number;
+    diamonds: number;
+    liquidOxygen: number;
+    helium3: number;
+};
+export declare const resBalancers: {
+    gold: number;
+    oil: number;
+    ore: number;
+    uranium: number;
+    diamonds: number;
+    liquidOxygen: number;
+    helium3: number;
+};
 export declare class Factory {
     lastUpdate: Date;
     id: number;
@@ -24,8 +42,8 @@ export declare class Factory {
     setOwner(player: Player): void;
     setRegion(region: Region): void;
     setWage(wage: string): void;
-    get production(): number;
-    get wage(): number;
+    production(playerLevel?: number, deep?: number, workExp?: number): number;
+    wage(playerLevel?: number, deepResource?: number, workExp?: number): number;
     get type(): string;
     set type(theType: string);
     toJSON(): {
@@ -34,7 +52,7 @@ export declare class Factory {
         level: number;
         owner: number;
         region: number;
-        wage: number;
+        wage: (playerLevel?: number, deepResource?: number, workExp?: number) => number;
         isFixed: boolean;
         potentialWage: number;
         type: string;

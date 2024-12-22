@@ -12,6 +12,26 @@ export const factoryIds = {
   helium3: 24,
 };
 
+export const resCoef = {
+  gold: 0.4,
+  oil: 0.65,
+  ore: 0.65,
+  uranium: 0.75,
+  diamonds: 0.75,
+  liquidOxygen: 1,
+  helium3: 1,
+};
+
+export const resBalancers = {
+  gold: 4,
+  oil: 1,
+  ore: 1,
+  uranium: 1,
+  diamonds: 1 / 1000,
+  liquidOxygen: 1 / 5,
+  helium3: 1 / 1000,
+};
+
 export class Factory {
   lastUpdate: Date = new Date(0);
   id: number;
@@ -54,14 +74,21 @@ export class Factory {
     }
   }
 
-  get production() {
-    return Math.pow(this.level, 0.8);
+  production(playerLevel: number = 1, deep: number = 1, workExp: number = 1) {
+    return (
+      0.2 *
+      Math.pow(playerLevel, 0.8) *
+      Math.pow((resCoef[this.type_] * deep) / 10, 0.8) *
+      Math.pow(this.level, 0.8) *
+      Math.pow(workExp / 10, 0.6) *
+      resBalancers[this.type_]
+    );
   }
 
-  get wage() {
+  wage(playerLevel?: number, deepResource?: number, workExp?: number) {
     return this.isFixed
       ? this.wage_
-      : this.wage_ * this.production * 1.2;
+      : this.wage_ * this.production(playerLevel, deepResource, workExp) * 1.2;
   }
 
   get type(): string {

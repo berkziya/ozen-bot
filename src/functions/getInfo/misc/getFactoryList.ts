@@ -5,7 +5,6 @@ import { Region } from '../../../entity/Region';
 import { State } from '../../../entity/State';
 import { UserHandler } from '../../../UserHandler';
 import { getFactoryInfo } from '../getFactoryInfo';
-import { fchmod } from 'fs';
 
 export async function getFactoryList(
   location: State | Region,
@@ -57,22 +56,26 @@ export async function getBestFactory(
   let factories = await getFactoryList(location, resource);
   if (!factories) return null;
   if (resource === 'gold') {
-    const nonFixedFactories = factories.filter(factory => !factory.isFixed);
-    const bestNonFixed = nonFixedFactories.sort((a, b) => b.wage - a.wage)[0];
+    const nonFixedFactories = factories.filter((factory) => !factory.isFixed);
+    const bestNonFixed = nonFixedFactories.sort(
+      (a, b) => b.wage() - a.wage()
+    )[0];
 
     await getFactoryInfo(bestNonFixed.id);
-    const coef = (bestNonFixed.potentialWage / bestNonFixed.production);
+    const coef = bestNonFixed.potentialWage / bestNonFixed.production();
 
-    factories.forEach(factory => factory.potentialWage = factory.production * coef);
+    factories.forEach(
+      (factory) => (factory.potentialWage = factory.production() * coef)
+    );
     factories = factories.sort((a, b) => {
-      if (a.isFixed && !b.isFixed) return b.wage - a.potentialWage;
-      if (!a.isFixed && b.isFixed) return b.potentialWage - a.wage;
+      if (a.isFixed && !b.isFixed) return b.wage() - a.potentialWage;
+      if (!a.isFixed && b.isFixed) return b.potentialWage - a.wage();
       return b.potentialWage - a.potentialWage;
     });
 
     for (const factory of factories) {
       if (factory.isFixed) {
-        if (fixedOK && factory.wage >= bestNonFixed.potentialWage) {
+        if (fixedOK && factory.wage() >= bestNonFixed.potentialWage) {
           return factory;
         }
       } else {
@@ -81,5 +84,7 @@ export async function getBestFactory(
     }
   }
 
-  return factories.filter(factory => !factory.isFixed).sort((a, b) => b.wage - a.wage)[0];
+  return factories
+    .filter((factory) => !factory.isFixed)
+    .sort((a, b) => b.wage() - a.wage())[0];
 }

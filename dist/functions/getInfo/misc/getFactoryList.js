@@ -81,21 +81,21 @@ async function getBestFactory(location, resource = 'gold', fixedOK = true) {
     if (!factories)
         return null;
     if (resource === 'gold') {
-        const nonFixedFactories = factories.filter(factory => !factory.isFixed);
-        const bestNonFixed = nonFixedFactories.sort((a, b) => b.wage - a.wage)[0];
+        const nonFixedFactories = factories.filter((factory) => !factory.isFixed);
+        const bestNonFixed = nonFixedFactories.sort((a, b) => b.wage() - a.wage())[0];
         await (0, getFactoryInfo_1.getFactoryInfo)(bestNonFixed.id);
-        const coef = (bestNonFixed.potentialWage / bestNonFixed.production);
-        factories.forEach(factory => factory.potentialWage = factory.production * coef);
+        const coef = bestNonFixed.potentialWage / bestNonFixed.production();
+        factories.forEach((factory) => (factory.potentialWage = factory.production() * coef));
         factories = factories.sort((a, b) => {
             if (a.isFixed && !b.isFixed)
-                return b.wage - a.potentialWage;
+                return b.wage() - a.potentialWage;
             if (!a.isFixed && b.isFixed)
-                return b.potentialWage - a.wage;
+                return b.potentialWage - a.wage();
             return b.potentialWage - a.potentialWage;
         });
         for (const factory of factories) {
             if (factory.isFixed) {
-                if (fixedOK && factory.wage >= bestNonFixed.potentialWage) {
+                if (fixedOK && factory.wage() >= bestNonFixed.potentialWage) {
                     return factory;
                 }
             }
@@ -104,5 +104,7 @@ async function getBestFactory(location, resource = 'gold', fixedOK = true) {
             }
         }
     }
-    return factories.filter(factory => !factory.isFixed).sort((a, b) => b.wage - a.wage)[0];
+    return factories
+        .filter((factory) => !factory.isFixed)
+        .sort((a, b) => b.wage() - a.wage())[0];
 }
