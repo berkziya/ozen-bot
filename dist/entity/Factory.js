@@ -21,7 +21,7 @@ exports.resCoef = {
     helium3: 1,
 };
 exports.resBalancers = {
-    gold: 4,
+    gold: 22,
     oil: 1,
     ore: 1,
     uranium: 1,

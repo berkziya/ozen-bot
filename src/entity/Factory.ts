@@ -23,7 +23,7 @@ export const resCoef = {
 };
 
 export const resBalancers = {
-  gold: 4,
+  gold: 22,
   oil: 1,
   ore: 1,
   uranium: 1,
