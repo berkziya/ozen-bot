@@ -4,11 +4,7 @@ import { Region } from '../../../entity/Region';
 import { War } from '../../../entity/War';
 import { calculateTroops } from './calculateTroops';
 
-export function calculateDamage(
-  player: Player,
-  war: War,
-  defend = true
-) {
+export function calculateDamage(player: Player, war: War, defend = true) {
   const clamp = (min: number, num: number, max: number): number => {
     return Math.max(min, Math.min(num, max));
   };

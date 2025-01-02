@@ -4,10 +4,7 @@ import { Region } from '../../../entity/Region';
 import { Law, Parliament } from '../../../entity/shared/Parliament';
 import { UserHandler } from '../../../UserHandler';
 
-export async function getParliamentInfo(
-  capital: Region,
-  isAutonomy = false
-) {
+export async function getParliamentInfo(capital: Region, isAutonomy = false) {
   const user = UserHandler.getInstance().getUser();
   invariant(user, 'Failed to get user');
 

@@ -27,7 +27,7 @@ class Player {
     regionPermits;
     constructor(id_) {
         this.id = id_;
-        this.name = "player/" + this.id.toString();
+        this.name = 'player/' + this.id.toString();
         this.homelandBonus = null;
         this.leaderOfState = null;
         this.econMinisterOfState = null;
@@ -49,7 +49,7 @@ class Player {
     setName(name) {
         const havePartyTag = name.match(/\[[^\]]{1,3}\]/g);
         if (havePartyTag) {
-            this.name = name.replace(havePartyTag[0], "").trim();
+            this.name = name.replace(havePartyTag[0], '').trim();
         }
         else {
             this.name = name.trim();
@@ -143,7 +143,7 @@ class Player {
         };
     }
     static [Symbol.hasInstance](instance) {
-        return (instance && typeof instance === "object" && "homelandBonus" in instance);
+        return (instance && typeof instance === 'object' && 'homelandBonus' in instance);
     }
 }
 exports.Player = Player;
