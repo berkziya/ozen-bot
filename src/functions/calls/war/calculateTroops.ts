@@ -24,7 +24,8 @@ export function calculateTroops(
 
   for (const troop of TROOPS_FOR_WAR_TYPES[war.type]) {
     let count = Math.floor(alpha / troopAlphaDamage[troop]);
-    if (!drones && ['laserDrones', 'spaceStations'].includes(troop)) count = 0;
+    if (!drones && troop == 'laserDrones') count = 0;
+    if (!drones && war.type == 'moon' && troop == 'spaceStations') count = 0;
     alpha -= count * troopAlphaDamage[troop];
     n[troop] = count;
   }

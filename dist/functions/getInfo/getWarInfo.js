@@ -66,6 +66,9 @@ async function getWarInfo(warId, force = false) {
     else if (type.includes('training')) {
         type = 'training';
     }
+    else if (type.includes('Space')) {
+        type = 'space';
+    }
     else {
         const revolutionCoupElement = $('#war_w_ata > div > span.no_pointer');
         if (revolutionCoupElement.length) {

@@ -4,7 +4,7 @@ export declare class War {
     lastUpdate: Date;
     id: number;
     name: string;
-    type: 'troopers' | 'sea' | 'training' | 'revolution' | 'coup' | 'ground';
+    type: 'troopers' | 'sea' | 'training' | 'revolution' | 'coup' | 'ground' | 'space' | 'moon';
     endingTime: Date | null;
     aggressor: Region;
     defender: Region;
@@ -17,7 +17,7 @@ export declare class War {
         lastUpdate: Date;
         id: number;
         name: string;
-        type: "troopers" | "sea" | "training" | "revolution" | "coup" | "ground";
+        type: "troopers" | "sea" | "training" | "revolution" | "coup" | "ground" | "space" | "moon";
         endingTime: Date | null;
         aggresor: number;
         defender: number;
