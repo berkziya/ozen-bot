@@ -1,9 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.State = void 0;
-const misc_1 = require("../misc");
-const Storage_1 = require("./shared/Storage");
-class State {
+import { toCamelCase } from '../misc';
+import { Storage } from './shared/Storage';
+export class State {
     lastUpdate = new Date(0);
     id;
     name;
@@ -20,7 +17,7 @@ class State {
     bordersOpen = false;
     needResidencyToWork = false;
     residencyIssuedByLeader = false;
-    storage = new Storage_1.Storage();
+    storage = new Storage();
     bloc = null;
     // permits: Set<Player>;
     constructor(id_) {
@@ -61,7 +58,7 @@ class State {
         autonomy.state = this;
     }
     setgovernmentForm(form) {
-        this.governmentForm = (0, misc_1.toCamelCase)(form);
+        this.governmentForm = toCamelCase(form);
     }
     setLeader(player) {
         if (this.leader && this.leader.leaderOfState === this) {
@@ -123,4 +120,3 @@ class State {
         return (instance && typeof instance === 'object' && 'governmentForm' in instance);
     }
 }
-exports.State = State;

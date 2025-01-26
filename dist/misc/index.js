@@ -1,27 +1,18 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTimestamp = exports.sanitizer = void 0;
-exports.dotless = dotless;
-exports.toCamelCase = toCamelCase;
-exports.numToSlang = numToSlang;
-exports.slangToNum = slangToNum;
-var sanitizer_1 = require("./sanitizer");
-Object.defineProperty(exports, "sanitizer", { enumerable: true, get: function () { return sanitizer_1.sanitizer; } });
-var timestamps_1 = require("./timestamps");
-Object.defineProperty(exports, "getTimestamp", { enumerable: true, get: function () { return timestamps_1.getTimestamp; } });
-function dotless(str) {
+export { sanitizer } from './sanitizer';
+export { getTimestamp } from './timestamps';
+export function dotless(str) {
     const match = str.match(/\d+/g);
     const digits = match ? match.join('') : '0';
     return parseInt(digits, 10);
 }
-function toCamelCase(str) {
+export function toCamelCase(str) {
     return str
         .replace(/\u00a0/g, ' ')
         .replace(/[^a-zA-Z0-9 ]+/g, '')
         .toLowerCase()
         .replace(/ +(.)/g, (m, chr) => chr.toUpperCase());
 }
-function numToSlang(number, alternative = false, figures = 1) {
+export function numToSlang(number, alternative = false, figures = 1) {
     let units = ['', 'k', 'kk', 'k' + 'kk', 'T', 'P'];
     if (alternative) {
         units = ['', 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
@@ -34,7 +25,7 @@ function numToSlang(number, alternative = false, figures = 1) {
     }
     return `${number.toFixed(3)}${units[units.length - 1]}`;
 }
-function slangToNum(slang) {
+export function slangToNum(slang) {
     if (typeof slang === 'number') {
         return slang;
     }

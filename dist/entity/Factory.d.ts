@@ -59,3 +59,4 @@ export declare class Factory {
     };
     static [Symbol.hasInstance](instance: any): boolean;
 }
+//# sourceMappingURL=Factory.d.ts.map

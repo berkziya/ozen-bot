@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Autonomy = void 0;
-const Storage_1 = require("./shared/Storage");
-class Autonomy {
+import { Storage } from './shared/Storage';
+export class Autonomy {
     lastUpdate = new Date(0);
     id;
     name;
@@ -10,7 +7,7 @@ class Autonomy {
     capital;
     regions;
     governor;
-    storage = new Storage_1.Storage();
+    storage = new Storage();
     constructor(id_) {
         this.id = id_;
         this.name = 'autonomy/' + this.id.toString();
@@ -54,4 +51,3 @@ class Autonomy {
         return instance && typeof instance === 'object' && 'governor' in instance;
     }
 }
-exports.Autonomy = Autonomy;

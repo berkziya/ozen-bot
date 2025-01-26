@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Factory = exports.resBalancers = exports.resCoef = exports.factoryIds = void 0;
-const misc_1 = require("../misc");
-exports.factoryIds = {
+import { dotless, toCamelCase } from '../misc';
+export const factoryIds = {
     gold: 6,
     oil: 2,
     ore: 5,
@@ -11,7 +8,7 @@ exports.factoryIds = {
     liquidOxygen: 21,
     helium3: 24,
 };
-exports.resCoef = {
+export const resCoef = {
     gold: 0.4,
     oil: 0.65,
     ore: 0.65,
@@ -20,7 +17,7 @@ exports.resCoef = {
     liquidOxygen: 1,
     helium3: 1,
 };
-exports.resBalancers = {
+export const resBalancers = {
     gold: 22,
     oil: 1,
     ore: 1,
@@ -29,7 +26,7 @@ exports.resBalancers = {
     liquidOxygen: 1 / 5,
     helium3: 1 / 1000,
 };
-class Factory {
+export class Factory {
     lastUpdate = new Date(0);
     id;
     name;
@@ -55,21 +52,21 @@ class Factory {
     setWage(wage) {
         if (wage.includes('%') || (this.type !== 'gold' && !wage.includes('$'))) {
             wage = wage.split(' ')[0];
-            this.wage_ = (0, misc_1.dotless)(wage) / 100;
+            this.wage_ = dotless(wage) / 100;
             this.isFixed = false;
         }
         else {
-            this.wage_ = (0, misc_1.dotless)(wage);
+            this.wage_ = dotless(wage);
             this.isFixed = true;
         }
     }
     production(playerLevel = 1, deep = 1, workExp = 1) {
         return (0.2 *
             Math.pow(playerLevel, 0.8) *
-            Math.pow((exports.resCoef[this.type_] * deep) / 10, 0.8) *
+            Math.pow((resCoef[this.type_] * deep) / 10, 0.8) *
             Math.pow(this.level, 0.8) *
             Math.pow(workExp / 10, 0.6) *
-            exports.resBalancers[this.type_]);
+            resBalancers[this.type_]);
     }
     wage(playerLevel, deepResource, workExp) {
         return this.isFixed
@@ -80,7 +77,7 @@ class Factory {
         return this.type_;
     }
     set type(theType) {
-        theType = (0, misc_1.toCamelCase)(theType);
+        theType = toCamelCase(theType);
         if (theType === 'diamond') {
             this.type_ = 'diamonds';
         }
@@ -108,4 +105,3 @@ class Factory {
         return instance && typeof instance === 'object' && 'isFixed' in instance;
     }
 }
-exports.Factory = Factory;

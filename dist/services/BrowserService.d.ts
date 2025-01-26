@@ -16,3 +16,4 @@ export default class BrowserService {
     } | null>;
     closeContext(): Promise<void>;
 }
+//# sourceMappingURL=BrowserService.d.ts.map

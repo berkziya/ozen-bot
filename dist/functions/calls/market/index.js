@@ -1,11 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.resourceToId = exports.getMyOffer = exports.sellResource = exports.buyResource = void 0;
-var tradeResource_1 = require("./tradeResource");
-Object.defineProperty(exports, "buyResource", { enumerable: true, get: function () { return tradeResource_1.buyResource; } });
-Object.defineProperty(exports, "sellResource", { enumerable: true, get: function () { return tradeResource_1.sellResource; } });
-Object.defineProperty(exports, "getMyOffer", { enumerable: true, get: function () { return tradeResource_1.getMyOffer; } });
-exports.resourceToId = {
+export { buyResource, sellResource, getMyOffer } from './tradeResource';
+export const resourceToId = {
     oil: 3,
     ore: 4,
     uranium: 11,

@@ -29,3 +29,4 @@ export declare class Autonomy {
     };
     static [Symbol.hasInstance](instance: any): boolean;
 }
+//# sourceMappingURL=Autonomy.d.ts.map

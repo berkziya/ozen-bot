@@ -9,6 +9,13 @@
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": "./dist/",
+    "./misc": "./dist/misc/index.js",
+    "./functions": "./dist/functions/index.js",
+    "./entity": "./dist/types/index.js",
+    "./user": "./dist/types/index.js"
+  },
   "license": "MIT",
   "dependencies": {
     "cheerio": "^1.0.0",

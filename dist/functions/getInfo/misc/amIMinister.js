@@ -1,17 +1,11 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.amIMinister = amIMinister;
-const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
-const getPlayerInfo_1 = require("../getPlayerInfo");
-const getRegionInfo_1 = require("../getRegionInfo");
-async function amIMinister(playerId) {
-    const player = await (0, getPlayerInfo_1.getPlayerInfo)(playerId);
-    (0, tiny_invariant_1.default)(player, 'Failed to get player info');
-    const region = await (0, getRegionInfo_1.getRegionInfo)(player.region.id);
-    (0, tiny_invariant_1.default)(region, 'Failed to get region info');
+import invariant from 'tiny-invariant';
+import { getPlayerInfo } from '../getPlayerInfo';
+import { getRegionInfo } from '../getRegionInfo';
+export async function amIMinister(playerId) {
+    const player = await getPlayerInfo(playerId);
+    invariant(player, 'Failed to get player info');
+    const region = await getRegionInfo(player.region.id);
+    invariant(region, 'Failed to get region info');
     const toBeReturned = {
         leader: false,
         dicta: false,

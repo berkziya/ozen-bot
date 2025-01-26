@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Region = void 0;
-class Region {
+export class Region {
     lastUpdate = new Date(0);
     id;
     name;
@@ -149,4 +146,3 @@ class Region {
         return instance && typeof instance === 'object' && 'buildings' in instance;
     }
 }
-exports.Region = Region;

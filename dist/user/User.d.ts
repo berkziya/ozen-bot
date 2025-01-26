@@ -19,3 +19,4 @@ export declare class User {
     }): Promise<Response>;
     get(url: string): Promise<string>;
 }
+//# sourceMappingURL=User.d.ts.map

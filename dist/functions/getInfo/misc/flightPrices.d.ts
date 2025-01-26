@@ -6,3 +6,4 @@ export declare function flightPrices(location: Region): Promise<{
         bordersOpen: boolean;
     };
 } | null>;
+//# sourceMappingURL=flightPrices.d.ts.map

@@ -102,3 +102,4 @@ export declare class Region {
     };
     static [Symbol.hasInstance](instance: any): boolean;
 }
+//# sourceMappingURL=Region.d.ts.map

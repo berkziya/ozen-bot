@@ -1,11 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPerkUpgradeTimes = getPerkUpgradeTimes;
-exports.upgradePerk = upgradePerk;
-exports.choosePerkToUpgrade = choosePerkToUpgrade;
 const perkToId = { str: 1, edu: 2, end: 3 };
 const currencyToId = { money: 1, gold: 2 };
-function getPerkUpgradeTimes(user) {
+export function getPerkUpgradeTimes(user) {
     const { perks } = user.player;
     const times = { str: 0, edu: 0, end: 0 };
     for (const [key, value] of Object.entries(perks)) {
@@ -18,10 +13,10 @@ function getPerkUpgradeTimes(user) {
     }
     return times;
 }
-async function upgradePerk(user, perk, currency = 'money') {
+export async function upgradePerk(user, perk, currency = 'money') {
     return await user.ajax(`/perks/up/${perkToId[perk]}/${currencyToId[currency]}`);
 }
-function choosePerkToUpgrade(user, gold = ['str', 'edu'], goldIfHaveTo = ['str']) {
+export function choosePerkToUpgrade(user, gold = ['str', 'edu'], goldIfHaveTo = ['str']) {
     const times = getPerkUpgradeTimes(user);
     let { str, edu, end } = times;
     str /= 2;

@@ -7,3 +7,4 @@ export declare const TROOP_ALPHA_DAMAGE: {
 };
 export declare function cancelAutoAttack(user: User): Promise<Response>;
 export declare function attack(user: User, war: War, defend?: boolean, max?: boolean, drones?: boolean): Promise<Response>;
+//# sourceMappingURL=index.d.ts.map

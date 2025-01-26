@@ -18,3 +18,4 @@ export declare class Bloc {
     };
     static [Symbol.hasInstance](instance: any): boolean;
 }
+//# sourceMappingURL=Bloc.d.ts.map

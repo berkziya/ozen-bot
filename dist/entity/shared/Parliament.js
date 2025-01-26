@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Parliament = exports.Law = void 0;
-class Law {
+export class Law {
     id;
     by;
     text;
@@ -19,8 +16,7 @@ class Law {
         };
     }
 }
-exports.Law = Law;
-class Parliament {
+export class Parliament {
     capitalRegion;
     isAutonomy;
     laws = [];
@@ -32,4 +28,3 @@ class Parliament {
         };
     }
 }
-exports.Parliament = Parliament;

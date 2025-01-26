@@ -34,3 +34,4 @@ export declare class War {
     };
     static [Symbol.hasInstance](instance: any): boolean;
 }
+//# sourceMappingURL=War.d.ts.map

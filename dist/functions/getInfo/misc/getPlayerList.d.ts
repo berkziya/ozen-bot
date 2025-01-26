@@ -19,3 +19,4 @@ export declare function getWarDamageList(user: User, id: number, defender: boole
     level: number;
     damage: number;
 }[]>;
+//# sourceMappingURL=getPlayerList.d.ts.map

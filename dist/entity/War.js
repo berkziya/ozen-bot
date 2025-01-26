@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.War = void 0;
-class War {
+export class War {
     lastUpdate = new Date(0);
     id;
     name;
@@ -40,4 +37,3 @@ class War {
         return (instance && typeof instance === 'object' && 'aggressorDamage' in instance);
     }
 }
-exports.War = War;

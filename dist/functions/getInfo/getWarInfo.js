@@ -1,50 +1,11 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getWarInfo = getWarInfo;
-const cheerio = __importStar(require("cheerio"));
-const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
-const timestamps_1 = require("../../misc/timestamps");
-const misc_1 = require("../../misc");
-const UserService_1 = __importDefault(require("../../user/UserService"));
-async function getWarInfo(warId, force = false) {
-    const user = UserService_1.default.getInstance().getUser();
-    (0, tiny_invariant_1.default)(user, 'Failed to get user');
+import * as cheerio from 'cheerio';
+import invariant from 'tiny-invariant';
+import { getTimestamp } from '../../misc/timestamps';
+import { dotless } from '../../misc';
+import UserService from '../../user/UserService';
+export async function getWarInfo(warId, force = false) {
+    const user = UserService.getInstance().getUser();
+    invariant(user, 'Failed to get user');
     const war = await user.models.getWar(warId);
     if (!force &&
         war.lastUpdate &&
@@ -88,7 +49,7 @@ async function getWarInfo(warId, force = false) {
     }
     war.type = type;
     const timeStr = $('body > div.margin > h1 > div.small').text();
-    war.endingTime = (0, timestamps_1.getTimestamp)(timeStr);
+    war.endingTime = getTimestamp(timeStr);
     if (!['revolution', 'coup', 'training'].includes(type)) {
         const attackerId = $('#war_w_ata_s > div.imp > span:nth-child(3)')
             .attr('action')
@@ -118,8 +79,8 @@ async function getWarInfo(warId, force = false) {
     const attackerDamageSelector = type === 'revolution' || type === 'coup'
         ? '#war_w_ata > div.imp > span.hov2 > span'
         : '#war_w_ata_s > div.imp > span:nth-child(5) > span';
-    war.aggressorDamage = (0, misc_1.dotless)($(attackerDamageSelector).text());
-    war.defenderDamage = (0, misc_1.dotless)($('#war_w_def_s > span:nth-child(5) > span').text());
+    war.aggressorDamage = dotless($(attackerDamageSelector).text());
+    war.defenderDamage = dotless($('#war_w_def_s > span:nth-child(5) > span').text());
     war.lastUpdate = new Date();
     return war;
 }

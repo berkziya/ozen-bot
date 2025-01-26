@@ -66,3 +66,4 @@ export declare class Storage {
         spaceStations: number;
     };
 }
+//# sourceMappingURL=Storage.d.ts.map

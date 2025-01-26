@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Party = void 0;
-class Party {
+export class Party {
     lastUpdate = new Date(0);
     id;
     name;
@@ -55,4 +52,3 @@ class Party {
         return (instance && typeof instance === 'object' && 'secretaries' in instance);
     }
 }
-exports.Party = Party;

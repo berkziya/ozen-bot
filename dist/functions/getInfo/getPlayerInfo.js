@@ -1,50 +1,11 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPlayerInfo = getPlayerInfo;
-const cheerio = __importStar(require("cheerio"));
-const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
-const misc_1 = require("../../misc");
-const UserService_1 = __importDefault(require("../../user/UserService"));
-const getRegionInfo_1 = require("./getRegionInfo");
-async function getPlayerInfo(playerId, force) {
-    const user = UserService_1.default.getInstance().getUser();
-    (0, tiny_invariant_1.default)(user, 'Failed to get user');
+import * as cheerio from 'cheerio';
+import invariant from 'tiny-invariant';
+import { dotless, toCamelCase } from '../../misc';
+import UserService from '../../user/UserService';
+import { getRegionInfo } from './getRegionInfo';
+export async function getPlayerInfo(playerId, force) {
+    const user = UserService.getInstance().getUser();
+    invariant(user, 'Failed to get user');
     const player = await user.models.getPlayer(playerId);
     if (!force &&
         player.lastUpdate &&
@@ -76,7 +37,7 @@ async function getPlayerInfo(playerId, force) {
         .attr('title')
         .match(/Exp:(.*)Next/);
     if (expMatch) {
-        player.exp = (0, misc_1.dotless)(expMatch[1]);
+        player.exp = dotless(expMatch[1]);
     }
     const leaderDiv = $('h2[title*="eader"]');
     if (leaderDiv.length) {
@@ -91,7 +52,7 @@ async function getPlayerInfo(playerId, force) {
     const trs = $('tbody > tr');
     for (let i = 1; i < trs.length; i++) {
         const tr = trs.eq(i);
-        const key = (0, misc_1.toCamelCase)(tr.find('td').first().text());
+        const key = toCamelCase(tr.find('td').first().text());
         const value = tr.find('td').last().text();
         if (key === 'perks') {
             const perks = value.split(' / ').map((perk) => {
@@ -139,7 +100,7 @@ async function getPlayerInfo(playerId, force) {
             const name = tr.find('div[action^="map/"]').text().trim();
             switch (key) {
                 case 'governor': {
-                    const region = await (0, getRegionInfo_1.getRegionInfo)(parseInt(id));
+                    const region = await getRegionInfo(parseInt(id));
                     const autonomy = region.autonomy;
                     autonomy.name = name;
                     player.setGovernor(autonomy);

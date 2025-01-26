@@ -20,3 +20,4 @@ export declare const resourceToId: {
     moonTanks: number;
     spaceStations: number;
 };
+//# sourceMappingURL=index.d.ts.map

@@ -6,3 +6,5 @@ export { getPlayerInfo } from './getPlayerInfo';
 export { getRegionInfo } from './getRegionInfo';
 export { getStateInfo } from './getStateInfo';
 export { getWarInfo } from './getWarInfo';
+
+export * from './misc';

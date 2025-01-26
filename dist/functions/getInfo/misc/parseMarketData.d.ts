@@ -25,3 +25,4 @@ export declare function parseMarketData(resource: keyof typeof resourceToId): Pr
     price: number;
 }[] | null>;
 export {};
+//# sourceMappingURL=parseMarketData.d.ts.map

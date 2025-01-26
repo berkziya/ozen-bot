@@ -1,5 +1,5 @@
-export {sanitizer} from './sanitizer';
-export {getTimestamp } from './timestamps';
+export { sanitizer } from './sanitizer';
+export { getTimestamp } from './timestamps';
 
 export function dotless(str: string): number {
   const match = str.match(/\d+/g);

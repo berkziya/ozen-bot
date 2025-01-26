@@ -6,3 +6,4 @@ export { getCitizens, getResidents } from './getPlayerList';
 export { mainPageInfo } from './mainPageInfo';
 export { parseMarketData } from './parseMarketData';
 export { storageInfo } from './storageInfo';
+//# sourceMappingURL=index.d.ts.map

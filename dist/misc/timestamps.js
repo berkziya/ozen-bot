@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTimestamp = getTimestamp;
-function getTimestamp(text) {
+export function getTimestamp(text) {
     const match = text
         .replace(/\s+/g, ' ')
         .match(/((\w+ \d+:\d+)|(\d+ \w+ \d+ \d+:\d+))/);

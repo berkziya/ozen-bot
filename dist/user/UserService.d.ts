@@ -11,3 +11,4 @@ export default class UserService {
     createUser(who: string, mail?: string, password?: string, cookies?: string): Promise<User>;
     autoCreateUsers(): Promise<void>;
 }
+//# sourceMappingURL=UserService.d.ts.map

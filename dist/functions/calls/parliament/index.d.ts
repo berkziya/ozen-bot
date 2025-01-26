@@ -14,3 +14,4 @@ export declare const resourceIds: {
 export declare function proLawByText(user: User, text: string): Promise<boolean>;
 export declare function proLaw(user: User, capital: Region, law: Law): Promise<Response>;
 export declare function cancelSelfLaw(user: User): Promise<Response>;
+//# sourceMappingURL=index.d.ts.map

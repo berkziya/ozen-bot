@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Storage = void 0;
-const misc_1 = require("../../misc");
-class Storage {
+import { dotless } from '../../misc';
+export class Storage {
     constructor() {
         this.subStorages = [];
     }
@@ -40,12 +37,12 @@ class Storage {
     }
     async setBudgetFromDiv(div) {
         const spans = div.find('span');
-        this.stateMoney = (0, misc_1.dotless)(spans.eq(0).text());
-        this.stateGold = (0, misc_1.dotless)(spans.eq(1).text());
-        this.stateOil = (0, misc_1.dotless)(spans.eq(2).text());
-        this.stateOre = (0, misc_1.dotless)(spans.eq(3).text());
-        this.stateUranium = (0, misc_1.dotless)(spans.eq(4).text());
-        this.stateDiamonds = (0, misc_1.dotless)(spans.eq(5).text());
+        this.stateMoney = dotless(spans.eq(0).text());
+        this.stateGold = dotless(spans.eq(1).text());
+        this.stateOil = dotless(spans.eq(2).text());
+        this.stateOre = dotless(spans.eq(3).text());
+        this.stateUranium = dotless(spans.eq(4).text());
+        this.stateDiamonds = dotless(spans.eq(5).text());
     }
     toJSON() {
         return {
@@ -81,4 +78,3 @@ class Storage {
         };
     }
 }
-exports.Storage = Storage;

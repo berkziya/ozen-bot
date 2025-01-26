@@ -8,3 +8,4 @@ export { State } from './State';
 export { War } from './War';
 export { Parliament } from './shared/Parliament';
 export { Storage } from './shared/Storage';
+//# sourceMappingURL=index.d.ts.map

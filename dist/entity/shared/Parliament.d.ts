@@ -26,3 +26,4 @@ export declare class Parliament {
         laws: Law[];
     };
 }
+//# sourceMappingURL=Parliament.d.ts.map

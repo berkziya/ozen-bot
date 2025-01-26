@@ -7,3 +7,4 @@ export declare function getMyOffer(user: User, resource: keyof typeof resourceTo
     price: number;
     sellLock: number;
 } | null>;
+//# sourceMappingURL=tradeResource.d.ts.map

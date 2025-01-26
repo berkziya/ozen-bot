@@ -68,3 +68,4 @@ export declare class Player {
     };
     static [Symbol.hasInstance](instance: any): boolean;
 }
+//# sourceMappingURL=Player.d.ts.map

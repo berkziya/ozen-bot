@@ -13,3 +13,4 @@ export declare const DEPT_IDS: {
     battleships: number;
 };
 export declare function workStateDept(user: User, dept?: keyof typeof DEPT_IDS): Promise<Response>;
+//# sourceMappingURL=index.d.ts.map

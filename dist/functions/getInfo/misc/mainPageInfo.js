@@ -1,43 +1,7 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.mainPageInfo = mainPageInfo;
-const cheerio = __importStar(require("cheerio"));
-const timestamps_1 = require("../../../misc/timestamps");
-const misc_1 = require("../../../misc");
-async function mainPageInfo(user) {
+import * as cheerio from 'cheerio';
+import { getTimestamp } from '../../../misc/timestamps';
+import { dotless } from '../../../misc';
+export async function mainPageInfo(user) {
     await user.ajax('/war/create_train');
     const content = await user.get('/main/content');
     if (!content || content.length < 150)
@@ -58,13 +22,13 @@ async function mainPageInfo(user) {
             }
             const money = script.match(/new_m\('([0-9.]+)'\);/);
             if (money) {
-                toBeReturned['money'] = (0, misc_1.dotless)(money[1]);
-                user.player.storage.money = (0, misc_1.dotless)(money[1]);
+                toBeReturned['money'] = dotless(money[1]);
+                user.player.storage.money = dotless(money[1]);
             }
             const gold = script.match(/new_g\('([0-9.]+)'\);/);
             if (gold) {
-                toBeReturned['gold'] = (0, misc_1.dotless)(gold[1]);
-                user.player.storage.gold = (0, misc_1.dotless)(gold[1]);
+                toBeReturned['gold'] = dotless(gold[1]);
+                user.player.storage.gold = dotless(gold[1]);
             }
             toBeReturned['perkCompletionDate'] = 0;
             const upgradingPerk = script.match(/\.perk_square_f\[perk="(\d)/);
@@ -113,7 +77,7 @@ async function mainPageInfo(user) {
     try {
         const movingDiv = index_regionDiv.find('div.small.white > div');
         const movingText = movingDiv.text().replace('back', 'back ');
-        const timestamp = (0, timestamps_1.getTimestamp)(movingText);
+        const timestamp = getTimestamp(movingText);
         if (movingText.includes('Moving in')) {
             toBeReturned['moving'] = true;
             toBeReturned['movingToId'] = parseInt(movingDiv.find('span').attr('action').split('/').pop());
@@ -146,7 +110,7 @@ async function mainPageInfo(user) {
     user.player.level = level;
     // Experience
     const experienceDiv = $('span[id="index_exp_points"]');
-    const experience = (0, misc_1.dotless)(experienceDiv.text());
+    const experience = dotless(experienceDiv.text());
     toBeReturned['experience'] = experience;
     user.player.exp = experience;
     // STR

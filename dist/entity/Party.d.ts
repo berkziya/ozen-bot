@@ -25,3 +25,4 @@ export declare class Party {
     };
     static [Symbol.hasInstance](instance: any): boolean;
 }
+//# sourceMappingURL=Party.d.ts.map

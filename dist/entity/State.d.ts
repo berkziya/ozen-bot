@@ -83,3 +83,4 @@ export declare class State {
     };
     static [Symbol.hasInstance](instance: any): boolean;
 }
+//# sourceMappingURL=State.d.ts.map

@@ -6,3 +6,4 @@ export declare const TROOPS_FOR_WAR_TYPES: {
 export declare function calculateTroops(player: Player, energy: number | undefined, war: War, drones?: boolean): {
     [key: string]: number;
 };
+//# sourceMappingURL=calculateTroops.d.ts.map

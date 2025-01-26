@@ -13,3 +13,4 @@ export default class AuthService {
     amILoggedIn(): Promise<boolean>;
     login(mail?: string, password?: string, cookies?: string): Promise<number | null>;
 }
+//# sourceMappingURL=AuthService.d.ts.map

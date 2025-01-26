@@ -1,15 +1,9 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.iPhoneUserAgent = void 0;
-const path_1 = __importDefault(require("path"));
-const playwright_1 = require("playwright");
-const UserService_1 = require("../user/UserService");
-exports.iPhoneUserAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/130.0 Mobile/15E148 Safari/605.1.15';
+import path from 'path';
+import { firefox } from 'playwright';
+import { cookiesDir } from '../user/UserService';
+export const iPhoneUserAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/130.0 Mobile/15E148 Safari/605.1.15';
 const mobileViewport = { width: 430, height: 932 };
-class BrowserService {
+export default class BrowserService {
     who;
     isMobile;
     context;
@@ -24,12 +18,12 @@ class BrowserService {
     async getContext() {
         try {
             if (!this.context) {
-                this.context = await playwright_1.firefox.launchPersistentContext(path_1.default.join(UserService_1.cookiesDir, 'browsers', this.who), {
+                this.context = await firefox.launchPersistentContext(path.join(cookiesDir, 'browsers', this.who), {
                     headless: true,
                     timezoneId: 'UTC',
                     locale: 'en-US',
                     viewport: this.isMobile ? mobileViewport : undefined,
-                    userAgent: this.isMobile ? exports.iPhoneUserAgent : undefined,
+                    userAgent: this.isMobile ? iPhoneUserAgent : undefined,
                     hasTouch: this.isMobile,
                 });
             }
@@ -62,4 +56,3 @@ class BrowserService {
         }
     }
 }
-exports.default = BrowserService;

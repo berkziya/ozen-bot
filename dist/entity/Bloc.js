@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Bloc = void 0;
-class Bloc {
+export class Bloc {
     lastUpdate = new Date(0);
     id;
     name;
@@ -33,4 +30,3 @@ class Bloc {
             'militaryAgreement' in instance);
     }
 }
-exports.Bloc = Bloc;

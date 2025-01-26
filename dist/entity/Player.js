@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Player = void 0;
-const Storage_1 = require("./shared/Storage");
-class Player {
+import { Storage } from './shared/Storage';
+export class Player {
     lastUpdate = new Date(0);
     id;
     name;
@@ -21,7 +18,7 @@ class Player {
     foreignMinisterOfState;
     governorOfAuto;
     party;
-    storage = new Storage_1.Storage();
+    storage = new Storage();
     factories;
     statePermits;
     regionPermits;
@@ -146,4 +143,3 @@ class Player {
         return (instance && typeof instance === 'object' && 'homelandBonus' in instance);
     }
 }
-exports.Player = Player;

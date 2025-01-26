@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const entity_1 = require("../entity");
-class ModelService {
+import { Autonomy, Bloc, Factory, Player, Region, State, War } from '../entity';
+export default class ModelService {
     static instance;
     models = {
         autonomies: new Map(),
@@ -31,25 +29,24 @@ class ModelService {
         return model;
     }
     async getAutonomy(autonomyId) {
-        return this.getModel(this.models.autonomies, autonomyId, entity_1.Autonomy);
+        return this.getModel(this.models.autonomies, autonomyId, Autonomy);
     }
     async getBloc(blocId) {
-        return this.getModel(this.models.blocs, blocId, entity_1.Bloc);
+        return this.getModel(this.models.blocs, blocId, Bloc);
     }
     async getFactory(factoryId) {
-        return this.getModel(this.models.factories, factoryId, entity_1.Factory);
+        return this.getModel(this.models.factories, factoryId, Factory);
     }
     async getPlayer(playerId) {
-        return this.getModel(this.models.players, playerId, entity_1.Player);
+        return this.getModel(this.models.players, playerId, Player);
     }
     async getRegion(regionId) {
-        return this.getModel(this.models.regions, regionId, entity_1.Region);
+        return this.getModel(this.models.regions, regionId, Region);
     }
     async getState(stateId) {
-        return this.getModel(this.models.states, stateId, entity_1.State);
+        return this.getModel(this.models.states, stateId, State);
     }
     async getWar(warId) {
-        return this.getModel(this.models.wars, warId, entity_1.War);
+        return this.getModel(this.models.wars, warId, War);
     }
 }
-exports.default = ModelService;

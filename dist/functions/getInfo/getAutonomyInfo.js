@@ -1,50 +1,11 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAutonomyInfo = getAutonomyInfo;
-const cheerio = __importStar(require("cheerio"));
-const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
-const misc_1 = require("../../misc");
-const UserService_1 = __importDefault(require("../../user/UserService"));
-const getRegionInfo_1 = require("./getRegionInfo");
-async function getAutonomyInfo(autonomyId, force) {
-    const user = UserService_1.default.getInstance().getUser();
-    (0, tiny_invariant_1.default)(user, 'Failed to get user');
+import * as cheerio from 'cheerio';
+import invariant from 'tiny-invariant';
+import { toCamelCase } from '../../misc';
+import UserService from '../../user/UserService';
+import { getRegionInfoInner } from './getRegionInfo';
+export async function getAutonomyInfo(autonomyId, force) {
+    const user = UserService.getInstance().getUser();
+    invariant(user, 'Failed to get user');
     const autonomy = await user.models.getAutonomy(autonomyId);
     if (!force &&
         autonomy.lastUpdate &&
@@ -53,7 +14,7 @@ async function getAutonomyInfo(autonomyId, force) {
     }
     const content = await user.get('/map/autonomy_details/' + autonomyId);
     if (!content || content.length < 150) {
-        return (0, getRegionInfo_1.getRegionInfoInner)(user, autonomyId, true);
+        return getRegionInfoInner(user, autonomyId, true);
     }
     autonomy.governor = null;
     autonomy.regions = new Set();
@@ -75,7 +36,7 @@ async function getAutonomyInfo(autonomyId, force) {
     const divs = $('#region_scroll > div');
     for (let i = 0; i < divs.length; i++) {
         const div = divs.eq(i);
-        const key = (0, misc_1.toCamelCase)(div.find('h2').first().text());
+        const key = toCamelCase(div.find('h2').first().text());
         if (key === 'governor') {
             const governorDiv = div.find('div.slide_profile_data > div');
             const governor = await user.models.getPlayer(governorDiv.attr('action').split('/').pop());

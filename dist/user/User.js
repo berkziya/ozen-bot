@@ -1,27 +1,21 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
-const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
-const sanitizer_1 = require("../misc/sanitizer");
-const AuthService_1 = __importDefault(require("../services/AuthService"));
-const BrowserService_1 = __importDefault(require("../services/BrowserService"));
-const ModelService_1 = __importDefault(require("../services/ModelService"));
-class User {
+import invariant from 'tiny-invariant';
+import { sanitizer } from '../misc/sanitizer';
+import AuthService from '../services/AuthService';
+import BrowserService from '../services/BrowserService';
+import ModelService from '../services/ModelService';
+export class User {
     who;
     isMobile;
     authService;
     browserService;
-    models = ModelService_1.default.getInstance();
+    models = ModelService.getInstance();
     player;
     constructor(who, isMobile = false) {
         this.who = who;
         this.isMobile = isMobile;
-        const sanitizedWho = (0, sanitizer_1.sanitizer)(who);
-        this.browserService = new BrowserService_1.default(sanitizedWho, isMobile);
-        this.authService = new AuthService_1.default(sanitizedWho, isMobile, this.browserService);
+        const sanitizedWho = sanitizer(who);
+        this.browserService = new BrowserService(sanitizedWho, isMobile);
+        this.authService = new AuthService(sanitizedWho, isMobile, this.browserService);
     }
     get id() {
         return this.player.id;
@@ -41,7 +35,7 @@ class User {
     async init(mail, password, cookies) {
         const userId = await this.authService.login(mail, password, cookies);
         await this.browserService.closeContext();
-        (0, tiny_invariant_1.default)(userId, 'Login failed');
+        invariant(userId, 'Login failed');
         this.player = await this.models.getPlayer(userId);
         return userId;
     }
@@ -73,4 +67,3 @@ class User {
         return result;
     }
 }
-exports.User = User;

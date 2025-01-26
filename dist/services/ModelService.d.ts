@@ -13,3 +13,4 @@ export default class ModelService {
     getState(stateId: number | string): Promise<State>;
     getWar(warId: number | string): Promise<War>;
 }
+//# sourceMappingURL=ModelService.d.ts.map

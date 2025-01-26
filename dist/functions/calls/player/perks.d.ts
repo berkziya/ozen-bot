@@ -20,3 +20,4 @@ export declare function choosePerkToUpgrade(user: User, gold?: string[], goldIfH
     gold: boolean;
 };
 export {};
+//# sourceMappingURL=perks.d.ts.map
