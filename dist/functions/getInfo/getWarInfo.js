@@ -41,7 +41,7 @@ const cheerio = __importStar(require("cheerio"));
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
 const timestamps_1 = require("../../misc/timestamps");
 const utils_1 = require("../../misc/utils");
-const UserHandler_1 = require("../../UserHandler");
+const UserHandler_1 = require("../../user/UserHandler");
 async function getWarInfo(warId, force = false) {
     const user = UserHandler_1.UserHandler.getInstance().getUser();
     (0, tiny_invariant_1.default)(user, 'Failed to get user');

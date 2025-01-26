@@ -40,7 +40,7 @@ exports.getPlayerInfo = getPlayerInfo;
 const cheerio = __importStar(require("cheerio"));
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
 const utils_1 = require("../../misc/utils");
-const UserHandler_1 = require("../../UserHandler");
+const UserHandler_1 = require("../../user/UserHandler");
 const getRegionInfo_1 = require("./getRegionInfo");
 async function getPlayerInfo(playerId, force) {
     const user = UserHandler_1.UserHandler.getInstance().getUser();

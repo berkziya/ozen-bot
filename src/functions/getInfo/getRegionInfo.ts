@@ -3,8 +3,8 @@ import invariant from 'tiny-invariant';
 import { Autonomy } from '../../entity/Autonomy';
 import { Region } from '../../entity/Region';
 import { dotless, toCamelCase } from '../../misc/utils';
-import { User } from '../../User';
-import { UserHandler } from '../../UserHandler';
+import { User } from '../../user/User';
+import { UserHandler } from '../../user/UserHandler';
 
 export async function getRegionInfo(regionId: number, force?: boolean) {
   const user = UserHandler.getInstance().getUser();

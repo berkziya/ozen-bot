@@ -1,4 +1,4 @@
-import { ModelService } from './services/ModelService';
+import { ModelService } from '../services/ModelService';
 import { User } from './User';
 export declare const cookiesDir: string;
 export declare class UserHandler {

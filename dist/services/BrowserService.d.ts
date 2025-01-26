@@ -9,10 +9,10 @@ export declare class BrowserService {
     get link(): string;
     getContext(): Promise<{
         context: BrowserContext;
-    } | null>;
+    }>;
     getPage(): Promise<{
         page: Page;
         context: BrowserContext;
-    } | null>;
+    }>;
     closeContext(): Promise<void>;
 }

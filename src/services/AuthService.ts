@@ -1,8 +1,8 @@
-import { promises as fs } from 'node:fs';
-import path from 'node:path';
+import { promises as fs } from 'fs';
+import path from 'path';
 import { BrowserContext } from 'playwright';
 import invariant from 'tiny-invariant';
-import { cookiesDir } from '../UserHandler';
+import { cookiesDir } from '../user/UserHandler';
 import { sanitizer } from '../misc/sanitizer';
 import { BrowserService } from './BrowserService';
 

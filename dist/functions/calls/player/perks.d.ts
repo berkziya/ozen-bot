@@ -1,4 +1,4 @@
-import { User } from '../../../User';
+import { User } from '../../../user/User';
 declare const perkToId: {
     str: number;
     edu: number;

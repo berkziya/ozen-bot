@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 import invariant from 'tiny-invariant';
 import { dotless, toCamelCase } from '../../misc/utils';
-import { UserHandler } from '../../UserHandler';
+import { UserHandler } from '../../user/UserHandler';
 import { getRegionInfo } from './getRegionInfo';
 
 export async function getPlayerInfo(playerId: number, force?: boolean) {

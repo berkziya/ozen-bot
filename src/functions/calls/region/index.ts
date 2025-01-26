@@ -1,5 +1,5 @@
 import { Region } from '../../../entity/Region';
-import { User } from '../../../User';
+import { User } from '../../../user/User';
 
 export async function cancelMove(user: User) {
   return await user.ajax('/map/cancel_move');

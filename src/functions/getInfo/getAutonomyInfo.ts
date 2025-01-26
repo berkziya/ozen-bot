@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 import invariant from 'tiny-invariant';
 import { toCamelCase } from '../../misc/utils';
-import { UserHandler } from '../../UserHandler';
+import { UserHandler } from '../../user/UserHandler';
 import { getRegionInfoInner } from './getRegionInfo';
 
 export async function getAutonomyInfo(autonomyId: number, force?: boolean) {

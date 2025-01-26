@@ -3,7 +3,7 @@ import { proLawByText, resourceIds } from '.';
 import { Autonomy } from '../../../entity/Autonomy';
 import { Region } from '../../../entity/Region';
 import { State } from '../../../entity/State';
-import { User } from '../../../User';
+import { User } from '../../../user/User';
 import { getAutonomyInfo } from '../../getInfo/getAutonomyInfo';
 import { getStateInfo } from '../../getInfo/getStateInfo';
 import { amIMinister } from '../../getInfo/misc/amIMinister';

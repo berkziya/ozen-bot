@@ -4,10 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
-const node_fs_1 = require("node:fs");
-const node_path_1 = __importDefault(require("node:path"));
+const fs_1 = require("fs");
+const path_1 = __importDefault(require("path"));
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
-const UserHandler_1 = require("../UserHandler");
+const UserHandler_1 = require("../user/UserHandler");
 const sanitizer_1 = require("../misc/sanitizer");
 class AuthService {
     who;
@@ -27,15 +27,15 @@ class AuthService {
             .join('; ');
     }
     get cookiesPath() {
-        return node_path_1.default.join(UserHandler_1.cookiesDir, `${this.who}-${this.isMobile ? 'm_' : ''}cookies.json`);
+        return path_1.default.join(UserHandler_1.cookiesDir, `${this.who}-${this.isMobile ? 'm_' : ''}cookies.json`);
     }
     async saveCookies(source) {
         try {
             if (!(typeof source === 'string'))
                 source = JSON.stringify(await source.cookies());
             this.cookieDict = JSON.parse(source);
-            await node_fs_1.promises.mkdir(UserHandler_1.cookiesDir, { recursive: true });
-            await node_fs_1.promises.writeFile(this.cookiesPath, source);
+            await fs_1.promises.mkdir(UserHandler_1.cookiesDir, { recursive: true });
+            await fs_1.promises.writeFile(this.cookiesPath, source);
         }
         catch (e) {
             console.error(e);
@@ -80,8 +80,8 @@ class AuthService {
             }
             try {
                 // check if there is a cookie file
-                await node_fs_1.promises.access(this.cookiesPath);
-                const cookiesData = await node_fs_1.promises.readFile(this.cookiesPath, 'utf8');
+                await fs_1.promises.access(this.cookiesPath);
+                const cookiesData = await fs_1.promises.readFile(this.cookiesPath, 'utf8');
                 const cookies = JSON.parse(cookiesData);
                 await page.context().addCookies(cookies);
                 await page.reload();

@@ -2,7 +2,7 @@ import * as cheerio from 'cheerio';
 import invariant from 'tiny-invariant';
 import { getTimestamp } from '../../misc/timestamps';
 import { dotless } from '../../misc/utils';
-import { UserHandler } from '../../UserHandler';
+import { UserHandler } from '../../user/UserHandler';
 
 export async function getWarInfo(warId: number, force = false) {
   const user = UserHandler.getInstance().getUser();

@@ -38,7 +38,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.flightPrices = flightPrices;
 const cheerio = __importStar(require("cheerio"));
-const UserHandler_1 = require("../../../UserHandler");
+const UserHandler_1 = require("../../../user/UserHandler");
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
 const utils_1 = require("../../../misc/utils");
 function parseTime(x) {

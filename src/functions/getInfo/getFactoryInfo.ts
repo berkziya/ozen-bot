@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 import invariant from 'tiny-invariant';
 import { dotless } from '../../misc/utils';
-import { UserHandler } from '../../UserHandler';
+import { UserHandler } from '../../user/UserHandler';
 
 export async function getFactoryInfo(factoryId: number, force?: boolean) {
   const user = UserHandler.getInstance().getUser();

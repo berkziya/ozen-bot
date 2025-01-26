@@ -1,4 +1,4 @@
-import { User } from '../../../User';
+import { User } from '../../../user/User';
 
 const perkToId = { str: 1, edu: 2, end: 3 };
 const currencyToId = { money: 1, gold: 2 };

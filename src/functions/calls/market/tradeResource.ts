@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 import invariant from 'tiny-invariant';
 import { resourceToId } from '.';
-import { User } from '../../../User';
+import { User } from '../../../user/User';
 import { parseMarketData } from '../../getInfo/misc/parseMarketData';
 
 export async function buyResource(

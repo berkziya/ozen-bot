@@ -1,6 +1,6 @@
 import invariant from 'tiny-invariant';
 import { proLawByText, resourceIds } from '.';
-import { User } from '../../../User';
+import { User } from '../../../user/User';
 import { amIMinister } from '../../getInfo/misc/amIMinister';
 
 export async function resourceRefill(

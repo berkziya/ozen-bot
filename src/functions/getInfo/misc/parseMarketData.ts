@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio';
 import invariant from 'tiny-invariant';
-import { UserHandler } from '../../../UserHandler';
+import { UserHandler } from '../../../user/UserHandler';
 
 const resourceToId = {
   oil: 3,

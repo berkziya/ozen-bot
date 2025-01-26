@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio';
 import { dotless } from '../../../misc/utils';
-import { User } from '../../../User';
+import { User } from '../../../user/User';
 
 export async function storageInfo(user: User) {
   const content = await user.get('/storage');

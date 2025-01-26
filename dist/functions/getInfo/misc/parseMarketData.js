@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseMarketData = parseMarketData;
 const cheerio = __importStar(require("cheerio"));
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
-const UserHandler_1 = require("../../../UserHandler");
+const UserHandler_1 = require("../../../user/UserHandler");
 const resourceToId = {
     oil: 3,
     ore: 4,

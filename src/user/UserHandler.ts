@@ -1,6 +1,6 @@
-import { promises as fs } from 'node:fs';
-import path from 'node:path';
-import { ModelService } from './services/ModelService';
+import { promises as fs } from 'fs';
+import path from 'path';
+import { ModelService } from '../services/ModelService';
 import { User } from './User';
 
 export const cookiesDir = path.join(process.cwd(), 'cookies');

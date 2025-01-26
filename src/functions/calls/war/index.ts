@@ -1,5 +1,5 @@
 import { War } from '../../../entity/War';
-import { User } from '../../../User';
+import { User } from '../../../user/User';
 import { calculateTroops } from './calculateTroops';
 
 export const troopAlphaDamage: { [key: string]: number } = {

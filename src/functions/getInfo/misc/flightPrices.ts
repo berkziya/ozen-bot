@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 
 import { Region } from '../../../entity/Region';
-import { UserHandler } from '../../../UserHandler';
+import { UserHandler } from '../../../user/UserHandler';
 import invariant from 'tiny-invariant';
 import { dotless } from '../../../misc/utils';
 

@@ -4,11 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserHandler = exports.cookiesDir = void 0;
-const node_fs_1 = require("node:fs");
-const node_path_1 = __importDefault(require("node:path"));
-const ModelService_1 = require("./services/ModelService");
+const fs_1 = require("fs");
+const path_1 = __importDefault(require("path"));
+const ModelService_1 = require("../services/ModelService");
 const User_1 = require("./User");
-exports.cookiesDir = node_path_1.default.join(process.cwd(), 'cookies');
+exports.cookiesDir = path_1.default.join(process.cwd(), 'cookies');
 class UserHandler {
     static instance;
     modelService = ModelService_1.ModelService.getInstance();
@@ -37,10 +37,10 @@ class UserHandler {
         return user;
     }
     async autoCreateUsers() {
-        const jsonFiles = (await node_fs_1.promises.readdir(exports.cookiesDir)).filter((file) => file.endsWith('.json'));
+        const jsonFiles = (await fs_1.promises.readdir(exports.cookiesDir)).filter((file) => file.endsWith('.json'));
         for (const file of jsonFiles) {
-            const filePath = node_path_1.default.join(exports.cookiesDir, file);
-            const fileContents = await node_fs_1.promises.readFile(filePath, 'utf-8');
+            const filePath = path_1.default.join(exports.cookiesDir, file);
+            const fileContents = await fs_1.promises.readFile(filePath, 'utf-8');
             const who = file.split('-')[0];
             await this.createUser(who, undefined, undefined, fileContents);
         }

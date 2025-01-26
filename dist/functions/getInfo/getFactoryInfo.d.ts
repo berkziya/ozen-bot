@@ -1,1 +1,1 @@
-export declare function getFactoryInfo(factoryId: number, force?: boolean): Promise<import("../../entity/Factory").Factory | null>;
+export declare function getFactoryInfo(factoryId: number, force?: boolean): Promise<import("../../entity/Factory").Factory>;

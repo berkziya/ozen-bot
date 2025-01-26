@@ -35,7 +35,7 @@ export declare class State {
         lastUpdate: Date;
         id: number;
         name: string;
-        capital: number | undefined;
+        capital: number;
         regions: number[];
         autonomies: number[];
         entryFee: number;
@@ -43,14 +43,14 @@ export declare class State {
         needResidencyToWork: boolean;
         residencyIssuedByLeader: boolean;
         governmentForm: string;
-        leader: number | undefined;
+        leader: number;
         leaderIsCommander: boolean;
-        econMinister: number | undefined;
-        foreignMinister: number | undefined;
-        leaderTermStart: Date | null;
+        econMinister: number;
+        foreignMinister: number;
+        leaderTermStart: Date;
         storage: {
             subStorages: Storage[];
-            owner: number | undefined;
+            owner: number;
             stateMoney: number;
             stateGold: number;
             stateOil: number;
@@ -79,7 +79,7 @@ export declare class State {
             moonTanks: number;
             spaceStations: number;
         };
-        bloc: number | undefined;
+        bloc: number;
     };
     static [Symbol.hasInstance](instance: any): boolean;
 }

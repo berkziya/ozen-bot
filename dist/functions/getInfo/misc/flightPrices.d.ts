@@ -5,4 +5,4 @@ export declare function flightPrices(location: Region): Promise<{
         time: number;
         bordersOpen: boolean;
     };
-} | null>;
+}>;

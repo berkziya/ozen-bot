@@ -1,5 +1,5 @@
 import invariant from 'tiny-invariant';
-import { User } from '../../../User';
+import { User } from '../../../user/User';
 import { Region } from '../../../entity/Region';
 import { Law } from '../../../entity/shared/Parliament';
 import { getStateInfo } from '../../getInfo/getStateInfo';

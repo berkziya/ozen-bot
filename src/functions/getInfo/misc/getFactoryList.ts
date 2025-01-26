@@ -3,7 +3,7 @@ import invariant from 'tiny-invariant';
 import { Factory, factoryIds } from '../../../entity/Factory';
 import { Region } from '../../../entity/Region';
 import { State } from '../../../entity/State';
-import { UserHandler } from '../../../UserHandler';
+import { UserHandler } from '../../../user/UserHandler';
 import { getFactoryInfo } from '../getFactoryInfo';
 
 export async function getFactoryList(

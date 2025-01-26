@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 import { getTimestamp } from '../../../misc/timestamps';
 import { dotless } from '../../../misc/utils';
-import { User } from '../../../User';
+import { User } from '../../../user/User';
 
 export async function mainPageInfo(user: User) {
   await user.ajax('/war/create_train');

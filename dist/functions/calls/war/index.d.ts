@@ -1,5 +1,5 @@
 import { War } from '../../../entity/War';
-import { User } from '../../../User';
+import { User } from '../../../user/User';
 export declare const troopAlphaDamage: {
     [key: string]: number;
 };

@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getWarList = getWarList;
 const cheerio = __importStar(require("cheerio"));
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
-const UserHandler_1 = require("../../../UserHandler");
+const UserHandler_1 = require("../../../user/UserHandler");
 async function getWarList(stateId) {
     const user = UserHandler_1.UserHandler.getInstance().getUser();
     (0, tiny_invariant_1.default)(user, 'Failed to get user');

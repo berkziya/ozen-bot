@@ -2,8 +2,8 @@ import * as cheerio from 'cheerio';
 import invariant from 'tiny-invariant';
 import { Region } from '../../../entity/Region';
 import { State } from '../../../entity/State';
-import { User } from '../../../User';
-import { UserHandler } from '../../../UserHandler';
+import { User } from '../../../user/User';
+import { UserHandler } from '../../../user/UserHandler';
 
 export async function getCitizens(location: Region | State) {
   const user = UserHandler.getInstance().getUser();

@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "target": "ESNext",
-    "module": "commonjs",
-    "declaration": true,
+    "module": "NodeNext",
     "outDir": "./dist",
-    "strict": true
+    "declaration": true,
+    "baseUrl": "./dist",
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist", "src/test.ts"]

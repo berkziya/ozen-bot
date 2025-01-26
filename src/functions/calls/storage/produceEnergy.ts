@@ -1,5 +1,5 @@
 import invariant from 'tiny-invariant';
-import { User } from '../../../User';
+import { User } from '../../../user/User';
 import { storageInfo } from '../../getInfo/misc/storageInfo';
 
 export async function produceEnergy(

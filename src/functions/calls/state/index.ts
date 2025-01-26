@@ -1,4 +1,4 @@
-import { User } from '../../../User';
+import { User } from '../../../user/User';
 
 const deptIds = {
   buildings: 'w1',
