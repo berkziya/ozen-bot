@@ -1,10 +1,10 @@
 import * as cheerio from 'cheerio';
 import invariant from 'tiny-invariant';
-import { dotless, toCamelCase } from '../../misc/utils';
-import { UserHandler } from '../../user/UserHandler';
+import { dotless, toCamelCase } from '../../misc';
+import UserService from '../../user/UserService';
 
 export async function getStateInfo(stateId: number, force?: boolean) {
-  const user = UserHandler.getInstance().getUser();
+  const user = UserService.getInstance().getUser();
   invariant(user, 'Failed to get user');
 
   const state = await user.models.getState(stateId);

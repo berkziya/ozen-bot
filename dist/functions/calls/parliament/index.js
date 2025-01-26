@@ -3,13 +3,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resourceIds = void 0;
+exports.resourceIds = exports.transferBudget = exports.resourceRefill = void 0;
 exports.proLawByText = proLawByText;
 exports.proLaw = proLaw;
 exports.cancelSelfLaw = cancelSelfLaw;
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
 const getStateInfo_1 = require("../../getInfo/getStateInfo");
 const getParliamentInfo_1 = require("../../getInfo/misc/getParliamentInfo");
+var resourceRefill_1 = require("./resourceRefill");
+Object.defineProperty(exports, "resourceRefill", { enumerable: true, get: function () { return resourceRefill_1.resourceRefill; } });
+var transferBudget_1 = require("./transferBudget");
+Object.defineProperty(exports, "transferBudget", { enumerable: true, get: function () { return transferBudget_1.transferBudget; } });
 exports.resourceIds = {
     money: 1,
     gold: 0,

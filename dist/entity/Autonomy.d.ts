@@ -21,10 +21,10 @@ export declare class Autonomy {
         lastUpdate: Date;
         id: number;
         name: string;
-        state: number;
-        capital: number;
+        state: number | undefined;
+        capital: number | undefined;
         regions: number[];
-        governor: number;
+        governor: number | undefined;
         storage: Storage;
     };
     static [Symbol.hasInstance](instance: any): boolean;

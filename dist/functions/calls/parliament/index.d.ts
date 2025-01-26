@@ -1,6 +1,8 @@
 import { User } from '../../../user/User';
 import { Region } from '../../../entity/Region';
 import { Law } from '../../../entity/shared/Parliament';
+export { resourceRefill } from './resourceRefill';
+export { transferBudget } from './transferBudget';
 export declare const resourceIds: {
     money: number;
     gold: number;

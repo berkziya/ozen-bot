@@ -61,7 +61,7 @@ export declare class Region {
         lastUpdate: Date;
         id: number;
         name: string;
-        state: number;
+        state: number | undefined;
         needResidencyToWork: boolean;
         taxRate: number;
         marketTaxes: number;
@@ -72,7 +72,7 @@ export declare class Region {
             uranium: number;
             diamonds: number;
         };
-        autonomy: number;
+        autonomy: number | undefined;
         profitShare: number;
         borderRegions: number[];
         buildings: {

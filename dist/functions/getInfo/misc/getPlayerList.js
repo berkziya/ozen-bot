@@ -42,9 +42,9 @@ exports.getWarDamageList = getWarDamageList;
 const cheerio = __importStar(require("cheerio"));
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
 const State_1 = require("../../../entity/State");
-const UserHandler_1 = require("../../../user/UserHandler");
+const UserService_1 = __importDefault(require("../../../user/UserService"));
 async function getCitizens(location) {
-    const user = UserHandler_1.UserHandler.getInstance().getUser();
+    const user = UserService_1.default.getInstance().getUser();
     (0, tiny_invariant_1.default)(user, 'Failed to get user');
     return location instanceof State_1.State
         ? getStateCitizens(user, location.id)

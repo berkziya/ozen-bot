@@ -38,14 +38,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.flightPrices = flightPrices;
 const cheerio = __importStar(require("cheerio"));
-const UserHandler_1 = require("../../../user/UserHandler");
+const UserService_1 = __importDefault(require("../../../user/UserService"));
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
-const utils_1 = require("../../../misc/utils");
+const misc_1 = require("../../../misc");
 function parseTime(x) {
     return (parseInt(x[1] ?? '0') * 3600 + parseInt(x[2] ?? '0') * 60 + parseInt(x[3]));
 }
 async function flightPrices(location) {
-    const user = UserHandler_1.UserHandler.getInstance().getUser();
+    const user = UserService_1.default.getInstance().getUser();
     (0, tiny_invariant_1.default)(user, 'Failed to get user');
     const content = await user.get(`/map/region_data/${location.id}`);
     if (!content || content.length < 150)
@@ -72,11 +72,11 @@ async function flightPrices(location) {
                 const flightPrices = script.match(/\$\('#move_here'\)\.html\('([0-9.]+) \$'\);/g);
                 (0, tiny_invariant_1.default)(flightPrices, 'Failed to get flight prices');
                 if (flightPrices[0])
-                    prices[1].price = (0, utils_1.dotless)(flightPrices[0]);
+                    prices[1].price = (0, misc_1.dotless)(flightPrices[0]);
                 if (flightTimes[1])
                     prices[2].time = parseTime(flightTimes[1]);
                 if (flightPrices[1])
-                    prices[2].price = (0, utils_1.dotless)(flightPrices[1]);
+                    prices[2].price = (0, misc_1.dotless)(flightPrices[1]);
             }
         }
     });

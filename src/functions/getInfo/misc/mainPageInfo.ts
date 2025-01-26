@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio';
 import { getTimestamp } from '../../../misc/timestamps';
-import { dotless } from '../../../misc/utils';
+import { dotless } from '../../../misc';
 import { User } from '../../../user/User';
 
 export async function mainPageInfo(user: User) {

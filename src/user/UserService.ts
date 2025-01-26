@@ -1,23 +1,23 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { ModelService } from '../services/ModelService';
+import ModelService from '../services/ModelService';
 import { User } from './User';
 
 export const cookiesDir = path.join(process.cwd(), 'cookies');
 
-export class UserHandler {
-  private static instance: UserHandler;
+export default class UserService {
+  private static instance: UserService;
 
   public modelService: ModelService = ModelService.getInstance();
   public users: User[] = [];
 
   private constructor() {}
 
-  static getInstance(): UserHandler {
-    if (!UserHandler.instance) {
-      UserHandler.instance = new UserHandler();
+  static getInstance(): UserService {
+    if (!UserService.instance) {
+      UserService.instance = new UserService();
     }
-    return UserHandler.instance;
+    return UserService.instance;
   }
 
   getUser(id?: number, who?: string): User | undefined {

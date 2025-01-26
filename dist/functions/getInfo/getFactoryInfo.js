@@ -39,10 +39,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getFactoryInfo = getFactoryInfo;
 const cheerio = __importStar(require("cheerio"));
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
-const utils_1 = require("../../misc/utils");
-const UserHandler_1 = require("../../user/UserHandler");
+const misc_1 = require("../../misc");
+const UserService_1 = __importDefault(require("../../user/UserService"));
 async function getFactoryInfo(factoryId, force) {
-    const user = UserHandler_1.UserHandler.getInstance().getUser();
+    const user = UserService_1.default.getInstance().getUser();
     (0, tiny_invariant_1.default)(user, 'Failed to get user');
     const factory = await user.models.getFactory(factoryId);
     if (!force &&
@@ -65,14 +65,14 @@ async function getFactoryInfo(factoryId, force) {
     factory.type = $('div.float_left > div.change_paper_about_target.float_left > span')
         .text()
         .split(' ')[0];
-    factory.level = (0, utils_1.dotless)($('div.float_left > div.change_paper_about_target.float_left > span').text());
+    factory.level = (0, misc_1.dotless)($('div.float_left > div.change_paper_about_target.float_left > span').text());
     factory.owner = await user.models.getPlayer($('span[action*="profile"]').attr('action').split('/').pop());
     factory.owner.setName($('span[action*="profile"]').text().trim());
     const region = await user.models.getRegion($('span[action*="map"]').attr('action').split('/').pop());
     factory.setRegion(region);
     factory.region.name = $('span[action*="map"]').text().trim();
     factory.setWage($('h2.white.imp').first().text());
-    const potentialWage = (0, utils_1.dotless)($('h2[class$="imp"]').last().text().split(' ')[0]);
+    const potentialWage = (0, misc_1.dotless)($('h2[class$="imp"]').last().text().split(' ')[0]);
     if (potentialWage) {
         factory.potentialWage = potentialWage;
     }

@@ -1,4 +1,4 @@
-import { dotless, toCamelCase } from '../misc/utils';
+import { dotless, toCamelCase } from '../misc';
 import { Player } from './Player';
 import { Region } from './Region';
 

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.State = void 0;
-const utils_1 = require("../misc/utils");
+const misc_1 = require("../misc");
 const Storage_1 = require("./shared/Storage");
 class State {
     lastUpdate = new Date(0);
@@ -61,7 +61,7 @@ class State {
         autonomy.state = this;
     }
     setgovernmentForm(form) {
-        this.governmentForm = (0, utils_1.toCamelCase)(form);
+        this.governmentForm = (0, misc_1.toCamelCase)(form);
     }
     setLeader(player) {
         if (this.leader && this.leader.leaderOfState === this) {

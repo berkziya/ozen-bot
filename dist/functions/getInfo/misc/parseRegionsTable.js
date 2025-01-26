@@ -1,7 +1,6 @@
 "use strict";
 // import { UserContext } from '../../../user/UserContext';
 // import { State } from '../../../entity/State';
-Object.defineProperty(exports, "__esModule", { value: true });
 // export async function parseRegionsTable(
 //   user: UserContext,
 //   stateId: number | null = null

@@ -1,0 +1,1 @@
+export { produceEnergy } from './produceEnergy';

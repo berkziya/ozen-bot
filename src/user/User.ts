@@ -1,9 +1,9 @@
 import invariant from 'tiny-invariant';
-import { Player } from '../entity/Player';
+import { Player } from '../entity';
 import { sanitizer } from '../misc/sanitizer';
-import { AuthService } from '../services/AuthService';
-import { BrowserService } from '../services/BrowserService';
-import { ModelService } from '../services/ModelService';
+import AuthService from '../services/AuthService';
+import BrowserService from '../services/BrowserService';
+import ModelService from '../services/ModelService';
 
 export class User {
   private authService: AuthService;

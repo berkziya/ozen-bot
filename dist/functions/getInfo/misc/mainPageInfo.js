@@ -36,7 +36,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.mainPageInfo = mainPageInfo;
 const cheerio = __importStar(require("cheerio"));
 const timestamps_1 = require("../../../misc/timestamps");
-const utils_1 = require("../../../misc/utils");
+const misc_1 = require("../../../misc");
 async function mainPageInfo(user) {
     await user.ajax('/war/create_train');
     const content = await user.get('/main/content');
@@ -58,13 +58,13 @@ async function mainPageInfo(user) {
             }
             const money = script.match(/new_m\('([0-9.]+)'\);/);
             if (money) {
-                toBeReturned['money'] = (0, utils_1.dotless)(money[1]);
-                user.player.storage.money = (0, utils_1.dotless)(money[1]);
+                toBeReturned['money'] = (0, misc_1.dotless)(money[1]);
+                user.player.storage.money = (0, misc_1.dotless)(money[1]);
             }
             const gold = script.match(/new_g\('([0-9.]+)'\);/);
             if (gold) {
-                toBeReturned['gold'] = (0, utils_1.dotless)(gold[1]);
-                user.player.storage.gold = (0, utils_1.dotless)(gold[1]);
+                toBeReturned['gold'] = (0, misc_1.dotless)(gold[1]);
+                user.player.storage.gold = (0, misc_1.dotless)(gold[1]);
             }
             toBeReturned['perkCompletionDate'] = 0;
             const upgradingPerk = script.match(/\.perk_square_f\[perk="(\d)/);
@@ -146,7 +146,7 @@ async function mainPageInfo(user) {
     user.player.level = level;
     // Experience
     const experienceDiv = $('span[id="index_exp_points"]');
-    const experience = (0, utils_1.dotless)(experienceDiv.text());
+    const experience = (0, misc_1.dotless)(experienceDiv.text());
     toBeReturned['experience'] = experience;
     user.player.exp = experience;
     // STR

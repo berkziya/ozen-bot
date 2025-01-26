@@ -1,11 +1,11 @@
 import * as cheerio from 'cheerio';
 import invariant from 'tiny-invariant';
-import { toCamelCase } from '../../misc/utils';
-import { UserHandler } from '../../user/UserHandler';
+import { toCamelCase } from '../../misc';
+import UserService from '../../user/UserService';
 import { getRegionInfoInner } from './getRegionInfo';
 
 export async function getAutonomyInfo(autonomyId: number, force?: boolean) {
-  const user = UserHandler.getInstance().getUser();
+  const user = UserService.getInstance().getUser();
   invariant(user, 'Failed to get user');
 
   const autonomy = await user.models.getAutonomy(autonomyId);

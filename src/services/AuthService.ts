@@ -2,11 +2,11 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { BrowserContext } from 'playwright';
 import invariant from 'tiny-invariant';
-import { cookiesDir } from '../user/UserHandler';
+import { cookiesDir } from '../user/UserService';
 import { sanitizer } from '../misc/sanitizer';
-import { BrowserService } from './BrowserService';
+import BrowserService from './BrowserService';
 
-export class AuthService {
+export default class AuthService {
   public cookieDict!: [];
   public c_html!: string;
 

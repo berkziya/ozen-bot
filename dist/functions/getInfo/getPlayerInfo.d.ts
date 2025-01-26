@@ -1,1 +1,1 @@
-export declare function getPlayerInfo(playerId: number, force?: boolean): Promise<import("../../entity/Player").Player>;
+export declare function getPlayerInfo(playerId: number, force?: boolean): Promise<import("../..").Player | null>;

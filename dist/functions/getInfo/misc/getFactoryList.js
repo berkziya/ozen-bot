@@ -43,10 +43,10 @@ const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
 const Factory_1 = require("../../../entity/Factory");
 const Region_1 = require("../../../entity/Region");
 const State_1 = require("../../../entity/State");
-const UserHandler_1 = require("../../../user/UserHandler");
+const UserService_1 = __importDefault(require("../../../user/UserService"));
 const getFactoryInfo_1 = require("../getFactoryInfo");
 async function getFactoryList(location, resource = 'gold') {
-    const user = UserHandler_1.UserHandler.getInstance().getUser();
+    const user = UserService_1.default.getInstance().getUser();
     (0, tiny_invariant_1.default)(user, 'Failed to get user');
     const resourceId = Factory_1.factoryIds[resource];
     const link = location instanceof State_1.State

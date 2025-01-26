@@ -1,6 +1,6 @@
 import { BrowserContext } from 'playwright';
-import { BrowserService } from './BrowserService';
-export declare class AuthService {
+import BrowserService from './BrowserService';
+export default class AuthService {
     private who;
     private isMobile;
     private browserService;

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Factory = exports.resBalancers = exports.resCoef = exports.factoryIds = void 0;
-const utils_1 = require("../misc/utils");
+const misc_1 = require("../misc");
 exports.factoryIds = {
     gold: 6,
     oil: 2,
@@ -55,11 +55,11 @@ class Factory {
     setWage(wage) {
         if (wage.includes('%') || (this.type !== 'gold' && !wage.includes('$'))) {
             wage = wage.split(' ')[0];
-            this.wage_ = (0, utils_1.dotless)(wage) / 100;
+            this.wage_ = (0, misc_1.dotless)(wage) / 100;
             this.isFixed = false;
         }
         else {
-            this.wage_ = (0, utils_1.dotless)(wage);
+            this.wage_ = (0, misc_1.dotless)(wage);
             this.isFixed = true;
         }
     }
@@ -80,7 +80,7 @@ class Factory {
         return this.type_;
     }
     set type(theType) {
-        theType = (0, utils_1.toCamelCase)(theType);
+        theType = (0, misc_1.toCamelCase)(theType);
         if (theType === 'diamond') {
             this.type_ = 'diamonds';
         }

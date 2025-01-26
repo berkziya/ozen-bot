@@ -1,13 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ModelService = void 0;
-const Autonomy_1 = require("../entity/Autonomy");
-const Bloc_1 = require("../entity/Bloc");
-const Factory_1 = require("../entity/Factory");
-const Player_1 = require("../entity/Player");
-const Region_1 = require("../entity/Region");
-const State_1 = require("../entity/State");
-const War_1 = require("../entity/War");
+const entity_1 = require("../entity");
 class ModelService {
     static instance;
     models = {
@@ -38,25 +31,25 @@ class ModelService {
         return model;
     }
     async getAutonomy(autonomyId) {
-        return this.getModel(this.models.autonomies, autonomyId, Autonomy_1.Autonomy);
+        return this.getModel(this.models.autonomies, autonomyId, entity_1.Autonomy);
     }
     async getBloc(blocId) {
-        return this.getModel(this.models.blocs, blocId, Bloc_1.Bloc);
+        return this.getModel(this.models.blocs, blocId, entity_1.Bloc);
     }
     async getFactory(factoryId) {
-        return this.getModel(this.models.factories, factoryId, Factory_1.Factory);
+        return this.getModel(this.models.factories, factoryId, entity_1.Factory);
     }
     async getPlayer(playerId) {
-        return this.getModel(this.models.players, playerId, Player_1.Player);
+        return this.getModel(this.models.players, playerId, entity_1.Player);
     }
     async getRegion(regionId) {
-        return this.getModel(this.models.regions, regionId, Region_1.Region);
+        return this.getModel(this.models.regions, regionId, entity_1.Region);
     }
     async getState(stateId) {
-        return this.getModel(this.models.states, stateId, State_1.State);
+        return this.getModel(this.models.states, stateId, entity_1.State);
     }
     async getWar(warId) {
-        return this.getModel(this.models.wars, warId, War_1.War);
+        return this.getModel(this.models.wars, warId, entity_1.War);
     }
 }
-exports.ModelService = ModelService;
+exports.default = ModelService;

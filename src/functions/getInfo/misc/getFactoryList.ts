@@ -3,14 +3,14 @@ import invariant from 'tiny-invariant';
 import { Factory, factoryIds } from '../../../entity/Factory';
 import { Region } from '../../../entity/Region';
 import { State } from '../../../entity/State';
-import { UserHandler } from '../../../user/UserHandler';
+import UserService from '../../../user/UserService';
 import { getFactoryInfo } from '../getFactoryInfo';
 
 export async function getFactoryList(
   location: State | Region,
   resource: keyof typeof factoryIds = 'gold'
 ) {
-  const user = UserHandler.getInstance().getUser();
+  const user = UserService.getInstance().getUser();
   invariant(user, 'Failed to get user');
 
   const resourceId = factoryIds[resource];

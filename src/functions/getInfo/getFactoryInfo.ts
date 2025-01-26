@@ -1,10 +1,10 @@
 import * as cheerio from 'cheerio';
 import invariant from 'tiny-invariant';
-import { dotless } from '../../misc/utils';
-import { UserHandler } from '../../user/UserHandler';
+import { dotless } from '../../misc';
+import UserService from '../../user/UserService';
 
 export async function getFactoryInfo(factoryId: number, force?: boolean) {
-  const user = UserHandler.getInstance().getUser();
+  const user = UserService.getInstance().getUser();
   invariant(user, 'Failed to get user');
   const factory = await user.models.getFactory(factoryId);
 

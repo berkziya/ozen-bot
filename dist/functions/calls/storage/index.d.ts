@@ -1,1 +1,1 @@
-export {};
+export { produceEnergy } from './produceEnergy';

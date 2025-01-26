@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import { dotless } from '../../../misc/utils';
+import { dotless } from '../../../misc';
 import { User } from '../../../user/User';
 
 export async function storageInfo(user: User) {

@@ -2,10 +2,10 @@ import * as cheerio from 'cheerio';
 import invariant from 'tiny-invariant';
 import { Region } from '../../../entity/Region';
 import { Law, Parliament } from '../../../entity/shared/Parliament';
-import { UserHandler } from '../../../user/UserHandler';
+import UserService from '../../../user/UserService';
 
 export async function getParliamentInfo(capital: Region, isAutonomy = false) {
-  const user = UserHandler.getInstance().getUser();
+  const user = UserService.getInstance().getUser();
   invariant(user, 'Failed to get user');
 
   const url = isAutonomy

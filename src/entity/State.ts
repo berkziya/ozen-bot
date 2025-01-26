@@ -1,4 +1,4 @@
-import { toCamelCase } from '../misc/utils';
+import { toCamelCase } from '../misc';
 import { Autonomy } from './Autonomy';
 import { Bloc } from './Bloc';
 import { Player } from './Player';

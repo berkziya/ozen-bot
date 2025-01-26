@@ -2,7 +2,10 @@ import { War } from '../../../entity/War';
 import { User } from '../../../user/User';
 import { calculateTroops } from './calculateTroops';
 
-export const troopAlphaDamage: { [key: string]: number } = {
+export { calculateTroops, TROOPS_FOR_WAR_TYPES } from './calculateTroops';
+export { calculateDamage } from './calculateDamage';
+
+export const TROOP_ALPHA_DAMAGE: { [key: string]: number } = {
   laserDrones: 6000,
   tanks: 10,
   aircrafts: 75,
@@ -13,7 +16,7 @@ export const troopAlphaDamage: { [key: string]: number } = {
   // missiles: 900,
 };
 
-const troopIds: { [key: string]: string } = {
+const TROOP_IDS: { [key: string]: string } = {
   aircrafts: 't1',
   tanks: 't2',
   missiles: 't14',
@@ -40,7 +43,7 @@ export async function attack(
   const aim = defend ? war.defender.id : war.aggressor.id;
 
   const troops = Object.entries(calculatedTroops).reduce(
-    (acc, [key, value]) => ({ ...acc, [troopIds[key]]: value.toString() }),
+    (acc, [key, value]) => ({ ...acc, [TROOP_IDS[key]]: value.toString() }),
     {}
   );
 

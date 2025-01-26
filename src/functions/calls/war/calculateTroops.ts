@@ -1,8 +1,8 @@
-import { troopAlphaDamage } from '.';
+import { TROOP_ALPHA_DAMAGE } from '.';
 import { Player } from '../../../entity/Player';
 import { War } from '../../../entity/War';
 
-const TROOPS_FOR_WAR_TYPES: { [key: string]: string[] } = {
+export const TROOPS_FOR_WAR_TYPES: { [key: string]: string[] } = {
   training: ['laserDrones', 'tanks', 'aircrafts', 'bombers'],
   ground: ['laserDrones', 'tanks', 'aircrafts', 'bombers'],
   troopers: ['laserDrones', 'tanks', 'aircrafts', 'bombers'],
@@ -23,10 +23,10 @@ export function calculateTroops(
   const n: { [key: string]: number } = {};
 
   for (const troop of TROOPS_FOR_WAR_TYPES[war.type]) {
-    let count = Math.floor(alpha / troopAlphaDamage[troop]);
+    let count = Math.floor(alpha / TROOP_ALPHA_DAMAGE[troop]);
     if (!drones && troop == 'laserDrones') count = 0;
     if (!drones && war.type == 'moon' && troop == 'spaceStations') count = 0;
-    alpha -= count * troopAlphaDamage[troop];
+    alpha -= count * TROOP_ALPHA_DAMAGE[troop];
     n[troop] = count;
   }
 

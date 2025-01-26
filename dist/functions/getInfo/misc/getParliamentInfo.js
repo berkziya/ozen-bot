@@ -40,9 +40,9 @@ exports.getParliamentInfo = getParliamentInfo;
 const cheerio = __importStar(require("cheerio"));
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
 const Parliament_1 = require("../../../entity/shared/Parliament");
-const UserHandler_1 = require("../../../user/UserHandler");
+const UserService_1 = __importDefault(require("../../../user/UserService"));
 async function getParliamentInfo(capital, isAutonomy = false) {
-    const user = UserHandler_1.UserHandler.getInstance().getUser();
+    const user = UserService_1.default.getInstance().getUser();
     (0, tiny_invariant_1.default)(user, 'Failed to get user');
     const url = isAutonomy
         ? '/parliament/auto/' + capital.id

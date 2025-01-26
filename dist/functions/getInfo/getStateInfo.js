@@ -39,10 +39,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getStateInfo = getStateInfo;
 const cheerio = __importStar(require("cheerio"));
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
-const utils_1 = require("../../misc/utils");
-const UserHandler_1 = require("../../user/UserHandler");
+const misc_1 = require("../../misc");
+const UserService_1 = __importDefault(require("../../user/UserService"));
 async function getStateInfo(stateId, force) {
-    const user = UserHandler_1.UserHandler.getInstance().getUser();
+    const user = UserService_1.default.getInstance().getUser();
     (0, tiny_invariant_1.default)(user, 'Failed to get user');
     const state = await user.models.getState(stateId);
     if (!force &&
@@ -67,9 +67,9 @@ async function getStateInfo(stateId, force) {
     const divs = $('#region_scroll > div');
     for (let i = 0; i < divs.length; i++) {
         const div = divs.eq(i);
-        const key = (0, utils_1.toCamelCase)(div.find('h2').first().text());
+        const key = (0, misc_1.toCamelCase)(div.find('h2').first().text());
         if (key === 'entryFee') {
-            const fee = (0, utils_1.dotless)(div.find('div.slide_profile_data > h2').first().text());
+            const fee = (0, misc_1.dotless)(div.find('div.slide_profile_data > h2').first().text());
             state.entryFee = fee;
         }
         else if (key === 'borders') {
@@ -97,7 +97,7 @@ async function getStateInfo(stateId, force) {
             }
         }
         else if (key === 'governmentForm') {
-            state.governmentForm = (0, utils_1.toCamelCase)(div.find('span').first().text());
+            state.governmentForm = (0, misc_1.toCamelCase)(div.find('span').first().text());
             // } else if (key === 'geopoliticalBloc') {
             //   const blocDiv = div.find('div[action^="blocs/show/"]');
             //   state.bloc = user.models.getBloc(blocDiv.attr('action')!.split('/').pop()!);

@@ -1,4 +1,4 @@
-import { dotless } from '../../misc/utils';
+import { dotless } from '../../misc';
 import { Autonomy } from '../Autonomy';
 import { Player } from '../Player';
 import { State } from '../State';

@@ -2,10 +2,10 @@ import * as cheerio from 'cheerio';
 import invariant from 'tiny-invariant';
 import { Region } from '../../../entity/Region';
 import { War } from '../../../entity/War';
-import { UserHandler } from '../../../user/UserHandler';
+import UserService from '../../../user/UserService';
 
 export async function getWarList(stateId: number) {
-  const user = UserHandler.getInstance().getUser();
+  const user = UserService.getInstance().getUser();
   invariant(user, 'Failed to get user');
 
   const content = await user.get('/listed/statewars/' + stateId);

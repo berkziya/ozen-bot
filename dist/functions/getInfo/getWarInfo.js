@@ -40,10 +40,10 @@ exports.getWarInfo = getWarInfo;
 const cheerio = __importStar(require("cheerio"));
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
 const timestamps_1 = require("../../misc/timestamps");
-const utils_1 = require("../../misc/utils");
-const UserHandler_1 = require("../../user/UserHandler");
+const misc_1 = require("../../misc");
+const UserService_1 = __importDefault(require("../../user/UserService"));
 async function getWarInfo(warId, force = false) {
-    const user = UserHandler_1.UserHandler.getInstance().getUser();
+    const user = UserService_1.default.getInstance().getUser();
     (0, tiny_invariant_1.default)(user, 'Failed to get user');
     const war = await user.models.getWar(warId);
     if (!force &&
@@ -118,8 +118,8 @@ async function getWarInfo(warId, force = false) {
     const attackerDamageSelector = type === 'revolution' || type === 'coup'
         ? '#war_w_ata > div.imp > span.hov2 > span'
         : '#war_w_ata_s > div.imp > span:nth-child(5) > span';
-    war.aggressorDamage = (0, utils_1.dotless)($(attackerDamageSelector).text());
-    war.defenderDamage = (0, utils_1.dotless)($('#war_w_def_s > span:nth-child(5) > span').text());
+    war.aggressorDamage = (0, misc_1.dotless)($(attackerDamageSelector).text());
+    war.defenderDamage = (0, misc_1.dotless)($('#war_w_def_s > span:nth-child(5) > span').text());
     war.lastUpdate = new Date();
     return war;
 }

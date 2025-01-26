@@ -1,3 +1,4 @@
+export { buyResource, sellResource, getMyOffer } from './tradeResource';
 export declare const resourceToId: {
     oil: number;
     ore: number;

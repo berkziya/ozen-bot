@@ -18,7 +18,7 @@ export declare class War {
         id: number;
         name: string;
         type: "troopers" | "sea" | "training" | "revolution" | "coup" | "ground" | "space" | "moon";
-        endingTime: Date;
+        endingTime: Date | null;
         aggresor: number;
         defender: number;
         aggressorDamage: number;

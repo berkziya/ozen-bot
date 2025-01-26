@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseMarketData = parseMarketData;
 const cheerio = __importStar(require("cheerio"));
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
-const UserHandler_1 = require("../../../user/UserHandler");
+const UserService_1 = __importDefault(require("../../../user/UserService"));
 const resourceToId = {
     oil: 3,
     ore: 4,
@@ -62,7 +62,7 @@ const resourceToId = {
     spaceStations: 23,
 };
 async function parseMarketData(resource) {
-    const user = UserHandler_1.UserHandler.getInstance().getUser();
+    const user = UserService_1.default.getInstance().getUser();
     (0, tiny_invariant_1.default)(user, 'Failed to get user');
     const content = await user.get('/storage/listed/' + resourceToId[resource]);
     if (!content || content.length < 150)

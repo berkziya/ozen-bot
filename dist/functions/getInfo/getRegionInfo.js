@@ -40,10 +40,10 @@ exports.getRegionInfo = getRegionInfo;
 exports.getRegionInfoInner = getRegionInfoInner;
 const cheerio = __importStar(require("cheerio"));
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
-const utils_1 = require("../../misc/utils");
-const UserHandler_1 = require("../../user/UserHandler");
+const misc_1 = require("../../misc");
+const UserService_1 = __importDefault(require("../../user/UserService"));
 async function getRegionInfo(regionId, force) {
-    const user = UserHandler_1.UserHandler.getInstance().getUser();
+    const user = UserService_1.default.getInstance().getUser();
     (0, tiny_invariant_1.default)(user, 'Failed to get user');
     const region = await user.models.getRegion(regionId);
     if (!force &&
@@ -101,12 +101,12 @@ async function getRegionInfoInner(user, regionId, getAutonomy = false) {
     for (let i = 0; i < buildingSpans.length; i++) {
         const buildingSpan = buildingSpans.eq(i);
         const buldingText = buildingSpan.text().split(': ');
-        region.buildings[buldingText[0]] = (0, utils_1.dotless)(buldingText[1]);
+        region.buildings[buldingText[0]] = (0, misc_1.dotless)(buldingText[1]);
     }
     const divs = $('#region_scroll > div');
     for (let i = 0; i < divs.length; i++) {
         const div = divs.eq(i);
-        const key = (0, utils_1.toCamelCase)(div.find('h2').first().text());
+        const key = (0, misc_1.toCamelCase)(div.find('h2').first().text());
         if (key === 'governor') {
             autonomy = await user.models.getAutonomy(region.id);
             autonomy.name = region.name;

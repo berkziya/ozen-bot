@@ -5,6 +5,9 @@ import { Law } from '../../../entity/shared/Parliament';
 import { getStateInfo } from '../../getInfo/getStateInfo';
 import { getParliamentInfo } from '../../getInfo/misc/getParliamentInfo';
 
+export { resourceRefill } from './resourceRefill';
+export { transferBudget } from './transferBudget';
+
 export const resourceIds = {
   money: 1,
   gold: 0,

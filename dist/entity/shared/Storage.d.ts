@@ -36,7 +36,7 @@ export declare class Storage {
     setBudgetFromDiv(div: any): Promise<void>;
     toJSON(): {
         subStorages: Storage[];
-        owner: number;
+        owner: number | undefined;
         stateMoney: number;
         stateGold: number;
         stateOil: number;

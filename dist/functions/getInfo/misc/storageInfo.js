@@ -35,14 +35,14 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.storageInfo = storageInfo;
 const cheerio = __importStar(require("cheerio"));
-const utils_1 = require("../../../misc/utils");
+const misc_1 = require("../../../misc");
 async function storageInfo(user) {
     const content = await user.get('/storage');
     if (!content || content.length < 150)
         return null;
     const $ = cheerio.load(content);
     function collectInfo(id) {
-        return (0, utils_1.dotless)($(`span[urlbar="${id}"]`).text().trim());
+        return (0, misc_1.dotless)($(`span[urlbar="${id}"]`).text().trim());
     }
     user.player.storage.oil = collectInfo(3);
     user.player.storage.ore = collectInfo(4);
@@ -70,10 +70,10 @@ async function storageInfo(user) {
             return;
         const money = script.match(/new_m\('([0-9.]+)'\);/);
         if (money)
-            user.player.storage.money = (0, utils_1.dotless)(money[1]);
+            user.player.storage.money = (0, misc_1.dotless)(money[1]);
         const gold = script.match(/new_g\('([0-9.]+)'\);/);
         if (gold)
-            user.player.storage.gold = (0, utils_1.dotless)(gold[1]);
+            user.player.storage.gold = (0, misc_1.dotless)(gold[1]);
         const expNlvl = script.match(/exp_size\((\d+), (\d+)/);
         if (expNlvl) {
             user.player.exp = parseInt(expNlvl[1]);

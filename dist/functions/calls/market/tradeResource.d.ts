@@ -6,4 +6,4 @@ export declare function getMyOffer(user: User, resource: keyof typeof resourceTo
     amount: number;
     price: number;
     sellLock: number;
-}>;
+} | null>;

@@ -23,5 +23,5 @@ export declare function parseMarketData(resource: keyof typeof resourceToId): Pr
     userId: number;
     amount: number;
     price: number;
-}[]>;
+}[] | null>;
 export {};

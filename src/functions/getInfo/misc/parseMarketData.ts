@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio';
 import invariant from 'tiny-invariant';
-import { UserHandler } from '../../../user/UserHandler';
+import UserService from '../../../user/UserService';
 
 const resourceToId = {
   oil: 3,
@@ -25,7 +25,7 @@ const resourceToId = {
 };
 
 export async function parseMarketData(resource: keyof typeof resourceToId) {
-  const user = UserHandler.getInstance().getUser();
+  const user = UserService.getInstance().getUser();
   invariant(user, 'Failed to get user');
 
   const content = await user.get('/storage/listed/' + resourceToId[resource]);

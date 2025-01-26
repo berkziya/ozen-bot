@@ -1,16 +1,15 @@
 import { User } from '../../../user/User';
-declare const deptIds: {
-    buildings: string;
-    gold: string;
-    oil: string;
-    ore: string;
-    diamonds: string;
-    uranium: string;
-    liquidOxygen: string;
-    helium3: string;
-    tanks: string;
-    spaceStations: string;
-    battleships: string;
+export declare const DEPT_IDS: {
+    buildings: number;
+    gold: number;
+    oil: number;
+    ore: number;
+    diamonds: number;
+    uranium: number;
+    liquidOxygen: number;
+    helium3: number;
+    tanks: number;
+    spaceStations: number;
+    battleships: number;
 };
-export declare function workStateDept(user: User, dept?: keyof typeof deptIds): Promise<Response>;
-export {};
+export declare function workStateDept(user: User, dept?: keyof typeof DEPT_IDS): Promise<Response>;

@@ -1,9 +1,9 @@
 import * as cheerio from 'cheerio';
 
 import { Region } from '../../../entity/Region';
-import { UserHandler } from '../../../user/UserHandler';
+import UserService from '../../../user/UserService';
 import invariant from 'tiny-invariant';
-import { dotless } from '../../../misc/utils';
+import { dotless } from '../../../misc';
 
 function parseTime(x: any) {
   return (
@@ -12,7 +12,7 @@ function parseTime(x: any) {
 }
 
 export async function flightPrices(location: Region) {
-  const user = UserHandler.getInstance().getUser();
+  const user = UserService.getInstance().getUser();
   invariant(user, 'Failed to get user');
 
   const content = await user.get(`/map/region_data/${location.id}`);

@@ -3,11 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthService = void 0;
 const fs_1 = require("fs");
 const path_1 = __importDefault(require("path"));
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
-const UserHandler_1 = require("../user/UserHandler");
+const UserService_1 = require("../user/UserService");
 const sanitizer_1 = require("../misc/sanitizer");
 class AuthService {
     who;
@@ -27,14 +26,14 @@ class AuthService {
             .join('; ');
     }
     get cookiesPath() {
-        return path_1.default.join(UserHandler_1.cookiesDir, `${this.who}-${this.isMobile ? 'm_' : ''}cookies.json`);
+        return path_1.default.join(UserService_1.cookiesDir, `${this.who}-${this.isMobile ? 'm_' : ''}cookies.json`);
     }
     async saveCookies(source) {
         try {
             if (!(typeof source === 'string'))
                 source = JSON.stringify(await source.cookies());
             this.cookieDict = JSON.parse(source);
-            await fs_1.promises.mkdir(UserHandler_1.cookiesDir, { recursive: true });
+            await fs_1.promises.mkdir(UserService_1.cookiesDir, { recursive: true });
             await fs_1.promises.writeFile(this.cookiesPath, source);
         }
         catch (e) {
@@ -122,4 +121,4 @@ class AuthService {
         }
     }
 }
-exports.AuthService = AuthService;
+exports.default = AuthService;

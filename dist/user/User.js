@@ -6,22 +6,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
 const sanitizer_1 = require("../misc/sanitizer");
-const AuthService_1 = require("../services/AuthService");
-const BrowserService_1 = require("../services/BrowserService");
-const ModelService_1 = require("../services/ModelService");
+const AuthService_1 = __importDefault(require("../services/AuthService"));
+const BrowserService_1 = __importDefault(require("../services/BrowserService"));
+const ModelService_1 = __importDefault(require("../services/ModelService"));
 class User {
     who;
     isMobile;
     authService;
     browserService;
-    models = ModelService_1.ModelService.getInstance();
+    models = ModelService_1.default.getInstance();
     player;
     constructor(who, isMobile = false) {
         this.who = who;
         this.isMobile = isMobile;
         const sanitizedWho = (0, sanitizer_1.sanitizer)(who);
-        this.browserService = new BrowserService_1.BrowserService(sanitizedWho, isMobile);
-        this.authService = new AuthService_1.AuthService(sanitizedWho, isMobile, this.browserService);
+        this.browserService = new BrowserService_1.default(sanitizedWho, isMobile);
+        this.authService = new AuthService_1.default(sanitizedWho, isMobile, this.browserService);
     }
     get id() {
         return this.player.id;

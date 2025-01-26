@@ -3,10 +3,10 @@ import invariant from 'tiny-invariant';
 import { Region } from '../../../entity/Region';
 import { State } from '../../../entity/State';
 import { User } from '../../../user/User';
-import { UserHandler } from '../../../user/UserHandler';
+import UserService from '../../../user/UserService';
 
 export async function getCitizens(location: Region | State) {
-  const user = UserHandler.getInstance().getUser();
+  const user = UserService.getInstance().getUser();
   invariant(user, 'Failed to get user');
 
   return location instanceof State

@@ -1,11 +1,11 @@
 import * as cheerio from 'cheerio';
 import invariant from 'tiny-invariant';
-import { dotless, toCamelCase } from '../../misc/utils';
-import { UserHandler } from '../../user/UserHandler';
+import { dotless, toCamelCase } from '../../misc';
+import UserService from '../../user/UserService';
 import { getRegionInfo } from './getRegionInfo';
 
 export async function getPlayerInfo(playerId: number, force?: boolean) {
-  const user = UserHandler.getInstance().getUser();
+  const user = UserService.getInstance().getUser();
   invariant(user, 'Failed to get user');
 
   const player = await user.models.getPlayer(playerId);

@@ -3,22 +3,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserHandler = exports.cookiesDir = void 0;
+exports.cookiesDir = void 0;
 const fs_1 = require("fs");
 const path_1 = __importDefault(require("path"));
-const ModelService_1 = require("../services/ModelService");
+const ModelService_1 = __importDefault(require("../services/ModelService"));
 const User_1 = require("./User");
 exports.cookiesDir = path_1.default.join(process.cwd(), 'cookies');
-class UserHandler {
+class UserService {
     static instance;
-    modelService = ModelService_1.ModelService.getInstance();
+    modelService = ModelService_1.default.getInstance();
     users = [];
     constructor() { }
     static getInstance() {
-        if (!UserHandler.instance) {
-            UserHandler.instance = new UserHandler();
+        if (!UserService.instance) {
+            UserService.instance = new UserService();
         }
-        return UserHandler.instance;
+        return UserService.instance;
     }
     getUser(id, who) {
         if (id)
@@ -46,4 +46,4 @@ class UserHandler {
         }
     }
 }
-exports.UserHandler = UserHandler;
+exports.default = UserService;

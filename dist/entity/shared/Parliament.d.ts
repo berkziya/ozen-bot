@@ -11,7 +11,7 @@ export declare class Law {
         id: number;
         by: number;
         text: string;
-        proposeDate: Date;
+        proposeDate: Date | null;
         pro: number[];
         contra: number[];
     };

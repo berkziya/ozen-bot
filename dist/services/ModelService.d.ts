@@ -1,11 +1,5 @@
-import { Autonomy } from '../entity/Autonomy';
-import { Bloc } from '../entity/Bloc';
-import { Factory } from '../entity/Factory';
-import { Player } from '../entity/Player';
-import { Region } from '../entity/Region';
-import { State } from '../entity/State';
-import { War } from '../entity/War';
-export declare class ModelService {
+import { Autonomy, Bloc, Factory, Player, Region, State, War } from '../entity';
+export default class ModelService {
     private static instance;
     private models;
     private constructor();

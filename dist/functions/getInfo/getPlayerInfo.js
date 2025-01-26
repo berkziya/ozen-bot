@@ -39,11 +39,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPlayerInfo = getPlayerInfo;
 const cheerio = __importStar(require("cheerio"));
 const tiny_invariant_1 = __importDefault(require("tiny-invariant"));
-const utils_1 = require("../../misc/utils");
-const UserHandler_1 = require("../../user/UserHandler");
+const misc_1 = require("../../misc");
+const UserService_1 = __importDefault(require("../../user/UserService"));
 const getRegionInfo_1 = require("./getRegionInfo");
 async function getPlayerInfo(playerId, force) {
-    const user = UserHandler_1.UserHandler.getInstance().getUser();
+    const user = UserService_1.default.getInstance().getUser();
     (0, tiny_invariant_1.default)(user, 'Failed to get user');
     const player = await user.models.getPlayer(playerId);
     if (!force &&
@@ -76,7 +76,7 @@ async function getPlayerInfo(playerId, force) {
         .attr('title')
         .match(/Exp:(.*)Next/);
     if (expMatch) {
-        player.exp = (0, utils_1.dotless)(expMatch[1]);
+        player.exp = (0, misc_1.dotless)(expMatch[1]);
     }
     const leaderDiv = $('h2[title*="eader"]');
     if (leaderDiv.length) {
@@ -91,7 +91,7 @@ async function getPlayerInfo(playerId, force) {
     const trs = $('tbody > tr');
     for (let i = 1; i < trs.length; i++) {
         const tr = trs.eq(i);
-        const key = (0, utils_1.toCamelCase)(tr.find('td').first().text());
+        const key = (0, misc_1.toCamelCase)(tr.find('td').first().text());
         const value = tr.find('td').last().text();
         if (key === 'perks') {
             const perks = value.split(' / ').map((perk) => {

@@ -1,25 +1,25 @@
 import { User } from '../../../user/User';
 
-const deptIds = {
-  buildings: 'w1',
-  gold: 'w2',
-  oil: 'w3',
-  ore: 'w4',
-  diamonds: 'w5',
-  uranium: 'w6',
-  liquidOxygen: 'w7',
-  helium3: 'w8',
-  tanks: 'w9',
-  spaceStations: 'w10',
-  battleships: 'w11',
+export const DEPT_IDS = {
+  buildings: 1,
+  gold: 2,
+  oil: 3,
+  ore: 4,
+  diamonds: 5,
+  uranium: 6,
+  liquidOxygen: 7,
+  helium3: 8,
+  tanks: 9,
+  spaceStations: 10,
+  battleships: 11,
 };
 
 export async function workStateDept(
   user: User,
-  dept: keyof typeof deptIds = 'tanks'
+  dept: keyof typeof DEPT_IDS = 'tanks'
 ) {
-  const toBeWorked = Object.entries(deptIds).reduce(
-    (acc, [key, value]) => ({ ...acc, [value]: dept == key ? 10 : 0 }),
+  const toBeWorked = Object.entries(DEPT_IDS).reduce(
+    (acc, [key, value]) => ({ ...acc, [`w${value}`]: dept == key ? 10 : 0 }),
     { state: user.player.region!.state!.id }
   );
   const what = JSON.stringify(toBeWorked);
