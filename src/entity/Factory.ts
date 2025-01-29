@@ -88,7 +88,7 @@ export class Factory {
   wage(playerLevel?: number, deepResource?: number, workExp?: number) {
     return this.isFixed
       ? this.wage_
-      : this.wage_ * this.production(playerLevel, deepResource, workExp) * 1.2;
+      : this.wage_ * this.production(playerLevel, deepResource, workExp);
   }
 
   get type(): string {
