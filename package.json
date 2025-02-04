@@ -1,6 +1,6 @@
 {
   "name": "@berkziya/ozen-bot",
-  "version": "0.5.12",
+  "version": "0.5.13",
   "type": "module",
   "scripts": {
     "build": "tsc"
@@ -10,13 +10,6 @@
   "files": [
     "dist"
   ],
-  "exports": {
-    ".": "./dist/index.js",
-    "./misc": "./dist/misc/index.js",
-    "./functions": "./dist/functions/index.js",
-    "./entity": "./dist/entity/index.js",
-    "./user": "./dist/user/index.js"
-  },
   "license": "MIT",
   "dependencies": {
     "cheerio": "^1.0.0",
