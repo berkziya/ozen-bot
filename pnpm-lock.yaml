@@ -15,8 +15,8 @@ importers:
         specifier: ^3.5.0
         version: 3.5.0
       drizzle-orm:
-        specifier: ^0.39.1
-        version: 0.39.1
+        specifier: ^0.39.2
+        version: 0.39.2
       playwright:
         specifier: ^1.50.1
         version: 1.50.1
@@ -240,8 +240,8 @@ packages:
   domutils@3.2.2:
     resolution: {integrity: sha512-6kZKyUajlDuqlHKVX1w7gyslj9MPIXzIFiz/rGu35uC1wMi+kMhQwGhl4lt9unC9Vb9INnY9Z3/ZA3+FhASLaw==}
 
-  drizzle-orm@0.39.1:
-    resolution: {integrity: sha512-2bDHlzTY31IDmrYn8i+ZZrxK8IyBD4mPZ7JmZdVDQj2tpBZXs/gxB/1kK5pSvkjxPUMNOVsTnoGkSltgjuJwcA==}
+  drizzle-orm@0.39.2:
+    resolution: {integrity: sha512-cuopo+udkKEGGpSxCML9ZRQ43R01zYCTsbqCrb9kJkabx1QEwFlPIFoQfx6E6tuawtiX930Gwyrkwj4inlpzDg==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=4'
@@ -590,7 +590,7 @@ snapshots:
       domelementtype: 2.3.0
       domhandler: 5.0.3
 
-  drizzle-orm@0.39.1: {}
+  drizzle-orm@0.39.2: {}
 
   encoding-sniffer@0.2.0:
     dependencies:
