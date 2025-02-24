@@ -12,6 +12,7 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "@berkziya/ozen-bot": "link:",
     "cheerio": "^1.0.0",
     "cron": "^3.5.0",
     "drizzle-orm": "^0.39.3",
@@ -20,12 +21,12 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@types/node": "^22.13.4",
+    "@types/node": "^22.13.5",
     "@types/node-fetch": "^2.6.12",
     "typescript": "^5.7.3"
   },
   "optionalDependencies": {
-    "tsx": "^4.19.2"
+    "tsx": "^4.19.3"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
